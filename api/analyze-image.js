@@ -46,7 +46,15 @@ module.exports = async function handler(req, res) {
 
     // Initialize Gemini
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    // Try different model names - gemini-pro-vision is the standard vision model
+    // If that doesn't work, try: gemini-1.5-pro, gemini-pro, or gemini-1.5-flash-latest
+    let model;
+    try {
+      model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
+    } catch (e) {
+      // Fallback to gemini-1.5-pro if vision model not available
+      model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    }
 
     // Prepare the prompt for structured vendor information
     const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
