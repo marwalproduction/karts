@@ -51,6 +51,8 @@ module.exports = async function handler(req, res) {
     
     if (roboflowApiKey) {
       try {
+        // Roboflow API format: send base64 image directly
+        const imageBuffer = Buffer.from(imageBase64, 'base64');
         const roboflowResponse = await fetch(
           `https://detect.roboflow.com/${roboflowModelId}?api_key=${roboflowApiKey}`,
           {
@@ -58,16 +60,16 @@ module.exports = async function handler(req, res) {
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-              image: `data:${mimeType || 'image/jpeg'};base64,${imageBase64}`
-            })
+            body: imageBuffer
           }
         );
 
         if (roboflowResponse.ok) {
           const roboflowData = await roboflowResponse.json();
-          detectedObjects = roboflowData.predictions || [];
+          detectedObjects = roboflowData.predictions || roboflowData.detections || [];
           console.log('YOLOv8 detected objects:', detectedObjects.length);
+        } else {
+          console.log('Roboflow API returned non-OK status:', roboflowResponse.status);
         }
       } catch (roboflowError) {
         console.error('Roboflow API error (non-critical):', roboflowError.message);
