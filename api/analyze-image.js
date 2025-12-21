@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { init } = require('@heyputer/puter.js/src/init.cjs');
 
-// Analyze image using Google Gemini Vision API + YOLOv8 via Roboflow
+// Analyze image using Google Gemini Vision API + YOLOv8 via Roboflow + Puter.ai (optional)
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -77,7 +78,33 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Step 2: Initialize Gemini for text extraction and understanding
+    // Step 2: Try Puter.ai first (if available) for image analysis
+    let puterAnalysis = null;
+    const puterAuthToken = process.env.PUTER_AUTH_TOKEN;
+    
+    if (puterAuthToken) {
+      try {
+        const puter = init(puterAuthToken);
+        
+        // Convert base64 to data URL for Puter.ai
+        const imageDataUrl = `data:${mimeType || 'image/jpeg'};base64,${imageBase64}`;
+        
+        // Use Puter.ai chat to analyze the image
+        const puterResponse = await puter.ai.chat(
+          `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with: heading (short title), description (2-3 sentences), extractedText (all visible text), extraInfo (items, prices, hours, contact, features). Return ONLY valid JSON, no markdown.`,
+          imageDataUrl,
+          { model: "gpt-4o-mini" } // or "gpt-5-nano" if available
+        );
+        
+        puterAnalysis = puterResponse;
+        console.log('Puter.ai analysis completed');
+      } catch (puterError) {
+        console.error('Puter.ai error (non-critical):', puterError.message);
+        // Continue with Gemini if Puter.ai fails
+      }
+    }
+
+    // Step 3: Initialize Gemini for text extraction and understanding (fallback or combined)
     const genAI = new GoogleGenerativeAI(apiKey);
     // Use gemini-pro-vision for vision tasks (standard model for image analysis)
     // Alternative models: gemini-1.5-pro, gemini-pro
@@ -129,35 +156,55 @@ Be concise but informative. If information is not visible, use null or empty arr
     text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
     let structuredData;
-    try {
-      structuredData = JSON.parse(text);
-      
-      // Add YOLOv8 detected objects to extraInfo
-      if (detectedObjects.length > 0) {
-        if (!structuredData.extraInfo) {
-          structuredData.extraInfo = {};
-        }
-        structuredData.extraInfo.detectedObjects = detectedItems;
-        structuredData.extraInfo.objectCount = detectedObjects.length;
+    
+    // If Puter.ai provided analysis, try to use it
+    if (puterAnalysis) {
+      try {
+        // Puter.ai might return JSON directly or as text
+        const puterText = typeof puterAnalysis === 'string' ? puterAnalysis : puterAnalysis.text || JSON.stringify(puterAnalysis);
+        const cleanedPuterText = puterText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+        structuredData = JSON.parse(cleanedPuterText);
+        console.log('Using Puter.ai analysis');
+      } catch (puterParseError) {
+        console.log('Puter.ai response not valid JSON, using Gemini instead');
+        // Fall through to Gemini parsing
       }
-    } catch (parseError) {
-      // If JSON parsing fails, create a fallback structure
-      console.error('Failed to parse Gemini response as JSON:', text);
-      structuredData = {
-        heading: 'Vendor',
-        description: text.substring(0, 200) || 'A vendor or business',
-        extractedText: text,
-        extraInfo: {
-          items: [],
-          prices: [],
-          hours: null,
-          contact: null,
-          features: [],
-          detectedObjects: detectedItems,
-          objectCount: detectedObjects.length
-        }
-      };
     }
+    
+    // If Puter.ai didn't work or wasn't available, use Gemini
+    if (!structuredData) {
+      try {
+        structuredData = JSON.parse(text);
+        console.log('Using Gemini analysis');
+      } catch (parseError) {
+        // If JSON parsing fails, create a fallback structure
+        console.error('Failed to parse Gemini response as JSON:', text);
+        structuredData = {
+          heading: 'Vendor',
+          description: text.substring(0, 200) || 'A vendor or business',
+          extractedText: text,
+          extraInfo: {
+            items: [],
+            prices: [],
+            hours: null,
+            contact: null,
+            features: []
+          }
+        };
+      }
+    }
+    
+    // Add YOLOv8 detected objects to extraInfo
+    if (detectedObjects.length > 0) {
+      if (!structuredData.extraInfo) {
+        structuredData.extraInfo = {};
+      }
+      structuredData.extraInfo.detectedObjects = detectedItems;
+      structuredData.extraInfo.objectCount = detectedObjects.length;
+    }
+    
+    // Add source information
+    structuredData.analysisSource = puterAnalysis ? 'puter.ai' : 'gemini';
 
     res.json({
       success: true,
