@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
+import Tesseract from 'tesseract.js';
 import './App.css';
 
 function App() {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState('');
   const [error, setError] = useState(null);
   const [ocr, setOcr] = useState(null);
   const [serverMsg, setServerMsg] = useState(null);
@@ -21,87 +23,104 @@ function App() {
     setError(null);
     setOcr(null);
     setServerMsg(null);
+    setLoadingProgress('Loading image...');
     setPreview(URL.createObjectURL(file));
 
-    // Get location automatically
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      setLoading(false);
-      return;
-    }
-
-    // Set a timeout for geolocation (10 seconds)
-    const geoTimeout = setTimeout(() => {
-      setError('Location request timed out. Please enable location access and try again.');
-      setLoading(false);
-    }, 10000);
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        clearTimeout(geoTimeout);
-        const location = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-
-        // Automatically submit after getting location
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('lat', location.lat);
-        formData.append('lng', location.lng);
-
-        try {
-          // Use /api/upload for Vercel deployment, or custom API URL if set
-          const apiUrl = process.env.REACT_APP_API_URL;
-          const uploadUrl = apiUrl ? `${apiUrl}/upload` : '/api/upload';
-          
-          // Add timeout to prevent infinite hanging (60 seconds)
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 60000);
-          
-          const response = await fetch(uploadUrl, {
-            method: 'POST',
-            body: formData,
-            signal: controller.signal,
-          });
-          
-          clearTimeout(timeoutId);
-          
-          if (!response.ok) {
-            const errorText = await response.text();
-            let errorData;
-            try {
-              errorData = JSON.parse(errorText);
-            } catch {
-              errorData = { error: `Server error: ${response.status} ${response.statusText}` };
-            }
-            throw new Error(errorData.error || 'Server error');
+    try {
+      // Step 1: Perform OCR client-side
+      setLoadingProgress('Extracting text from image...');
+      const { data: { text } } = await Tesseract.recognize(file, 'eng', {
+        logger: m => {
+          if (m.status === 'recognizing text') {
+            const progress = Math.round(m.progress * 100);
+            setLoadingProgress(`Extracting text... ${progress}%`);
           }
-          
-          const data = await response.json();
-          setOcr(data.ocr);
-          setServerMsg(data.message);
-          setLoading(false);
-        } catch (err) {
-          if (err.name === 'AbortError') {
-            setError('Request timed out. Please try again.');
-          } else {
-            setError(err.message || 'Upload failed');
-          }
-          setLoading(false);
         }
-      },
-      (err) => {
-        clearTimeout(geoTimeout);
-        setError('Could not retrieve location. Please enable location access.');
+      });
+
+      setOcr(text);
+      setLoadingProgress('Getting location...');
+
+      // Step 2: Get location
+      if (!navigator.geolocation) {
+        setError('Geolocation is not supported by your browser');
         setLoading(false);
-      },
-      {
-        timeout: 10000,
-        enableHighAccuracy: false,
-        maximumAge: 60000
+        setLoadingProgress('');
+        return;
       }
-    );
+
+      // Set a timeout for geolocation (10 seconds)
+      const geoTimeout = setTimeout(() => {
+        setError('Location request timed out. Please enable location access and try again.');
+        setLoading(false);
+        setLoadingProgress('');
+      }, 10000);
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          clearTimeout(geoTimeout);
+          const location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          // Step 3: Send OCR text and location to server
+          setLoadingProgress('Sending data...');
+          
+          try {
+            const apiUrl = process.env.REACT_APP_API_URL;
+            const uploadUrl = apiUrl ? `${apiUrl}/upload` : '/api/upload';
+            
+            const response = await fetch(uploadUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                ocr: text,
+                lat: location.lat,
+                lng: location.lng,
+              }),
+            });
+            
+            if (!response.ok) {
+              const errorText = await response.text();
+              let errorData;
+              try {
+                errorData = JSON.parse(errorText);
+              } catch {
+                errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+              }
+              throw new Error(errorData.error || 'Server error');
+            }
+            
+            const data = await response.json();
+            setServerMsg(data.message || 'Vendor info saved successfully');
+            setLoading(false);
+            setLoadingProgress('');
+          } catch (err) {
+            setError(err.message || 'Failed to send data');
+            setLoading(false);
+            setLoadingProgress('');
+          }
+        },
+        (err) => {
+          clearTimeout(geoTimeout);
+          setError('Could not retrieve location. Please enable location access.');
+          setLoading(false);
+          setLoadingProgress('');
+        },
+        {
+          timeout: 10000,
+          enableHighAccuracy: false,
+          maximumAge: 60000
+        }
+      );
+    } catch (err) {
+      setError(err.message || 'OCR processing failed');
+      setLoading(false);
+      setLoadingProgress('');
+    }
 
     // Reset file input
     e.target.value = '';
@@ -120,7 +139,7 @@ function App() {
           style={{ display: 'none' }}
         />
         <button onClick={handleCaptureAndSend} disabled={loading} style={{ padding: '15px 30px', fontSize: '18px', marginTop: '20px' }}>
-          {loading ? 'Processing...' : '📷 Capture & Send'}
+          {loading ? (loadingProgress || 'Processing...') : '📷 Capture & Send'}
         </button>
         {preview && (
           <div style={{ margin: '1em 0' }}>
