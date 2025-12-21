@@ -8,6 +8,8 @@
   "scripts": {
     "build": "cd frontend && npm install && npm run build"
   },
-  "dependencies": {}
+  "dependencies": {
+    "mongoose": "^9.0.2"
+  }
 }
 

@@ -5,6 +5,12 @@
   "functions": {
     "api/upload.js": {
       "maxDuration": 60
+    },
+    "api/search.js": {
+      "maxDuration": 10
+    },
+    "api/nearby.js": {
+      "maxDuration": 10
     }
   },
   "routes": [

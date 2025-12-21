@@ -1,3 +1,6 @@
+const connectDB = require('./db');
+const Vendor = require('./models/Vendor');
+
 // Vercel serverless function handler
 // Now receives OCR text from client instead of processing images
 module.exports = async function handler(req, res) {
@@ -45,14 +48,38 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'ocr, lat, and lng are required' });
     }
 
-    // Here you would typically save the data to a database
-    // For now, just return success
-    console.log('Received vendor data:', { ocr, lat, lng });
+    // Connect to database and save vendor
+    try {
+      await connectDB();
+      
+      const vendor = new Vendor({
+        ocr: ocr.trim(),
+        location: {
+          type: 'Point',
+          coordinates: [parseFloat(lng), parseFloat(lat)] // MongoDB uses [lng, lat]
+        }
+      });
 
-    res.json({
-      message: 'Vendor info saved successfully',
-      coords: { lat, lng }
-    });
+      await vendor.save();
+      console.log('Vendor saved successfully:', vendor._id);
+
+      res.json({
+        message: 'Vendor info saved successfully',
+        coords: { lat, lng },
+        id: vendor._id
+      });
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      // If no MongoDB URI is set, still return success (for development)
+      if (process.env.MONGODB_URI) {
+        res.status(500).json({ error: 'Failed to save vendor data' });
+      } else {
+        res.json({
+          message: 'Vendor info received (database not configured)',
+          coords: { lat, lng }
+        });
+      }
+    }
   } catch (error) {
     console.error('Upload error:', error);
     res.status(500).json({ error: error.message || 'Server error' });
