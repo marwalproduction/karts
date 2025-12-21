@@ -16,7 +16,7 @@
       "maxDuration": 10
     },
     "api/analyze-image.js": {
-      "maxDuration": 30
+      "maxDuration": 40
     },
     "api/list-models.js": {
       "maxDuration": 10

@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Analyze image using Google Gemini Vision API
+// Analyze image using Google Gemini Vision API + YOLOv8 via Roboflow
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -44,13 +44,50 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'imageBase64 is required' });
     }
 
-    // Initialize Gemini
+    // Step 1: YOLOv8 Object Detection via Roboflow (optional, if API key is set)
+    let detectedObjects = [];
+    const roboflowApiKey = process.env.ROBOFLOW_API_KEY;
+    const roboflowModelId = process.env.ROBOFLOW_MODEL_ID || 'food-items-detection/1'; // Default model
+    
+    if (roboflowApiKey) {
+      try {
+        const roboflowResponse = await fetch(
+          `https://detect.roboflow.com/${roboflowModelId}?api_key=${roboflowApiKey}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              image: `data:${mimeType || 'image/jpeg'};base64,${imageBase64}`
+            })
+          }
+        );
+
+        if (roboflowResponse.ok) {
+          const roboflowData = await roboflowResponse.json();
+          detectedObjects = roboflowData.predictions || [];
+          console.log('YOLOv8 detected objects:', detectedObjects.length);
+        }
+      } catch (roboflowError) {
+        console.error('Roboflow API error (non-critical):', roboflowError.message);
+        // Continue with Gemini even if Roboflow fails
+      }
+    }
+
+    // Step 2: Initialize Gemini for text extraction and understanding
     const genAI = new GoogleGenerativeAI(apiKey);
     // Use gemini-pro-vision for vision tasks (standard model for image analysis)
     // Alternative models: gemini-1.5-pro, gemini-pro
     const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
     // Prepare the prompt for structured vendor information
+    // Include detected objects from YOLOv8 if available
+    const detectedItems = detectedObjects.map(obj => obj.class || obj.name).filter(Boolean);
+    const objectDetectionInfo = detectedItems.length > 0 
+      ? `\n\nDetected objects in image: ${detectedItems.join(', ')}. Use this information to enhance the analysis.`
+      : '';
+
     const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
 {
@@ -62,9 +99,10 @@ module.exports = async function handler(req, res) {
     "prices": ["Prices if visible"],
     "hours": "Operating hours if visible",
     "contact": "Phone number or contact info if visible",
-    "features": ["Notable features like 'outdoor seating', 'cash only', etc."]
+    "features": ["Notable features like 'outdoor seating', 'cash only', etc."],
+    "detectedObjects": ["Objects detected by AI vision model"]
   }
-}
+}${objectDetectionInfo}
 
 Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
@@ -91,6 +129,15 @@ Be concise but informative. If information is not visible, use null or empty arr
     let structuredData;
     try {
       structuredData = JSON.parse(text);
+      
+      // Add YOLOv8 detected objects to extraInfo
+      if (detectedObjects.length > 0) {
+        if (!structuredData.extraInfo) {
+          structuredData.extraInfo = {};
+        }
+        structuredData.extraInfo.detectedObjects = detectedItems;
+        structuredData.extraInfo.objectCount = detectedObjects.length;
+      }
     } catch (parseError) {
       // If JSON parsing fails, create a fallback structure
       console.error('Failed to parse Gemini response as JSON:', text);
@@ -103,7 +150,9 @@ Be concise but informative. If information is not visible, use null or empty arr
           prices: [],
           hours: null,
           contact: null,
-          features: []
+          features: [],
+          detectedObjects: detectedItems,
+          objectCount: detectedObjects.length
         }
       };
     }
