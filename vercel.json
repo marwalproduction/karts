@@ -2,17 +2,12 @@
   "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
-  "builds": [
-    {
-      "src": "api/upload.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/upload.js": {
+      "runtime": "@vercel/node"
     }
-  ],
+  },
   "routes": [
-    {
-      "src": "/api/upload",
-      "dest": "/api/upload.js"
-    },
     {
       "handle": "filesystem"
     },
