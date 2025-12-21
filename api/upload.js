@@ -41,15 +41,22 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid JSON in request body' });
     }
 
-    const { ocr, lat, lng } = data;
+    const { heading, description, extractedText, extraInfo, lat, lng } = data;
 
-    if (!ocr || lat === undefined || lng === undefined) {
-      return res.status(400).json({ error: 'ocr, lat, and lng are required' });
+    if (!heading || lat === undefined || lng === undefined) {
+      return res.status(400).json({ error: 'heading, lat, and lng are required' });
     }
 
-    // Save vendor to GitHub
+    // Save structured vendor to GitHub
     try {
-      const vendor = await saveVendor({ ocr, lat, lng });
+      const vendor = await saveVendor({ 
+        heading, 
+        description, 
+        extractedText, 
+        extraInfo, 
+        lat, 
+        lng 
+      });
       console.log('Vendor saved successfully to GitHub:', vendor.id);
 
       res.json({

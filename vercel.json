@@ -14,6 +14,9 @@
     },
     "api/test-github.js": {
       "maxDuration": 10
+    },
+    "api/analyze-image.js": {
+      "maxDuration": 30
     }
   },
   "routes": [

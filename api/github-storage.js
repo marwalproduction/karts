@@ -89,7 +89,16 @@ async function saveVendor(vendorData) {
     
     const vendor = {
       id: vendorId,
-      ocr: vendorData.ocr.trim(),
+      heading: vendorData.heading || 'Vendor',
+      description: vendorData.description || '',
+      extractedText: vendorData.extractedText || '',
+      extraInfo: vendorData.extraInfo || {
+        items: [],
+        prices: [],
+        hours: null,
+        contact: null,
+        features: []
+      },
       location: {
         lat: parseFloat(vendorData.lat),
         lng: parseFloat(vendorData.lng)
@@ -169,12 +178,22 @@ async function searchVendors(query) {
   const vendors = await getAllVendors();
   const searchTerm = query.toLowerCase();
   
-  return vendors.filter(vendor => 
-    vendor.ocr.toLowerCase().includes(searchTerm)
-  ).sort((a, b) => {
+  return vendors.filter(vendor => {
+    const searchableText = [
+      vendor.heading,
+      vendor.description,
+      vendor.extractedText,
+      ...(vendor.extraInfo?.items || []),
+      ...(vendor.extraInfo?.features || [])
+    ].join(' ').toLowerCase();
+    
+    return searchableText.includes(searchTerm);
+  }).sort((a, b) => {
     // Sort by relevance (how many times search term appears)
-    const aCount = (vendor.ocr.toLowerCase().match(new RegExp(searchTerm, 'g')) || []).length;
-    const bCount = (vendor.ocr.toLowerCase().match(new RegExp(searchTerm, 'g')) || []).length;
+    const aText = [a.heading, a.description, a.extractedText].join(' ').toLowerCase();
+    const bText = [b.heading, b.description, b.extractedText].join(' ').toLowerCase();
+    const aCount = (aText.match(new RegExp(searchTerm, 'g')) || []).length;
+    const bCount = (bText.match(new RegExp(searchTerm, 'g')) || []).length;
     return bCount - aCount;
   });
 }

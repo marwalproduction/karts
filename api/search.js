@@ -28,7 +28,10 @@ module.exports = async function handler(req, res) {
     res.json({
       vendors: limitedVendors.map(v => ({
         id: v.id,
-        text: v.ocr,
+        heading: v.heading || 'Vendor',
+        description: v.description || '',
+        extractedText: v.extractedText || '',
+        extraInfo: v.extraInfo || {},
         location: v.location,
         createdAt: v.createdAt
       }))

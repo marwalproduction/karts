@@ -1,6 +1,79 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Tesseract from 'tesseract.js';
 import './App.css';
+
+// Vendor Card Component for displaying structured vendor listings
+function VendorCard({ vendor, formatDate }) {
+  return (
+    <div
+      style={{
+        background: '#222',
+        padding: '20px',
+        borderRadius: '8px',
+        marginBottom: '15px',
+        textAlign: 'left',
+        border: '1px solid #333'
+      }}
+    >
+      <h3 style={{ marginTop: 0, marginBottom: '10px', color: '#4CAF50', fontSize: '1.2em' }}>
+        {vendor.heading || 'Vendor'}
+      </h3>
+      
+      {vendor.description && (
+        <p style={{ color: '#ccc', margin: '10px 0', lineHeight: '1.5' }}>
+          {vendor.description}
+        </p>
+      )}
+
+      {vendor.extractedText && (
+        <div style={{ marginTop: '12px', padding: '10px', background: '#111', borderRadius: '5px' }}>
+          <div style={{ fontSize: '0.85em', color: '#aaa', marginBottom: '5px' }}>Details:</div>
+          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#fff', fontSize: '0.9em' }}>
+            {vendor.extractedText}
+          </pre>
+        </div>
+      )}
+
+      {vendor.extraInfo && (
+        <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
+          {vendor.extraInfo.items && vendor.extraInfo.items.length > 0 && (
+            <div style={{ marginTop: '8px' }}>
+              <span style={{ color: '#aaa' }}>Items: </span>
+              <span style={{ color: '#fff' }}>{vendor.extraInfo.items.join(', ')}</span>
+            </div>
+          )}
+          {vendor.extraInfo.prices && vendor.extraInfo.prices.length > 0 && (
+            <div style={{ marginTop: '8px', color: '#4CAF50' }}>
+              <span style={{ color: '#aaa' }}>Prices: </span>
+              {vendor.extraInfo.prices.join(', ')}
+            </div>
+          )}
+          {vendor.extraInfo.hours && (
+            <div style={{ marginTop: '8px', color: '#fff' }}>
+              <span style={{ color: '#aaa' }}>Hours: </span>
+              {vendor.extraInfo.hours}
+            </div>
+          )}
+          {vendor.extraInfo.contact && (
+            <div style={{ marginTop: '8px', color: '#fff' }}>
+              <span style={{ color: '#aaa' }}>Contact: </span>
+              {vendor.extraInfo.contact}
+            </div>
+          )}
+          {vendor.extraInfo.features && vendor.extraInfo.features.length > 0 && (
+            <div style={{ marginTop: '8px' }}>
+              <span style={{ color: '#aaa' }}>Features: </span>
+              <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.features.join(' • ')}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px' }}>
+        📍 Location: {vendor.location?.lat?.toFixed(4)}, {vendor.location?.lng?.toFixed(4)} • {formatDate(vendor.createdAt)}
+      </div>
+    </div>
+  );
+}
 
 function App() {
   const [activeTab, setActiveTab] = useState('add'); // 'add' or 'browse'
@@ -8,7 +81,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState('');
   const [error, setError] = useState(null);
-  const [ocr, setOcr] = useState(null);
+  const [vendorData, setVendorData] = useState(null);
   const [serverMsg, setServerMsg] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -86,27 +159,58 @@ function App() {
 
     setLoading(true);
     setError(null);
-    setOcr(null);
+    setVendorData(null);
     setServerMsg(null);
     setLoadingProgress('Loading image...');
     setPreview(URL.createObjectURL(file));
 
     try {
-      // Step 1: Perform OCR client-side
-      setLoadingProgress('Extracting text from image...');
-      const { data: { text } } = await Tesseract.recognize(file, 'eng', {
-        logger: m => {
-          if (m.status === 'recognizing text') {
-            const progress = Math.round(m.progress * 100);
-            setLoadingProgress(`Extracting text... ${progress}%`);
-          }
-        }
+      // Step 1: Convert image to base64
+      setLoadingProgress('Preparing image...');
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64String = reader.result.split(',')[1];
+          resolve(base64String);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
       });
 
-      setOcr(text);
+      // Step 2: Analyze image with Gemini AI
+      setLoadingProgress('Analyzing image with AI...');
+      const analyzeUrl = `${apiUrl}/api/analyze-image`;
+      const analyzeResponse = await fetch(analyzeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageBase64: base64,
+          mimeType: file.type || 'image/jpeg',
+        }),
+      });
+
+      if (!analyzeResponse.ok) {
+        const errorText = await analyzeResponse.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: `AI analysis failed: ${analyzeResponse.status}` };
+        }
+        throw new Error(errorData.error || 'Failed to analyze image');
+      }
+
+      const analyzeData = await analyzeResponse.json();
+      if (!analyzeData.success || !analyzeData.data) {
+        throw new Error('Invalid response from AI analysis');
+      }
+
+      setVendorData(analyzeData.data);
       setLoadingProgress('Getting location...');
 
-      // Step 2: Get location
+      // Step 3: Get location
       if (!navigator.geolocation) {
         setError('Geolocation is not supported by your browser');
         setLoading(false);
@@ -129,8 +233,8 @@ function App() {
             lng: position.coords.longitude,
           };
 
-          // Step 3: Send OCR text and location to server
-          setLoadingProgress('Sending data...');
+          // Step 4: Send structured vendor data to server
+          setLoadingProgress('Saving vendor...');
           
           try {
             const uploadUrl = `${apiUrl}/api/upload`;
@@ -141,7 +245,10 @@ function App() {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                ocr: text,
+                heading: analyzeData.data.heading,
+                description: analyzeData.data.description,
+                extractedText: analyzeData.data.extractedText,
+                extraInfo: analyzeData.data.extraInfo,
                 lat: location.lat,
                 lng: location.lng,
               }),
@@ -168,7 +275,7 @@ function App() {
               fetchNearbyVendors(userLocation.lat, userLocation.lng);
             }
           } catch (err) {
-            setError(err.message || 'Failed to send data');
+            setError(err.message || 'Failed to save vendor');
             setLoading(false);
             setLoadingProgress('');
           }
@@ -186,7 +293,7 @@ function App() {
         }
       );
     } catch (err) {
-      setError(err.message || 'OCR processing failed');
+      setError(err.message || 'Image analysis failed');
       setLoading(false);
       setLoadingProgress('');
     }
@@ -267,11 +374,54 @@ function App() {
                 <img src={preview} alt="preview" style={{ width: 220, borderRadius: 8 }} />
               </div>
             )}
-            {ocr && (
-              <div style={{ marginTop: '1em', background: '#222', padding: 12, borderRadius: 8, maxWidth: '90%' }}>
-                <b>Extracted Text:</b>
-                <pre style={{ whiteSpace: 'pre-wrap', textAlign: 'left' }}>{ocr}</pre>
-                {serverMsg && <div style={{ color: 'lightgreen', fontSize: '0.95em' }}>{serverMsg}</div>}
+            {vendorData && (
+              <div style={{ marginTop: '1em', background: '#222', padding: '20px', borderRadius: 8, maxWidth: '90%', textAlign: 'left' }}>
+                <h3 style={{ marginTop: 0, color: '#4CAF50' }}>{vendorData.heading}</h3>
+                {vendorData.description && (
+                  <p style={{ color: '#ccc', margin: '10px 0' }}>{vendorData.description}</p>
+                )}
+                {vendorData.extractedText && (
+                  <div style={{ marginTop: '15px' }}>
+                    <b style={{ color: '#aaa' }}>Extracted Text:</b>
+                    <pre style={{ whiteSpace: 'pre-wrap', color: '#fff', marginTop: '5px' }}>{vendorData.extractedText}</pre>
+                  </div>
+                )}
+                {vendorData.extraInfo && (
+                  <div style={{ marginTop: '15px', fontSize: '0.9em' }}>
+                    {vendorData.extraInfo.items && vendorData.extraInfo.items.length > 0 && (
+                      <div style={{ marginTop: '10px' }}>
+                        <b style={{ color: '#aaa' }}>Items:</b>
+                        <ul style={{ color: '#fff', margin: '5px 0', paddingLeft: '20px' }}>
+                          {vendorData.extraInfo.items.map((item, i) => <li key={i}>{item}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {vendorData.extraInfo.prices && vendorData.extraInfo.prices.length > 0 && (
+                      <div style={{ marginTop: '10px', color: '#4CAF50' }}>
+                        <b>Prices:</b> {vendorData.extraInfo.prices.join(', ')}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.hours && (
+                      <div style={{ marginTop: '10px', color: '#fff' }}>
+                        <b>Hours:</b> {vendorData.extraInfo.hours}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.contact && (
+                      <div style={{ marginTop: '10px', color: '#fff' }}>
+                        <b>Contact:</b> {vendorData.extraInfo.contact}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.features && vendorData.extraInfo.features.length > 0 && (
+                      <div style={{ marginTop: '10px' }}>
+                        <b style={{ color: '#aaa' }}>Features:</b>
+                        <div style={{ color: '#4CAF50', marginTop: '5px' }}>
+                          {vendorData.extraInfo.features.join(' • ')}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {serverMsg && <div style={{ color: 'lightgreen', fontSize: '0.95em', marginTop: '15px' }}>{serverMsg}</div>}
               </div>
             )}
             {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -309,21 +459,7 @@ function App() {
               <div style={{ marginBottom: '30px' }}>
                 <h3>Search Results</h3>
                 {searchResults.map((vendor) => (
-                  <div
-                    key={vendor.id}
-                    style={{
-                      background: '#222',
-                      padding: '15px',
-                      borderRadius: '8px',
-                      marginBottom: '10px',
-                      textAlign: 'left'
-                    }}
-                  >
-                    <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: 'white' }}>{vendor.text}</pre>
-                    <div style={{ fontSize: '0.85em', color: '#aaa', marginTop: '8px' }}>
-                      {formatDate(vendor.createdAt)}
-                    </div>
-                  </div>
+                  <VendorCard key={vendor.id} vendor={vendor} formatDate={formatDate} />
                 ))}
               </div>
             )}
@@ -339,21 +475,7 @@ function App() {
                 <p>Loading nearby vendors...</p>
               ) : nearbyVendors.length > 0 ? (
                 nearbyVendors.map((vendor) => (
-                  <div
-                    key={vendor.id}
-                    style={{
-                      background: '#222',
-                      padding: '15px',
-                      borderRadius: '8px',
-                      marginBottom: '10px',
-                      textAlign: 'left'
-                    }}
-                  >
-                    <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: 'white' }}>{vendor.text}</pre>
-                    <div style={{ fontSize: '0.85em', color: '#aaa', marginTop: '8px' }}>
-                      {formatDate(vendor.createdAt)}
-                    </div>
-                  </div>
+                  <VendorCard key={vendor.id} vendor={vendor} formatDate={formatDate} />
                 ))
               ) : (
                 <p style={{ color: '#aaa' }}>No nearby vendors found. Be the first to add one!</p>
