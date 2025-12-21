@@ -59,12 +59,18 @@ module.exports = async function handler(req, res) {
       });
     } catch (storageError) {
       console.error('Storage error:', storageError);
+      console.error('Error stack:', storageError.stack);
+      
       if (!process.env.GITHUB_TOKEN) {
         res.status(500).json({ 
-          error: 'GitHub storage not configured. Please set GITHUB_TOKEN environment variable.' 
+          error: 'GitHub storage not configured. Please set GITHUB_TOKEN environment variable in Vercel settings.' 
         });
       } else {
-        res.status(500).json({ error: 'Failed to save vendor data: ' + storageError.message });
+        const errorMessage = storageError.message || 'Unknown error';
+        res.status(500).json({ 
+          error: `Failed to save vendor data: ${errorMessage}`,
+          details: process.env.NODE_ENV === 'development' ? storageError.stack : undefined
+        });
       }
     }
   } catch (error) {

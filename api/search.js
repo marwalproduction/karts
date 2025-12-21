@@ -38,7 +38,10 @@ module.exports = async function handler(req, res) {
     if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }
-    res.status(500).json({ error: error.message || 'Search failed' });
+    res.status(500).json({ 
+      error: error.message || 'Search failed',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 

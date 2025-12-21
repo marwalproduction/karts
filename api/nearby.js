@@ -40,7 +40,10 @@ module.exports = async function handler(req, res) {
     if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }
-    res.status(500).json({ error: error.message || 'Failed to fetch nearby vendors' });
+    res.status(500).json({ 
+      error: error.message || 'Failed to fetch nearby vendors',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
 

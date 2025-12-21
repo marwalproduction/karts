@@ -110,24 +110,52 @@ async function saveVendor(vendorData) {
     } catch (error) {
       if (error.status === 404) {
         // Create directory by creating a .gitkeep file
-        await octokit.repos.createOrUpdateFileContents({
-          owner: OWNER,
-          repo: REPO,
-          path: `${DATA_PATH}/.gitkeep`,
-          message: 'Create vendor data directory',
-          content: Buffer.from('').toString('base64'),
-        });
+        try {
+          await octokit.repos.createOrUpdateFileContents({
+            owner: OWNER,
+            repo: REPO,
+            path: `${DATA_PATH}/.gitkeep`,
+            message: 'Create vendor data directory',
+            content: Buffer.from('').toString('base64'),
+          });
+        } catch (createError) {
+          console.error('Error creating directory:', createError);
+          // If we can't create directory, try to create the file directly anyway
+        }
+      } else {
+        // Re-throw if it's not a 404
+        throw error;
       }
     }
 
     // Create the vendor file
-    await octokit.repos.createOrUpdateFileContents({
-      owner: OWNER,
-      repo: REPO,
-      path: filename,
-      message: `Add vendor: ${vendorId}`,
-      content: encodedContent,
-    });
+    try {
+      await octokit.repos.createOrUpdateFileContents({
+        owner: OWNER,
+        repo: REPO,
+        path: filename,
+        message: `Add vendor: ${vendorId}`,
+        content: encodedContent,
+      });
+    } catch (error) {
+      console.error('GitHub API error details:', {
+        status: error.status,
+        message: error.message,
+        owner: OWNER,
+        repo: REPO,
+        path: filename
+      });
+      
+      if (error.status === 401) {
+        throw new Error('GitHub authentication failed. Please check your GITHUB_TOKEN.');
+      } else if (error.status === 403) {
+        throw new Error('GitHub access forbidden. Check token permissions and repository access.');
+      } else if (error.status === 404) {
+        throw new Error(`Repository not found: ${OWNER}/${REPO}. Check GITHUB_OWNER and GITHUB_REPO environment variables.`);
+      } else {
+        throw new Error(`GitHub API error: ${error.message || 'Unknown error'}`);
+      }
+    }
 
     return vendor;
   } catch (error) {
