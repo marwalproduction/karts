@@ -60,15 +60,16 @@ After adding the environment variable, redeploy your application.
 
 ## How It Works
 
-**Priority Order:**
-1. **Google Vision API** (if credentials set) - Extracts text via OCR
-2. **Puter.ai** (if token set) - AI analysis
-3. **Gemini** (fallback) - AI analysis and understanding
+**Google Vision API Analysis:**
+1. **Text Detection (OCR)** - Extracts all visible text from images
+2. **Label Detection** - Identifies objects, scenes, and concepts
+3. **Object Localization** - Detects and localizes multiple objects with bounding boxes
 
-**Combined Analysis:**
-- Google Vision API: High-quality OCR text extraction
-- Puter.ai/Gemini: Understanding and structuring the information
-- Results merged for comprehensive vendor data
+**Structured Output:**
+- Heading: Generated from detected objects or labels
+- Description: Created from detected labels and context
+- Extracted Text: All text found via OCR
+- Extra Info: Items, prices (extracted from text), features (from labels), detected objects
 
 ## Pricing
 
@@ -94,7 +95,7 @@ After adding the environment variable, redeploy your application.
 
 ## Note
 
-Google Vision API is **optional**. The app works fine with just Gemini/Puter.ai. Vision API adds high-quality OCR capabilities but isn't required for basic functionality.
+Google Vision API is **required** for image analysis. The app uses Vision API exclusively for OCR and object detection.
 
 For more information, see: [Google Cloud Vision API Documentation](https://cloud.google.com/vision/docs)
 
