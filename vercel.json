@@ -17,6 +17,9 @@
     },
     "api/analyze-image.js": {
       "maxDuration": 30
+    },
+    "api/list-models.js": {
+      "maxDuration": 10
     }
   },
   "routes": [
