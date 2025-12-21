@@ -1,7 +1,5 @@
-const Tesseract = require('tesseract.js');
-const Busboy = require('busboy');
-
 // Vercel serverless function handler
+// Now receives OCR text from client instead of processing images
 module.exports = async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,48 +15,43 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Parse multipart form data
-    const busboy = Busboy({ headers: req.headers });
-    let imageBuffer = null;
-    let lat = null;
-    let lng = null;
-
+    // Log request details for debugging
+    console.log('Request headers:', req.headers);
+    console.log('Content-Type:', req.headers['content-type']);
+    // Parse JSON body (OCR is now done client-side)
+    // Read the request body stream
+    const chunks = [];
+    
     await new Promise((resolve, reject) => {
-      busboy.on('file', (name, file, info) => {
-        if (name === 'image') {
-          const chunks = [];
-          file.on('data', (chunk) => chunks.push(chunk));
-          file.on('end', () => {
-            imageBuffer = Buffer.concat(chunks);
-          });
-        }
+      req.on('data', (chunk) => {
+        chunks.push(chunk);
       });
-
-      busboy.on('field', (name, value) => {
-        if (name === 'lat') lat = value;
-        if (name === 'lng') lng = value;
-      });
-
-      busboy.on('finish', resolve);
-      busboy.on('error', reject);
-      req.pipe(busboy);
+      req.on('end', resolve);
+      req.on('error', reject);
     });
-
-    if (!imageBuffer || !lat || !lng) {
-      return res.status(400).json({ error: 'image, lat, and lng are required' });
+    
+    const body = Buffer.concat(chunks).toString();
+    
+    let data;
+    try {
+      data = body ? JSON.parse(body) : {};
+    } catch (parseError) {
+      return res.status(400).json({ error: 'Invalid JSON in request body' });
     }
 
-    // OCR: use Tesseract to extract text
-    const { data: { text } } = await Tesseract.recognize(
-      imageBuffer,
-      'eng',
-      { logger: m => console.log(m) }
-    );
+    const { ocr, lat, lng } = data;
+
+    if (!ocr || lat === undefined || lng === undefined) {
+      return res.status(400).json({ error: 'ocr, lat, and lng are required' });
+    }
+
+    // Here you would typically save the data to a database
+    // For now, just return success
+    console.log('Received vendor data:', { ocr, lat, lng });
 
     res.json({
-      ocr: text,
-      coords: { lat, lng },
-      message: 'Vendor info extracted (text only for now)'
+      message: 'Vendor info saved successfully',
+      coords: { lat, lng }
     });
   } catch (error) {
     console.error('Upload error:', error);

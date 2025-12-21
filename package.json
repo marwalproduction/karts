@@ -8,9 +8,6 @@
   "scripts": {
     "build": "cd frontend && npm install && npm run build"
   },
-  "dependencies": {
-    "busboy": "^1.6.0",
-    "tesseract.js": "^7.0.0"
-  }
+  "dependencies": {}
 }
 
