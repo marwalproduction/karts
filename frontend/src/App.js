@@ -44,8 +44,10 @@ function App() {
         formData.append('lng', location.lng);
 
         try {
-          const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-          const response = await fetch(`${apiUrl}/upload`, {
+          // Use /api/upload for Vercel deployment, or custom API URL if set
+          const apiUrl = process.env.REACT_APP_API_URL;
+          const uploadUrl = apiUrl ? `${apiUrl}/upload` : '/api/upload';
+          const response = await fetch(uploadUrl, {
             method: 'POST',
             body: formData,
           });

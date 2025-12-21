@@ -1,0 +1,10 @@
+{
+  "name": "karts",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "tesseract.js": "^7.0.0"
+  }
+}
+

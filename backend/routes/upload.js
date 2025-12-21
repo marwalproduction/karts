@@ -1,12 +1,11 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
 const Tesseract = require('tesseract.js');
-const fs = require('fs');
 
 const router = express.Router();
 
-const upload = multer({ dest: 'uploads/' });
+// Use memory storage for Vercel serverless (no file system)
+const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /upload - expects: image file, location {lat, lng} (JSON or form)
 router.post('/', upload.single('image'), async (req, res) => {
@@ -16,17 +15,12 @@ router.post('/', upload.single('image'), async (req, res) => {
       return res.status(400).json({ error: 'image, lat, and lng are required' });
     }
 
-    // OCR: use Tesseract to extract text
-    const imagePath = req.file.path;
+    // OCR: use Tesseract to extract text from buffer (memory)
     const { data: { text } } = await Tesseract.recognize(
-      imagePath,
+      req.file.buffer,
       'eng',
       { logger: m => console.log(m) }
     );
-
-    // Optional: save to DB here (we'll do this later)
-    // Clean up the uploaded file
-    fs.unlink(imagePath, () => {});
 
     res.json({
       ocr: text,
