@@ -1,5 +1,4 @@
-const connectDB = require('./db');
-const Vendor = require('./models/Vendor');
+const { saveVendor } = require('./github-storage');
 
 // Vercel serverless function handler
 // Now receives OCR text from client instead of processing images
@@ -48,36 +47,24 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'ocr, lat, and lng are required' });
     }
 
-    // Connect to database and save vendor
+    // Save vendor to GitHub
     try {
-      await connectDB();
-      
-      const vendor = new Vendor({
-        ocr: ocr.trim(),
-        location: {
-          type: 'Point',
-          coordinates: [parseFloat(lng), parseFloat(lat)] // MongoDB uses [lng, lat]
-        }
-      });
-
-      await vendor.save();
-      console.log('Vendor saved successfully:', vendor._id);
+      const vendor = await saveVendor({ ocr, lat, lng });
+      console.log('Vendor saved successfully to GitHub:', vendor.id);
 
       res.json({
         message: 'Vendor info saved successfully',
         coords: { lat, lng },
-        id: vendor._id
+        id: vendor.id
       });
-    } catch (dbError) {
-      console.error('Database error:', dbError);
-      // If no MongoDB URI is set, still return success (for development)
-      if (process.env.MONGODB_URI) {
-        res.status(500).json({ error: 'Failed to save vendor data' });
-      } else {
-        res.json({
-          message: 'Vendor info received (database not configured)',
-          coords: { lat, lng }
+    } catch (storageError) {
+      console.error('Storage error:', storageError);
+      if (!process.env.GITHUB_TOKEN) {
+        res.status(500).json({ 
+          error: 'GitHub storage not configured. Please set GITHUB_TOKEN environment variable.' 
         });
+      } else {
+        res.status(500).json({ error: 'Failed to save vendor data: ' + storageError.message });
       }
     }
   } catch (error) {

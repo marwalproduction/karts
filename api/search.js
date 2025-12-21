@@ -1,5 +1,4 @@
-const connectDB = require('./db');
-const Vendor = require('./models/Vendor');
+const { searchVendors } = require('./github-storage');
 
 // Search vendors by text
 module.exports = async function handler(req, res) {
@@ -23,32 +22,20 @@ module.exports = async function handler(req, res) {
       return res.json({ vendors: [] });
     }
 
-    await connectDB();
-
-    // Text search on OCR field
-    const vendors = await Vendor.find(
-      { $text: { $search: query } },
-      { score: { $meta: 'textScore' } }
-    )
-      .sort({ score: { $meta: 'textScore' }, createdAt: -1 })
-      .limit(limit)
-      .select('ocr location createdAt')
-      .lean();
+    const vendors = await searchVendors(query);
+    const limitedVendors = vendors.slice(0, limit);
 
     res.json({
-      vendors: vendors.map(v => ({
-        id: v._id,
+      vendors: limitedVendors.map(v => ({
+        id: v.id,
         text: v.ocr,
-        location: {
-          lat: v.location.coordinates[1],
-          lng: v.location.coordinates[0]
-        },
+        location: v.location,
         createdAt: v.createdAt
       }))
     });
   } catch (error) {
     console.error('Search error:', error);
-    if (!process.env.MONGODB_URI) {
+    if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }
     res.status(500).json({ error: error.message || 'Search failed' });

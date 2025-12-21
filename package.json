@@ -9,7 +9,7 @@
     "build": "cd frontend && npm install && npm run build"
   },
   "dependencies": {
-    "mongoose": "^9.0.2"
+    "@octokit/rest": "^20.0.2"
   }
 }
 

@@ -1,5 +1,4 @@
-const connectDB = require('./db');
-const Vendor = require('./models/Vendor');
+const { getNearbyVendors } = require('./github-storage');
 
 // Get nearby vendors based on user location
 module.exports = async function handler(req, res) {
@@ -25,39 +24,20 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'lat and lng query parameters are required' });
     }
 
-    await connectDB();
-
-    // Find vendors within radius, sorted by distance and date
-    const vendors = await Vendor.find({
-      location: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [lng, lat] // MongoDB uses [lng, lat]
-          },
-          $maxDistance: radius // in meters
-        }
-      }
-    })
-      .sort({ createdAt: -1 }) // Latest first
-      .limit(limit)
-      .select('ocr location createdAt')
-      .lean();
+    const vendors = await getNearbyVendors(lat, lng, radius);
+    const limitedVendors = vendors.slice(0, limit);
 
     res.json({
-      vendors: vendors.map(v => ({
-        id: v._id,
+      vendors: limitedVendors.map(v => ({
+        id: v.id,
         text: v.ocr,
-        location: {
-          lat: v.location.coordinates[1],
-          lng: v.location.coordinates[0]
-        },
+        location: v.location,
         createdAt: v.createdAt
       }))
     });
   } catch (error) {
     console.error('Nearby vendors error:', error);
-    if (!process.env.MONGODB_URI) {
+    if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }
     res.status(500).json({ error: error.message || 'Failed to fetch nearby vendors' });
