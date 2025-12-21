@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { init } = require('@heyputer/puter.js/src/init.cjs');
 
-// Analyze image using Google Gemini Vision API + YOLOv8 via Roboflow + Puter.ai (optional)
+// Analyze image using Google Gemini Vision API + Puter.ai (optional)
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -45,40 +45,7 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'imageBase64 is required' });
     }
 
-    // Step 1: YOLOv8 Object Detection via Roboflow (optional, if API key is set)
-    let detectedObjects = [];
-    const roboflowApiKey = process.env.ROBOFLOW_API_KEY;
-    const roboflowModelId = process.env.ROBOFLOW_MODEL_ID || 'food-items-detection/1'; // Default model
-    
-    if (roboflowApiKey) {
-      try {
-        // Roboflow API format: send base64 image directly
-        const imageBuffer = Buffer.from(imageBase64, 'base64');
-        const roboflowResponse = await fetch(
-          `https://detect.roboflow.com/${roboflowModelId}?api_key=${roboflowApiKey}`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: imageBuffer
-          }
-        );
-
-        if (roboflowResponse.ok) {
-          const roboflowData = await roboflowResponse.json();
-          detectedObjects = roboflowData.predictions || roboflowData.detections || [];
-          console.log('YOLOv8 detected objects:', detectedObjects.length);
-        } else {
-          console.log('Roboflow API returned non-OK status:', roboflowResponse.status);
-        }
-      } catch (roboflowError) {
-        console.error('Roboflow API error (non-critical):', roboflowError.message);
-        // Continue with Gemini even if Roboflow fails
-      }
-    }
-
-    // Step 2: Try Puter.ai first (if available) for image analysis
+    // Step 1: Try Puter.ai first (if available) for image analysis
     let puterAnalysis = null;
     const puterAuthToken = process.env.PUTER_AUTH_TOKEN;
     
@@ -104,19 +71,13 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Step 3: Initialize Gemini for text extraction and understanding (fallback or combined)
+    // Step 2: Initialize Gemini for text extraction and understanding (fallback or combined)
     const genAI = new GoogleGenerativeAI(apiKey);
     // Use gemini-pro-vision for vision tasks (standard model for image analysis)
     // Alternative models: gemini-1.5-pro, gemini-pro
     const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
     // Prepare the prompt for structured vendor information
-    // Include detected objects from YOLOv8 if available
-    const detectedItems = detectedObjects.map(obj => obj.class || obj.name).filter(Boolean);
-    const objectDetectionInfo = detectedItems.length > 0 
-      ? `\n\nDetected objects in image: ${detectedItems.join(', ')}. Use this information to enhance the analysis.`
-      : '';
-
     const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
 {
@@ -128,10 +89,9 @@ module.exports = async function handler(req, res) {
     "prices": ["Prices if visible"],
     "hours": "Operating hours if visible",
     "contact": "Phone number or contact info if visible",
-    "features": ["Notable features like 'outdoor seating', 'cash only', etc."],
-    "detectedObjects": ["Objects detected by AI vision model"]
+    "features": ["Notable features like 'outdoor seating', 'cash only', etc."]
   }
-}${objectDetectionInfo}
+}
 
 Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
@@ -192,15 +152,6 @@ Be concise but informative. If information is not visible, use null or empty arr
           }
         };
       }
-    }
-    
-    // Add YOLOv8 detected objects to extraInfo
-    if (detectedObjects.length > 0) {
-      if (!structuredData.extraInfo) {
-        structuredData.extraInfo = {};
-      }
-      structuredData.extraInfo.detectedObjects = detectedItems;
-      structuredData.extraInfo.objectCount = detectedObjects.length;
     }
     
     // Add source information
