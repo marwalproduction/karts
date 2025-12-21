@@ -30,8 +30,15 @@ function App() {
       return;
     }
 
+    // Set a timeout for geolocation (10 seconds)
+    const geoTimeout = setTimeout(() => {
+      setError('Location request timed out. Please enable location access and try again.');
+      setLoading(false);
+    }, 10000);
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        clearTimeout(geoTimeout);
         const location = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -47,23 +54,52 @@ function App() {
           // Use /api/upload for Vercel deployment, or custom API URL if set
           const apiUrl = process.env.REACT_APP_API_URL;
           const uploadUrl = apiUrl ? `${apiUrl}/upload` : '/api/upload';
+          
+          // Add timeout to prevent infinite hanging (60 seconds)
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 60000);
+          
           const response = await fetch(uploadUrl, {
             method: 'POST',
             body: formData,
+            signal: controller.signal,
           });
+          
+          clearTimeout(timeoutId);
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            let errorData;
+            try {
+              errorData = JSON.parse(errorText);
+            } catch {
+              errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+            }
+            throw new Error(errorData.error || 'Server error');
+          }
+          
           const data = await response.json();
-          if (!response.ok) throw new Error(data.error || 'Server error');
           setOcr(data.ocr);
           setServerMsg(data.message);
           setLoading(false);
         } catch (err) {
-          setError(err.message || 'Upload failed');
+          if (err.name === 'AbortError') {
+            setError('Request timed out. Please try again.');
+          } else {
+            setError(err.message || 'Upload failed');
+          }
           setLoading(false);
         }
       },
       (err) => {
+        clearTimeout(geoTimeout);
         setError('Could not retrieve location. Please enable location access.');
         setLoading(false);
+      },
+      {
+        timeout: 10000,
+        enableHighAccuracy: false,
+        maximumAge: 60000
       }
     );
 
