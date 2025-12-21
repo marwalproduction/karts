@@ -22,22 +22,6 @@
       "dest": "/api/$1"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/logo(.*).png",
-      "dest": "/logo$1.png"
-    },
-    {
       "handle": "filesystem"
     },
     {
