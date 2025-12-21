@@ -1,7 +1,8 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { init } = require('@heyputer/puter.js/src/init.cjs');
+const vision = require('@google-cloud/vision');
 
-// Analyze image using Google Gemini Vision API + Puter.ai (optional)
+// Analyze image using Google Cloud Vision API + Google Gemini + Puter.ai (optional)
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -45,7 +46,47 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'imageBase64 is required' });
     }
 
-    // Step 1: Try Puter.ai first (if available) for image analysis
+    // Step 1: Try Google Cloud Vision API for OCR (if credentials are set)
+    let visionApiText = '';
+    let visionApiLabels = [];
+    const googleVisionCredentials = process.env.GOOGLE_VISION_CREDENTIALS;
+    
+    if (googleVisionCredentials) {
+      try {
+        // Parse service account credentials from environment variable
+        const credentials = JSON.parse(googleVisionCredentials);
+        const client = new vision.ImageAnnotatorClient({ credentials });
+        
+        const imageBuffer = Buffer.from(imageBase64, 'base64');
+        
+        // Perform text detection (OCR)
+        const [textResult] = await client.textDetection({
+          image: { content: imageBuffer }
+        });
+        
+        if (textResult.textAnnotations && textResult.textAnnotations.length > 0) {
+          visionApiText = textResult.textAnnotations[0].description || '';
+          console.log('Google Vision API OCR completed');
+        }
+        
+        // Perform label detection for context
+        const [labelResult] = await client.labelDetection({
+          image: { content: imageBuffer }
+        });
+        
+        if (labelResult.labelAnnotations) {
+          visionApiLabels = labelResult.labelAnnotations
+            .map(label => label.description)
+            .filter(Boolean);
+          console.log('Google Vision API labels:', visionApiLabels.length);
+        }
+      } catch (visionError) {
+        console.error('Google Vision API error (non-critical):', visionError.message);
+        // Continue with other methods if Vision API fails
+      }
+    }
+
+    // Step 2: Try Puter.ai first (if available) for image analysis
     let puterAnalysis = null;
     const puterAuthToken = process.env.PUTER_AUTH_TOKEN;
     
@@ -71,13 +112,21 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // Step 2: Initialize Gemini for text extraction and understanding (fallback or combined)
+    // Step 3: Initialize Gemini for text extraction and understanding (fallback or combined)
     const genAI = new GoogleGenerativeAI(apiKey);
     // Use gemini-pro-vision for vision tasks (standard model for image analysis)
     // Alternative models: gemini-1.5-pro, gemini-pro
     const model = genAI.getGenerativeModel({ model: 'gemini-pro-vision' });
 
     // Prepare the prompt for structured vendor information
+    // Include Google Vision API OCR text if available
+    const visionApiContext = visionApiText 
+      ? `\n\nExtracted text from image (OCR): ${visionApiText.substring(0, 500)}`
+      : '';
+    const visionLabelsContext = visionApiLabels.length > 0
+      ? `\n\nDetected labels/objects: ${visionApiLabels.join(', ')}`
+      : '';
+
     const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
 {
@@ -93,7 +142,7 @@ module.exports = async function handler(req, res) {
   }
 }
 
-Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
+Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.${visionApiContext}${visionLabelsContext}`;
 
     // Convert base64 to buffer
     const imageBuffer = Buffer.from(imageBase64, 'base64');
@@ -154,8 +203,34 @@ Be concise but informative. If information is not visible, use null or empty arr
       }
     }
     
+    // Enhance with Google Vision API OCR if available
+    if (visionApiText && !structuredData.extractedText) {
+      structuredData.extractedText = visionApiText;
+    } else if (visionApiText && structuredData.extractedText) {
+      // Combine OCR text (Vision API is usually more accurate for text)
+      structuredData.extractedText = visionApiText + '\n\n' + structuredData.extractedText;
+    }
+    
+    // Add detected labels to features if available
+    if (visionApiLabels.length > 0) {
+      if (!structuredData.extraInfo) {
+        structuredData.extraInfo = {};
+      }
+      if (!structuredData.extraInfo.features) {
+        structuredData.extraInfo.features = [];
+      }
+      structuredData.extraInfo.features = [
+        ...structuredData.extraInfo.features,
+        ...visionApiLabels
+      ];
+    }
+    
     // Add source information
-    structuredData.analysisSource = puterAnalysis ? 'puter.ai' : 'gemini';
+    const sources = [];
+    if (visionApiText) sources.push('google-vision-ocr');
+    if (puterAnalysis) sources.push('puter.ai');
+    if (!puterAnalysis) sources.push('gemini');
+    structuredData.analysisSource = sources.join(' + ');
 
     res.json({
       success: true,

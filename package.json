@@ -11,7 +11,8 @@
   "dependencies": {
     "@octokit/rest": "^20.0.2",
     "@google/generative-ai": "^0.21.0",
-    "@heyputer/puter.js": "^2.0.0"
+    "@heyputer/puter.js": "^2.0.0",
+    "@google-cloud/vision": "^4.0.0"
   }
 }
 
