@@ -42,8 +42,8 @@ function VendorCard({ vendor, formatDate }) {
         {vendor.heading || 'Vendor'}
       </h3>
       
-      {/* Show items right after heading with icons */}
-      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
+      {/* Show items/services list right after heading with icons */}
+      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 ? (
         <div style={{ marginTop: '8px', marginBottom: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {vendor.extraInfo.items.map((item, i) => {
             // Get icon based on item type
@@ -78,22 +78,10 @@ function VendorCard({ vendor, formatDate }) {
             );
           })}
         </div>
-      )}
-      
-      {vendor.description && (
-        <p style={{ 
-          color: '#aaa', 
-          margin: '8px 0', 
-          lineHeight: '1.4', 
-          fontSize: '0.85em',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }}>
-          {vendor.description}
-        </p>
+      ) : (
+        <div style={{ marginTop: '8px', marginBottom: '10px', color: '#666', fontSize: '0.85em', fontStyle: 'italic' }}>
+          No items listed
+        </div>
       )}
 
       {/* Show contact info if available */}
