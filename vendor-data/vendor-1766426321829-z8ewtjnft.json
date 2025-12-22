@@ -1,0 +1,21 @@
+{
+  "id": "vendor-1766426321829-z8ewtjnft",
+  "heading": "Artistic Room Door",
+  "description": "The image depicts a door adorned with various artistic posters, showcasing a mix of vibrant characters and styles. The area also features a simple desk arrangement, hinting at a creative workspace.",
+  "extractedText": "{\n  \"heading\": \"Artistic Room Door\",\n  \"description\": \"The image depicts a door adorned with various artistic posters, showcasing a mix of vibrant characters and styles. The area also features a simple desk arrangement, hinting at a creative workspace.\",\n  \"extractedText\": null,\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": [\"Decorative posters\", \"Workspace\"]\n  }\n}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Decorative posters",
+      "Workspace"
+    ]
+  },
+  "location": {
+    "lat": 18.647456,
+    "lng": 73.8869837
+  },
+  "createdAt": "2025-12-22T17:58:41.829Z"
+}
