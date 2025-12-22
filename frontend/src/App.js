@@ -218,24 +218,28 @@ function App() {
 Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
       let puterResponse;
-      try {
-        puterResponse = await window.puter.ai.chat(
-          prompt,
-          imageUrl,
-          { model: "gpt-5-nano" }
-        );
-      } catch (puterError) {
-        // Try alternative models if gpt-5-nano fails
-        console.log('GPT-5-nano failed, trying gpt-4o-mini...');
+      const modelsToTry = ["gpt-4o-mini", "gpt-4o", "gpt-4", "claude-3-haiku", "gpt-3.5-turbo"];
+      let lastError = null;
+      
+      for (const model of modelsToTry) {
         try {
+          console.log(`Trying model: ${model}`);
           puterResponse = await window.puter.ai.chat(
             prompt,
             imageUrl,
-            { model: "gpt-4o-mini" }
+            { model: model }
           );
-        } catch (fallbackError) {
-          throw new Error(`Puter.ai analysis failed: ${fallbackError.message || 'Unknown error'}`);
+          console.log(`Success with model: ${model}`);
+          break; // Success, exit loop
+        } catch (modelError) {
+          console.log(`Model ${model} failed:`, modelError.message);
+          lastError = modelError;
+          continue; // Try next model
         }
+      }
+      
+      if (!puterResponse) {
+        throw new Error(`All Puter.ai models failed. Last error: ${lastError?.message || 'Unknown error'}. Please check Puter.ai availability.`);
       }
 
       // Clean up object URL
