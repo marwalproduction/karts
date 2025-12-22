@@ -620,7 +620,14 @@ Be concise but informative. If information is not visible, use null or empty arr
   };
 
   return (
-    <div className="App" style={{ background: '#f5f5f5', minHeight: '100vh' }}>
+    <div className="App" style={{ 
+      background: '#f5f5f5', 
+      minHeight: '100vh',
+      width: '100%',
+      overflowX: 'hidden',
+      margin: 0,
+      padding: 0
+    }}>
       <header className="App-header" style={{
         background: '#fff',
         minHeight: '100vh',
@@ -631,7 +638,8 @@ Be concise but informative. If information is not visible, use null or empty arr
         margin: '0 auto',
         position: 'relative',
         paddingBottom: '80px',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        boxSizing: 'border-box'
       }}>
         {/* Header */}
         <div style={{
@@ -671,7 +679,9 @@ Be concise but informative. If information is not visible, use null or empty arr
           background: '#fff',
           maxWidth: '600px',
           margin: '0 auto',
-          width: '100%'
+          width: '100%',
+          boxSizing: 'border-box',
+          overflowX: 'hidden'
         }}>
         
         {/* Puter.ai Authentication Status */}
