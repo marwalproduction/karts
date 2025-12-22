@@ -48,15 +48,6 @@ function VendorCard({ vendor, formatDate }) {
         </p>
       )}
 
-      {vendor.extractedText && (
-        <div style={{ marginTop: '12px', padding: '10px', background: '#111', borderRadius: '5px' }}>
-          <div style={{ fontSize: '0.85em', color: '#aaa', marginBottom: '5px' }}>Details:</div>
-          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#fff', fontSize: '0.9em' }}>
-            {vendor.extractedText}
-          </pre>
-        </div>
-      )}
-
       {/* Show items if available, but not the full extraInfo box */}
       {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
         <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
