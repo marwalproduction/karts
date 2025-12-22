@@ -894,6 +894,50 @@ Be concise but informative. If information is not visible, use null or empty arr
           </div>
         )}
         </div>
+
+        {/* Bottom Navigation */}
+        <div style={{
+          position: 'fixed',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100%',
+          maxWidth: '428px',
+          background: '#fff',
+          borderTop: '1px solid #f0f0f0',
+          display: 'flex',
+          justifyContent: 'space-around',
+          padding: '12px 0',
+          boxShadow: '0 -2px 10px rgba(0,0,0,0.05)',
+          zIndex: 100
+        }}>
+          <div 
+            style={{ textAlign: 'center', cursor: 'pointer' }}
+            onClick={() => setActiveTab('browse')}
+          >
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>🏠</div>
+            <div style={{ fontSize: '11px', color: activeTab === 'browse' ? '#000' : '#999', fontWeight: activeTab === 'browse' ? '600' : '400' }}>Home</div>
+          </div>
+          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>❤️</div>
+            <div style={{ fontSize: '11px', color: '#999' }}>Favorites</div>
+          </div>
+          <div 
+            style={{ textAlign: 'center', cursor: 'pointer' }}
+            onClick={() => setActiveTab('add')}
+          >
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>➕</div>
+            <div style={{ fontSize: '11px', color: activeTab === 'add' ? '#000' : '#999', fontWeight: activeTab === 'add' ? '600' : '400' }}>Add</div>
+          </div>
+          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>💬</div>
+            <div style={{ fontSize: '11px', color: '#999' }}>Messages</div>
+          </div>
+          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>☰</div>
+            <div style={{ fontSize: '11px', color: '#999' }}>Menu</div>
+          </div>
+        </div>
       </header>
     </div>
   );
