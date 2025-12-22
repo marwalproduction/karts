@@ -117,7 +117,85 @@ function App() {
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
 
+  // Puter.ai authentication state
+  const [puterAuthStatus, setPuterAuthStatus] = useState('checking'); // 'checking', 'signed-in', 'signed-out'
+  const [puterUser, setPuterUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(false);
+
   const apiUrl = process.env.REACT_APP_API_URL || '';
+
+  // Check Puter.ai authentication status on mount
+  useEffect(() => {
+    const checkPuterAuth = async () => {
+      try {
+        await waitForPuter();
+        
+        if (window.puter && window.puter.auth) {
+          const isSignedIn = window.puter.auth.isSignedIn();
+          if (isSignedIn) {
+            try {
+              const user = window.puter.auth.getUser();
+              setPuterUser(user);
+              setPuterAuthStatus('signed-in');
+            } catch (err) {
+              console.error('Error getting user:', err);
+              setPuterAuthStatus('signed-out');
+            }
+          } else {
+            setPuterAuthStatus('signed-out');
+          }
+        } else {
+          setPuterAuthStatus('signed-out');
+        }
+      } catch (err) {
+        console.error('Puter.ai not available:', err);
+        setPuterAuthStatus('signed-out');
+      }
+    };
+
+    checkPuterAuth();
+  }, []);
+
+  // Sign in to Puter.ai
+  const handlePuterSignIn = async () => {
+    setAuthLoading(true);
+    setError(null);
+    
+    try {
+      await waitForPuter();
+      
+      if (!window.puter || !window.puter.auth) {
+        throw new Error('Puter.ai is not available. Please refresh the page.');
+      }
+
+      const user = await window.puter.auth.signIn();
+      setPuterUser(user);
+      setPuterAuthStatus('signed-in');
+      setError(null);
+    } catch (err) {
+      console.error('Sign-in error:', err);
+      setError(`Sign-in failed: ${err.message || 'Unknown error'}`);
+      setPuterAuthStatus('signed-out');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  // Sign out from Puter.ai
+  const handlePuterSignOut = async () => {
+    try {
+      await waitForPuter();
+      
+      if (window.puter && window.puter.auth && window.puter.auth.signOut) {
+        await window.puter.auth.signOut();
+      }
+      
+      setPuterUser(null);
+      setPuterAuthStatus('signed-out');
+    } catch (err) {
+      console.error('Sign-out error:', err);
+    }
+  };
 
   // Get user location on mount
   useEffect(() => {
