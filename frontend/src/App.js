@@ -217,6 +217,22 @@ function App() {
 
 Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
+      // Check if Puter.ai is authenticated (might be required)
+      let puterAuthError = null;
+      try {
+        // Try to check authentication status
+        if (window.puter.auth && typeof window.puter.auth.getUser === 'function') {
+          try {
+            await window.puter.auth.getUser();
+          } catch (authErr) {
+            console.warn('Puter.ai auth check:', authErr);
+            puterAuthError = 'Puter.ai may require authentication. Please check if you need to sign in.';
+          }
+        }
+      } catch (e) {
+        // Auth check not available, continue anyway
+      }
+
       let puterResponse;
       const modelsToTry = ["gpt-4o-mini", "gpt-4o", "gpt-4", "claude-3-haiku", "gpt-3.5-turbo"];
       let lastError = null;
@@ -234,12 +250,21 @@ Be concise but informative. If information is not visible, use null or empty arr
         } catch (modelError) {
           console.log(`Model ${model} failed:`, modelError.message);
           lastError = modelError;
+          // If error mentions auth/401, stop trying other models
+          if (modelError.message && (modelError.message.includes('401') || modelError.message.includes('auth') || modelError.message.includes('unauthorized'))) {
+            puterAuthError = 'Puter.ai authentication required. Please sign in to Puter.ai.';
+            break;
+          }
           continue; // Try next model
         }
       }
       
       if (!puterResponse) {
-        throw new Error(`All Puter.ai models failed. Last error: ${lastError?.message || 'Unknown error'}. Please check Puter.ai availability.`);
+        URL.revokeObjectURL(imageUrl);
+        const errorMsg = puterAuthError || 
+          `All Puter.ai models failed. Last error: ${lastError?.message || 'Unknown error'}. ` +
+          `This might be due to authentication requirements. Please check Puter.ai documentation or try refreshing the page.`;
+        throw new Error(errorMsg);
       }
 
       // Clean up object URL
