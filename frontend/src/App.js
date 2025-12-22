@@ -872,28 +872,57 @@ Be concise but informative. If information is not visible, use null or empty arr
 
         {/* Browse Tab */}
         {activeTab === 'browse' && (
-          <div style={{ width: '100%', maxWidth: '600px' }}>
+          <div style={{ 
+            width: '100%', 
+            maxWidth: '800px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            padding: '30px',
+            borderRadius: '20px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h2 style={{ 
+              marginTop: 0, 
+              marginBottom: '25px',
+              fontSize: '2em',
+              color: 'white',
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}>
+              🔍 Discover Vendors
+            </h2>
             {/* Search */}
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '25px' }}>
               <input
                 type="text"
-                placeholder="🔍 Search vendors..."
+                placeholder="🔍 Search vendors, items, or locations..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   handleSearch(e.target.value);
                 }}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  fontSize: '16px',
-                  borderRadius: '5px',
-                  border: '1px solid #555',
-                  backgroundColor: '#222',
-                  color: 'white'
+                style={{ 
+                  padding: '15px 20px', 
+                  fontSize: '16px', 
+                  width: '100%', 
+                  borderRadius: '15px', 
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: 'white',
+                  backdropFilter: 'blur(10px)',
+                  outline: 'none'
+                }}
+                onFocus={(e) => {
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.4)';
+                  e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+                  e.target.style.background = 'rgba(255, 255, 255, 0.1)';
                 }}
               />
-              {searchLoading && <p style={{ marginTop: '10px' }}>Searching...</p>}
+              {searchLoading && <p style={{ marginTop: '15px', color: 'rgba(255, 255, 255, 0.8)' }}>🔍 Searching...</p>}
             </div>
 
             {/* Search Results */}
