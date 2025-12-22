@@ -165,10 +165,9 @@ function App() {
     setPreview(URL.createObjectURL(file));
 
     try {
-      // Step 1: Check if Puter.ai is loaded
-      if (typeof window.puter === 'undefined') {
-        throw new Error('Puter.ai is not loaded. Please refresh the page.');
-      }
+      // Step 1: Wait for Puter.ai to load
+      setLoadingProgress('Loading AI...');
+      await waitForPuter();
 
       // Step 2: Create image URL for Puter.ai
       setLoadingProgress('Preparing image...');
@@ -194,11 +193,26 @@ function App() {
 
 Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
-      const puterResponse = await window.puter.ai.chat(
-        prompt,
-        imageUrl,
-        { model: "gpt-5-nano" }
-      );
+      let puterResponse;
+      try {
+        puterResponse = await window.puter.ai.chat(
+          prompt,
+          imageUrl,
+          { model: "gpt-5-nano" }
+        );
+      } catch (puterError) {
+        // Try alternative models if gpt-5-nano fails
+        console.log('GPT-5-nano failed, trying gpt-4o-mini...');
+        try {
+          puterResponse = await window.puter.ai.chat(
+            prompt,
+            imageUrl,
+            { model: "gpt-4o-mini" }
+          );
+        } catch (fallbackError) {
+          throw new Error(`Puter.ai analysis failed: ${fallbackError.message || 'Unknown error'}`);
+        }
+      }
 
       // Clean up object URL
       URL.revokeObjectURL(imageUrl);
