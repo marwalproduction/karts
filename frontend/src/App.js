@@ -1,6 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
+// Wait for Puter.ai to load
+const waitForPuter = () => {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== 'undefined' && window.puter) {
+      resolve(window.puter);
+      return;
+    }
+    
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max wait
+    
+    const checkPuter = setInterval(() => {
+      attempts++;
+      if (window.puter) {
+        clearInterval(checkPuter);
+        resolve(window.puter);
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkPuter);
+        reject(new Error('Puter.ai failed to load. Please refresh the page.'));
+      }
+    }, 100);
+  });
+};
+
 // Vendor Card Component for displaying structured vendor listings
 function VendorCard({ vendor, formatDate }) {
   return (
