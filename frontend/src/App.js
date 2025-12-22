@@ -271,6 +271,14 @@ function App() {
       setLoadingProgress('Loading AI...');
       await waitForPuter();
 
+      // Step 1.5: Check authentication
+      if (window.puter.auth && !window.puter.auth.isSignedIn()) {
+        setLoading(false);
+        setLoadingProgress('');
+        setError('Please sign in to Puter.ai to use AI image analysis. Click "Sign in to Puter.ai" button above.');
+        return;
+      }
+
       // Step 2: Create image URL for Puter.ai
       setLoadingProgress('Preparing image...');
       const imageUrl = URL.createObjectURL(file);
