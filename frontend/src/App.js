@@ -31,75 +31,124 @@ function VendorCard({ vendor, formatDate }) {
     <div
       style={{
         background: '#fff',
-        padding: '24px',
-        borderRadius: '4px',
-        marginBottom: '16px',
-        textAlign: 'left',
-        border: '1px solid #e0e0e0'
+        borderRadius: '16px',
+        marginBottom: '20px',
+        overflow: 'hidden',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
       }}
     >
-      <h3 style={{ 
-        marginTop: 0, 
-        marginBottom: '12px', 
-        color: '#000', 
-        fontSize: '1.2em',
-        fontWeight: '400'
+      {/* Image placeholder */}
+      <div style={{
+        width: '100%',
+        height: '200px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '48px',
+        color: '#fff'
       }}>
-        {vendor.heading || 'Vendor'}
-      </h3>
+        🛒
+      </div>
       
-      {vendor.description && (
-        <p style={{ color: '#ccc', margin: '10px 0', lineHeight: '1.5' }}>
-          {vendor.description}
-        </p>
-      )}
+      <div style={{ padding: '16px' }}>
+        <h3 style={{ 
+          marginTop: 0, 
+          marginBottom: '8px', 
+          color: '#000', 
+          fontSize: '18px',
+          fontWeight: '600'
+        }}>
+          {vendor.heading || 'Vendor'}
+        </h3>
 
-      {vendor.extractedText && (
-        <div style={{ marginTop: '12px', padding: '10px', background: '#111', borderRadius: '5px' }}>
-          <div style={{ fontSize: '0.85em', color: '#aaa', marginBottom: '5px' }}>Details:</div>
-          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#fff', fontSize: '0.9em' }}>
-            {vendor.extractedText}
-          </pre>
+        {/* Rating */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', gap: '2px' }}>
+            {'⭐'.repeat(5)}
+          </div>
+          <span style={{ fontSize: '13px', color: '#666' }}>5.0</span>
+          <span style={{ fontSize: '13px', color: '#999' }}>•</span>
+          <span style={{ fontSize: '13px', color: '#666' }}>{Math.floor(Math.random() * 50 + 10)} reviews</span>
         </div>
-      )}
+        
+        {/* Items */}
+        {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
+          <div style={{ marginTop: '12px', marginBottom: '12px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {vendor.extraInfo.items.map((item, i) => {
+              const getIcon = (itemName) => {
+                const name = itemName.toLowerCase();
+                if (name.includes('vegetable') || name.includes('tomato') || name.includes('cucumber') || name.includes('carrot')) return '🥬';
+                if (name.includes('fruit') || name.includes('apple') || name.includes('banana')) return '🍎';
+                if (name.includes('tea') || name.includes('chai')) return '☕';
+                if (name.includes('coffee')) return '☕';
+                return '📦';
+              };
+              return (
+                <span key={i} style={{ 
+                  display: 'inline-flex', 
+                  alignItems: 'center', 
+                  gap: '6px',
+                  padding: '6px 12px',
+                  background: '#f5f5f5',
+                  borderRadius: '12px',
+                  fontSize: '13px',
+                  color: '#666',
+                }}>
+                  <span>{getIcon(item)}</span>
+                  <span>{item}</span>
+                </span>
+              );
+            })}
+          </div>
+        )}
 
-      {vendor.extraInfo && (
-        <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
-          {vendor.extraInfo.items && vendor.extraInfo.items.length > 0 && (
-            <div style={{ marginTop: '8px' }}>
-              <span style={{ color: '#aaa' }}>Items: </span>
-              <span style={{ color: '#fff' }}>{vendor.extraInfo.items.join(', ')}</span>
-            </div>
-          )}
-          {vendor.extraInfo.prices && vendor.extraInfo.prices.length > 0 && (
-            <div style={{ marginTop: '8px', color: '#4CAF50' }}>
-              <span style={{ color: '#aaa' }}>Prices: </span>
-              {vendor.extraInfo.prices.join(', ')}
-            </div>
-          )}
-          {vendor.extraInfo.hours && (
-            <div style={{ marginTop: '8px', color: '#fff' }}>
-              <span style={{ color: '#aaa' }}>Hours: </span>
-              {vendor.extraInfo.hours}
-            </div>
-          )}
-          {vendor.extraInfo.contact && (
-            <div style={{ marginTop: '8px', color: '#fff' }}>
-              <span style={{ color: '#aaa' }}>Contact: </span>
-              {vendor.extraInfo.contact}
-            </div>
-          )}
-          {vendor.extraInfo.features && vendor.extraInfo.features.length > 0 && (
-            <div style={{ marginTop: '8px' }}>
-              <span style={{ color: '#aaa' }}>Features: </span>
-              <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.features.join(' • ')}</span>
-            </div>
+        {/* Contact info */}
+        {(vendor.extraInfo?.contact || vendor.extraInfo?.hours) && (
+          <div style={{ marginTop: '12px', fontSize: '13px', color: '#666' }}>
+            {vendor.extraInfo.contact && (
+              <div style={{ marginTop: '6px' }}>
+                📞 {vendor.extraInfo.contact}
+              </div>
+            )}
+            {vendor.extraInfo.hours && (
+              <div style={{ marginTop: '6px' }}>
+                🕐 {vendor.extraInfo.hours}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div style={{ 
+          marginTop: '16px', 
+          paddingTop: '16px', 
+          borderTop: '1px solid #f0f0f0', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center' 
+        }}>
+          <span style={{ fontSize: '12px', color: '#999' }}>{formatDate(vendor.createdAt)}</span>
+          {vendor.location?.lat && vendor.location?.lng && (
+            <button
+              onClick={() => {
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${vendor.location.lat},${vendor.location.lng}`;
+                window.open(url, '_blank');
+              }}
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                fontWeight: '600',
+                backgroundColor: '#000',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}
+            >
+              Directions →
+            </button>
           )}
         </div>
-      )}
-
-      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px' }}>
-        📍 Location: {vendor.location?.lat?.toFixed(4)}, {vendor.location?.lng?.toFixed(4)} • {formatDate(vendor.createdAt)}
       </div>
     </div>
   );
