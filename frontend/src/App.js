@@ -27,6 +27,8 @@ const waitForPuter = () => {
 
 // Vendor Card Component for displaying structured vendor listings
 function VendorCard({ vendor, formatDate }) {
+  const [isFavorited, setIsFavorited] = useState(false);
+  
   return (
     <div
       style={{
@@ -34,16 +36,45 @@ function VendorCard({ vendor, formatDate }) {
         borderRadius: '16px',
         marginBottom: '20px',
         overflow: 'hidden',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        position: 'relative'
       }}
     >
+      {/* Favorite Icon */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsFavorited(!isFavorited);
+        }}
+        style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          background: 'rgba(255, 255, 255, 0.9)',
+          border: 'none',
+          borderRadius: '50%',
+          width: '36px',
+          height: '36px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          fontSize: '20px',
+          zIndex: 10,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}
+      >
+        {isFavorited ? '❤️' : '🤍'}
+      </button>
+      
       <div style={{ padding: '16px' }}>
         <h3 style={{ 
           marginTop: 0, 
           marginBottom: '12px', 
           color: '#000', 
           fontSize: '18px',
-          fontWeight: '600'
+          fontWeight: '600',
+          paddingRight: '40px'
         }}>
           {vendor.heading || 'Vendor'}
         </h3>
