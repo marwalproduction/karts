@@ -759,13 +759,15 @@ Be concise but informative. If information is not visible, use null or empty arr
               }}
               style={{ 
                 width: '100%',
+                maxWidth: '100%',
                 padding: '14px 16px', 
                 fontSize: '15px', 
                 borderRadius: '12px', 
                 border: '1px solid #e0e0e0',
                 background: '#f5f5f5',
                 color: '#000',
-                outline: 'none'
+                outline: 'none',
+                boxSizing: 'border-box'
               }}
               onFocus={(e) => {
                 e.target.style.border = '1px solid #000';
