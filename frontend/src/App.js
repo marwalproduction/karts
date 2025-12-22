@@ -925,6 +925,7 @@ Be concise but informative. If information is not visible, use null or empty arr
             </div>
           </div>
         )}
+        </div>
       </header>
     </div>
   );
