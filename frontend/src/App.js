@@ -679,64 +679,19 @@ IMPORTANT:
               style={{ display: 'none' }}
             />
             <button onClick={handleCaptureAndSend} disabled={loading} style={{ padding: '15px 30px', fontSize: '18px', marginTop: '20px' }}>
-              {loading ? (loadingProgress || 'Processing...') : '📷 Capture & Send'}
+              {loading ? 'Processing...' : '📷 Capture & Send'}
             </button>
-            {preview && (
-              <div style={{ margin: '1em 0' }}>
-                <img src={preview} alt="preview" style={{ width: 220, borderRadius: 8 }} />
+            {loading && (
+              <div style={{ marginTop: '15px', color: '#aaa', fontSize: '0.9em' }}>
+                {loadingProgress || 'Processing your image...'}
               </div>
             )}
-            {vendorData && (
-              <div style={{ marginTop: '1em', background: '#222', padding: '20px', borderRadius: 8, maxWidth: '90%', textAlign: 'left' }}>
-                <h3 style={{ marginTop: 0, color: '#4CAF50' }}>{vendorData.heading}</h3>
-                {vendorData.description && (
-                  <p style={{ color: '#ccc', margin: '10px 0' }}>{vendorData.description}</p>
-                )}
-                {vendorData.extractedText && (
-                  <div style={{ marginTop: '15px' }}>
-                    <b style={{ color: '#aaa' }}>Extracted Text:</b>
-                    <pre style={{ whiteSpace: 'pre-wrap', color: '#fff', marginTop: '5px' }}>{vendorData.extractedText}</pre>
-                  </div>
-                )}
-                {vendorData.extraInfo && (
-                  <div style={{ marginTop: '15px', fontSize: '0.9em' }}>
-                    {vendorData.extraInfo.items && vendorData.extraInfo.items.length > 0 && (
-                      <div style={{ marginTop: '10px' }}>
-                        <b style={{ color: '#aaa' }}>Items:</b>
-                        <ul style={{ color: '#fff', margin: '5px 0', paddingLeft: '20px' }}>
-                          {vendorData.extraInfo.items.map((item, i) => <li key={i}>{item}</li>)}
-                        </ul>
-                      </div>
-                    )}
-                    {vendorData.extraInfo.prices && vendorData.extraInfo.prices.length > 0 && (
-                      <div style={{ marginTop: '10px', color: '#4CAF50' }}>
-                        <b>Prices:</b> {vendorData.extraInfo.prices.join(', ')}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.hours && (
-                      <div style={{ marginTop: '10px', color: '#fff' }}>
-                        <b>Hours:</b> {vendorData.extraInfo.hours}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.contact && (
-                      <div style={{ marginTop: '10px', color: '#fff' }}>
-                        <b>Contact:</b> {vendorData.extraInfo.contact}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.features && vendorData.extraInfo.features.length > 0 && (
-                      <div style={{ marginTop: '10px' }}>
-                        <b style={{ color: '#aaa' }}>Features:</b>
-                        <div style={{ color: '#4CAF50', marginTop: '5px' }}>
-                          {vendorData.extraInfo.features.join(' • ')}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {serverMsg && <div style={{ color: 'lightgreen', fontSize: '0.95em', marginTop: '15px' }}>{serverMsg}</div>}
+            {serverMsg && !loading && (
+              <div style={{ marginTop: '20px', padding: '20px', background: '#1a4d1a', borderRadius: '8px', color: '#4CAF50', fontSize: '1.1em', fontWeight: 'bold' }}>
+                ✅ {serverMsg}
               </div>
             )}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{ color: 'red', marginTop: '15px' }}>{error}</p>}
           </div>
         )}
 
