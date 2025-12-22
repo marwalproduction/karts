@@ -165,49 +165,69 @@ function App() {
     setPreview(URL.createObjectURL(file));
 
     try {
-      // Step 1: Convert image to base64
+      // Step 1: Check if Puter.ai is loaded
+      if (typeof window.puter === 'undefined') {
+        throw new Error('Puter.ai is not loaded. Please refresh the page.');
+      }
+
+      // Step 2: Create image URL for Puter.ai
       setLoadingProgress('Preparing image...');
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64String = reader.result.split(',')[1];
-          resolve(base64String);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+      const imageUrl = URL.createObjectURL(file);
 
-      // Step 2: Analyze image with Gemini AI
+      // Step 3: Analyze image with Puter.ai (client-side)
       setLoadingProgress('Analyzing image with AI...');
-      const analyzeUrl = `${apiUrl}/api/analyze-image`;
-      const analyzeResponse = await fetch(analyzeUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          imageBase64: base64,
-          mimeType: file.type || 'image/jpeg',
-        }),
-      });
+      
+      const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
-      if (!analyzeResponse.ok) {
-        const errorText = await analyzeResponse.text();
-        let errorData;
-        try {
-          errorData = JSON.parse(errorText);
-        } catch {
-          errorData = { error: `AI analysis failed: ${analyzeResponse.status}` };
-        }
-        throw new Error(errorData.error || 'Failed to analyze image');
+{
+  "heading": "A short, descriptive title (e.g., 'Taco Stand', 'Coffee Cart', 'Food Truck')",
+  "description": "A brief AI-generated description of what this vendor offers, their specialties, or notable features (2-3 sentences)",
+  "extractedText": "All visible text from signs, menus, or labels (preserve line breaks)",
+  "extraInfo": {
+    "items": ["List of items/products if visible"],
+    "prices": ["Prices if visible"],
+    "hours": "Operating hours if visible",
+    "contact": "Phone number or contact info if visible",
+    "features": ["Notable features like 'outdoor seating', 'cash only', etc."]
+  }
+}
+
+Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
+
+      const puterResponse = await window.puter.ai.chat(
+        prompt,
+        imageUrl,
+        { model: "gpt-5-nano" }
+      );
+
+      // Clean up object URL
+      URL.revokeObjectURL(imageUrl);
+
+      // Parse Puter.ai response
+      let puterText = typeof puterResponse === 'string' ? puterResponse : puterResponse.text || JSON.stringify(puterResponse);
+      const cleanedText = puterText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+
+      let analyzeData;
+      try {
+        analyzeData = JSON.parse(cleanedText);
+      } catch (parseError) {
+        // If JSON parsing fails, create structured data from text
+        console.error('Failed to parse Puter.ai response as JSON:', cleanedText);
+        analyzeData = {
+          heading: 'Vendor',
+          description: cleanedText.substring(0, 200) || 'A vendor or business',
+          extractedText: cleanedText,
+          extraInfo: {
+            items: [],
+            prices: [],
+            hours: null,
+            contact: null,
+            features: []
+          }
+        };
       }
 
-      const analyzeData = await analyzeResponse.json();
-      if (!analyzeData.success || !analyzeData.data) {
-        throw new Error('Invalid response from AI analysis');
-      }
-
-      setVendorData(analyzeData.data);
+      setVendorData(analyzeData);
       setLoadingProgress('Getting location...');
 
       // Step 3: Get location
@@ -245,10 +265,10 @@ function App() {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                heading: analyzeData.data.heading,
-                description: analyzeData.data.description,
-                extractedText: analyzeData.data.extractedText,
-                extraInfo: analyzeData.data.extraInfo,
+                heading: analyzeData.heading,
+                description: analyzeData.description,
+                extractedText: analyzeData.extractedText,
+                extraInfo: analyzeData.extraInfo,
                 lat: location.lat,
                 lng: location.lng,
               }),
