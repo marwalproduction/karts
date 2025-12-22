@@ -538,36 +538,50 @@ Be concise but informative. If information is not visible, use null or empty arr
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{ background: '#f5f5f5', minHeight: '100vh' }}>
       <header className="App-header" style={{
         background: '#fff',
         minHeight: '100vh',
-        padding: '40px 20px',
-        color: '#000'
+        padding: '0',
+        color: '#000',
+        maxWidth: '428px',
+        margin: '0 auto',
+        boxShadow: '0 0 20px rgba(0,0,0,0.1)'
       }}>
-        <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '50px'
-          }}>
-            <h1 style={{ 
-              marginBottom: '10px', 
-              fontSize: '2em',
-              fontWeight: '300',
-              color: '#000',
-              letterSpacing: '2px'
-            }}>
-              Karts Vendor
-            </h1>
-            <p style={{ 
-              color: '#666', 
-              fontSize: '0.9em',
-              marginTop: '10px',
-              fontWeight: '300'
-            }}>
-              Discover local vendors near you
-            </p>
+        {/* Header */}
+        <div style={{
+          padding: '20px 20px 16px 20px',
+          background: '#fff',
+          borderBottom: '1px solid #f0f0f0'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <div>
+              <div style={{ fontSize: '18px', fontWeight: '600', color: '#000', marginBottom: '4px' }}>
+                Hello, User
+              </div>
+              <div style={{ fontSize: '14px', color: '#666', fontWeight: '400' }}>
+                Welcome to Karts Vendor
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: '#e0e0e0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px'
+              }}>
+                👤
+              </div>
+              <div style={{ fontSize: '20px', color: '#000', cursor: 'pointer' }}>⚙️</div>
+            </div>
           </div>
+        </div>
+        
+        <div style={{ padding: '20px', background: '#fff' }}>
         
         {/* Puter.ai Authentication Status */}
         <div style={{ 
@@ -630,77 +644,113 @@ Be concise but informative. If information is not visible, use null or empty arr
           )}
         </div>
         
-        {/* Tabs */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '0', 
-          marginBottom: '40px',
-          borderBottom: '1px solid #e0e0e0'
-        }}>
-          <button
-            onClick={() => setActiveTab('add')}
-            style={{
-              padding: '12px 24px',
-              fontSize: '14px',
-              fontWeight: '400',
-              background: 'transparent',
-              color: activeTab === 'add' ? '#000' : '#666',
-              border: 'none',
-              borderBottom: activeTab === 'add' ? '2px solid #000' : '2px solid transparent',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Add Vendor
-          </button>
-          <button
-            onClick={() => setActiveTab('browse')}
-            style={{
-              padding: '12px 24px',
-              fontSize: '14px',
-              fontWeight: '400',
-              background: 'transparent',
-              color: activeTab === 'browse' ? '#000' : '#666',
-              border: 'none',
-              borderBottom: activeTab === 'browse' ? '2px solid #000' : '2px solid transparent',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Browse
-          </button>
-        </div>
-
-        {/* Add Vendor Tab */}
-        {activeTab === 'add' && (
-          <div>
+          {/* Search Bar */}
+          <div style={{ marginBottom: '24px' }}>
             <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={handleImageCapture}
-              style={{ display: 'none' }}
+              type="text"
+              placeholder="Search vendors..."
+              value={activeTab === 'browse' ? searchQuery : ''}
+              onChange={(e) => {
+                if (activeTab === 'browse') {
+                  setSearchQuery(e.target.value);
+                  handleSearch(e.target.value);
+                }
+              }}
+              style={{ 
+                width: '100%',
+                padding: '14px 16px', 
+                fontSize: '15px', 
+                borderRadius: '12px', 
+                border: '1px solid #e0e0e0',
+                background: '#f5f5f5',
+                color: '#000',
+                outline: 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.border = '1px solid #000';
+                e.target.style.background = '#fff';
+              }}
+              onBlur={(e) => {
+                e.target.style.border = '1px solid #e0e0e0';
+                e.target.style.background = '#f5f5f5';
+              }}
             />
-            <div style={{ textAlign: 'center' }}>
-              <button 
-                onClick={handleCaptureAndSend} 
-                disabled={loading} 
-                style={{ 
-                  padding: '14px 32px', 
+          </div>
+
+          {/* Category Tabs */}
+          <div style={{ 
+            display: 'flex', 
+            gap: '8px', 
+            marginBottom: '24px',
+            overflowX: 'auto',
+            paddingBottom: '4px'
+          }}>
+            {['All', 'Food', 'Vegetables', 'Beverages', 'Snacks'].map((cat) => (
+              <button
+                key={cat}
+                style={{
+                  padding: '8px 16px',
                   fontSize: '14px',
-                  fontWeight: '400',
-                  background: loading ? '#f5f5f5' : '#000',
-                  color: loading ? '#999' : '#fff',
+                  fontWeight: '500',
+                  background: cat === 'All' ? '#000' : '#f5f5f5',
+                  color: cat === 'All' ? '#fff' : '#666',
                   border: 'none',
-                  borderRadius: '4px',
-                  cursor: loading ? 'not-allowed' : 'pointer',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
                   transition: 'all 0.2s ease'
                 }}
               >
-                {loading ? (loadingProgress || 'Processing...') : 'Add Vendor'}
+                {cat}
               </button>
-            </div>
+            ))}
+          </div>
+
+          {/* Add Vendor Tab */}
+          {activeTab === 'add' && (
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handleImageCapture}
+                style={{ display: 'none' }}
+              />
+              <div style={{ 
+                background: '#fff',
+                borderRadius: '16px',
+                padding: '40px 20px',
+                textAlign: 'center',
+                border: '2px dashed #e0e0e0',
+                marginBottom: '20px'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>📷</div>
+                <div style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#000' }}>
+                  Add a Vendor
+                </div>
+                <div style={{ fontSize: '14px', color: '#666', marginBottom: '24px' }}>
+                  Capture a photo of a vendor or food cart
+                </div>
+                <button 
+                  onClick={handleCaptureAndSend} 
+                  disabled={loading} 
+                  style={{ 
+                    padding: '14px 32px', 
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    background: loading ? '#f5f5f5' : '#000',
+                    color: loading ? '#999' : '#fff',
+                    border: 'none',
+                    borderRadius: '12px',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s ease',
+                    width: '100%'
+                  }}
+                >
+                  {loading ? (loadingProgress || 'Processing...') : 'Capture Photo'}
+                </button>
+              </div>
             {preview && (
               <div style={{ margin: '1em 0' }}>
                 <img src={preview} alt="preview" style={{ width: 220, borderRadius: 8 }} />
@@ -760,38 +810,10 @@ Be concise but informative. If information is not visible, use null or empty arr
           </div>
         )}
 
-        {/* Browse Tab */}
-        {activeTab === 'browse' && (
-          <div>
-            {/* Search */}
-            <div style={{ marginBottom: '30px' }}>
-              <input
-                type="text"
-                placeholder="Search vendors..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  handleSearch(e.target.value);
-                }}
-                style={{ 
-                  padding: '12px 16px', 
-                  fontSize: '14px', 
-                  width: '100%', 
-                  borderRadius: '4px', 
-                  border: '1px solid #e0e0e0',
-                  background: '#fff',
-                  color: '#000',
-                  outline: 'none'
-                }}
-                onFocus={(e) => {
-                  e.target.style.border = '1px solid #000';
-                }}
-                onBlur={(e) => {
-                  e.target.style.border = '1px solid #e0e0e0';
-                }}
-              />
-              {searchLoading && <p style={{ marginTop: '12px', color: '#666', fontSize: '0.9em' }}>Searching...</p>}
-            </div>
+          {/* Browse Tab */}
+          {activeTab === 'browse' && (
+            <div>
+              {searchLoading && <p style={{ marginTop: '12px', color: '#666', fontSize: '14px', textAlign: 'center' }}>Searching...</p>}
 
             {/* Search Results */}
             {searchQuery && searchResults.length > 0 && (
