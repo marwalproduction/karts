@@ -593,9 +593,11 @@ Be concise but informative. If information is not visible, use null or empty arr
         minHeight: '100vh',
         padding: '0',
         color: '#000',
-        maxWidth: '428px',
+        maxWidth: '100%',
+        width: '100%',
         margin: '0 auto',
-        boxShadow: '0 0 20px rgba(0,0,0,0.1)'
+        position: 'relative',
+        paddingBottom: '80px'
       }}>
         {/* Header */}
         <div style={{
@@ -630,7 +632,13 @@ Be concise but informative. If information is not visible, use null or empty arr
           </div>
         </div>
         
-        <div style={{ padding: '20px', background: '#fff' }}>
+        <div style={{ 
+          padding: '20px', 
+          background: '#fff',
+          maxWidth: '600px',
+          margin: '0 auto',
+          width: '100%'
+        }}>
         
         {/* Puter.ai Authentication Status */}
         <div style={{ 
@@ -899,43 +907,37 @@ Be concise but informative. If information is not visible, use null or empty arr
         <div style={{
           position: 'fixed',
           bottom: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
+          left: 0,
+          right: 0,
           width: '100%',
-          maxWidth: '428px',
+          maxWidth: '100%',
           background: '#fff',
           borderTop: '1px solid #f0f0f0',
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
           padding: '12px 0',
           boxShadow: '0 -2px 10px rgba(0,0,0,0.05)',
           zIndex: 100
         }}>
-          <div 
-            style={{ textAlign: 'center', cursor: 'pointer' }}
-            onClick={() => setActiveTab('browse')}
-          >
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>🏠</div>
-            <div style={{ fontSize: '11px', color: activeTab === 'browse' ? '#000' : '#999', fontWeight: activeTab === 'browse' ? '600' : '400' }}>Home</div>
-          </div>
-          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>❤️</div>
-            <div style={{ fontSize: '11px', color: '#999' }}>Favorites</div>
-          </div>
-          <div 
-            style={{ textAlign: 'center', cursor: 'pointer' }}
-            onClick={() => setActiveTab('add')}
-          >
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>➕</div>
-            <div style={{ fontSize: '11px', color: activeTab === 'add' ? '#000' : '#999', fontWeight: activeTab === 'add' ? '600' : '400' }}>Add</div>
-          </div>
-          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>💬</div>
-            <div style={{ fontSize: '11px', color: '#999' }}>Messages</div>
-          </div>
-          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>☰</div>
-            <div style={{ fontSize: '11px', color: '#999' }}>Menu</div>
+          <div style={{ display: 'flex', gap: '40px', maxWidth: '428px', width: '100%', justifyContent: 'space-around' }}>
+            <div 
+              style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}
+              onClick={() => setActiveTab('browse')}
+            >
+              <div style={{ fontSize: '20px', marginBottom: '4px' }}>🏠</div>
+              <div style={{ fontSize: '11px', color: activeTab === 'browse' ? '#000' : '#999', fontWeight: activeTab === 'browse' ? '600' : '400' }}>Home</div>
+            </div>
+            <div style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}>
+              <div style={{ fontSize: '20px', marginBottom: '4px' }}>❤️</div>
+              <div style={{ fontSize: '11px', color: '#999' }}>Favorites</div>
+            </div>
+            <div 
+              style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}
+              onClick={() => setActiveTab('add')}
+            >
+              <div style={{ fontSize: '20px', marginBottom: '4px' }}>➕</div>
+              <div style={{ fontSize: '11px', color: activeTab === 'add' ? '#000' : '#999', fontWeight: activeTab === 'add' ? '600' : '400' }}>Add</div>
+            </div>
           </div>
         </div>
       </header>
