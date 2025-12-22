@@ -487,6 +487,63 @@ Be concise but informative. If information is not visible, use null or empty arr
       <header className="App-header">
         <h1 style={{ marginBottom: '20px' }}>Karts Vendor App</h1>
         
+        {/* Puter.ai Authentication Status */}
+        <div style={{ 
+          marginBottom: '20px', 
+          padding: '15px', 
+          background: puterAuthStatus === 'signed-in' ? '#1a4d1a' : puterAuthStatus === 'checking' ? '#333' : '#4d1a1a', 
+          borderRadius: '8px',
+          border: '1px solid #333'
+        }}>
+          {puterAuthStatus === 'checking' && (
+            <div style={{ color: '#aaa' }}>Checking Puter.ai authentication...</div>
+          )}
+          {puterAuthStatus === 'signed-in' && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ color: '#4CAF50' }}>
+                ✅ Signed in to Puter.ai {puterUser?.username && `as ${puterUser.username}`}
+              </div>
+              <button
+                onClick={handlePuterSignOut}
+                style={{
+                  padding: '5px 15px',
+                  fontSize: '14px',
+                  backgroundColor: '#666',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer'
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
+          {puterAuthStatus === 'signed-out' && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ color: '#ff6b6b' }}>
+                ⚠️ Sign in to Puter.ai required for AI image analysis
+              </div>
+              <button
+                onClick={handlePuterSignIn}
+                disabled={authLoading}
+                style={{
+                  padding: '8px 20px',
+                  fontSize: '14px',
+                  backgroundColor: '#4CAF50',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: authLoading ? 'not-allowed' : 'pointer',
+                  opacity: authLoading ? 0.6 : 1
+                }}
+              >
+                {authLoading ? 'Signing in...' : 'Sign in to Puter.ai'}
+              </button>
+            </div>
+          )}
+        </div>
+        
         {/* Tabs */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
           <button
