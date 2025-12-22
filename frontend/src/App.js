@@ -883,7 +883,13 @@ Be concise but informative. If information is not visible, use null or empty arr
               <div style={{ marginBottom: '30px' }}>
                 <h3>Search Results</h3>
                 {searchResults.map((vendor) => (
-                  <VendorCard key={vendor.id} vendor={vendor} formatDate={formatDate} />
+                  <VendorCard 
+                    key={vendor.id} 
+                    vendor={vendor} 
+                    formatDate={formatDate}
+                    isFavorited={isVendorFavorited(vendor.id)}
+                    onToggleFavorite={toggleFavorite}
+                  />
                 ))}
               </div>
             )}
