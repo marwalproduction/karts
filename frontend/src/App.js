@@ -513,13 +513,18 @@ Be concise but informative. If information is not visible, use null or empty arr
             
             if (!response.ok) {
               const errorText = await response.text();
+              console.error('Server error response:', {
+                status: response.status,
+                statusText: response.statusText,
+                body: errorText
+              });
               let errorData;
               try {
                 errorData = JSON.parse(errorText);
               } catch {
-                errorData = { error: `Server error: ${response.status} ${response.statusText}` };
+                errorData = { error: `Server error: ${response.status} ${response.statusText}. Response: ${errorText}` };
               }
-              throw new Error(errorData.error || 'Server error');
+              throw new Error(errorData.error || `Server error: ${response.status} ${response.statusText}`);
             }
             
             const data = await response.json();
