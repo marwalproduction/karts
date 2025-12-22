@@ -38,92 +38,69 @@ function VendorCard({ vendor, formatDate }) {
         border: '1px solid #333'
       }}
     >
-      <h3 style={{ marginTop: 0, marginBottom: '10px', color: '#4CAF50', fontSize: '1.2em' }}>
+      <h3 style={{ 
+        marginTop: 0, 
+        marginBottom: '10px', 
+        color: '#fff', 
+        fontSize: '1.4em',
+        fontWeight: 'bold',
+        textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
+      }}>
         {vendor.heading || 'Vendor'}
       </h3>
       
-      {/* Show items/services list right after heading with icons */}
-      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 ? (
-        <div style={{ marginTop: '8px', marginBottom: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {vendor.extraInfo.items.map((item, i) => {
-            // Get icon based on item type
-            const getIcon = (itemName) => {
-              const name = itemName.toLowerCase();
-              if (name.includes('vegetable') || name.includes('tomato') || name.includes('cucumber') || name.includes('carrot') || name.includes('onion') || name.includes('potato') || name.includes('lettuce') || name.includes('cabbage')) return '🥬';
-              if (name.includes('fruit') || name.includes('apple') || name.includes('banana') || name.includes('orange') || name.includes('mango')) return '🍎';
-              if (name.includes('tea') || name.includes('chai')) return '☕';
-              if (name.includes('coffee')) return '☕';
-              if (name.includes('food') || name.includes('meal') || name.includes('dish')) return '🍽️';
-              if (name.includes('taco') || name.includes('burrito')) return '🌮';
-              if (name.includes('pizza')) return '🍕';
-              if (name.includes('burger')) return '🍔';
-              if (name.includes('drink') || name.includes('juice') || name.includes('soda')) return '🥤';
-              if (name.includes('snack') || name.includes('chips')) return '🍿';
-              return '📦';
-            };
-            return (
-              <span key={i} style={{ 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                gap: '4px',
-                padding: '4px 8px',
-                background: '#333',
-                borderRadius: '12px',
-                fontSize: '0.85em',
-                color: '#4CAF50'
-              }}>
-                <span>{getIcon(item)}</span>
-                <span>{item}</span>
-              </span>
-            );
-          })}
-        </div>
-      ) : (
-        <div style={{ marginTop: '8px', marginBottom: '10px', color: '#666', fontSize: '0.85em', fontStyle: 'italic' }}>
-          No items listed
+      {vendor.description && (
+        <p style={{ color: '#ccc', margin: '10px 0', lineHeight: '1.5' }}>
+          {vendor.description}
+        </p>
+      )}
+
+      {vendor.extractedText && (
+        <div style={{ marginTop: '12px', padding: '10px', background: '#111', borderRadius: '5px' }}>
+          <div style={{ fontSize: '0.85em', color: '#aaa', marginBottom: '5px' }}>Details:</div>
+          <pre style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#fff', fontSize: '0.9em' }}>
+            {vendor.extractedText}
+          </pre>
         </div>
       )}
 
-      {/* Show contact info if available */}
-      {(vendor.extraInfo?.contact || vendor.extraInfo?.hours) && (
-        <div style={{ marginTop: '10px', fontSize: '0.85em', color: '#aaa' }}>
-          {vendor.extraInfo.contact && (
-            <div style={{ marginTop: '5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span>📞</span>
-              <span style={{ color: '#fff' }}>{vendor.extraInfo.contact}</span>
+      {vendor.extraInfo && (
+        <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
+          {vendor.extraInfo.items && vendor.extraInfo.items.length > 0 && (
+            <div style={{ marginTop: '8px' }}>
+              <span style={{ color: '#aaa' }}>Items: </span>
+              <span style={{ color: '#fff' }}>{vendor.extraInfo.items.join(', ')}</span>
+            </div>
+          )}
+          {vendor.extraInfo.prices && vendor.extraInfo.prices.length > 0 && (
+            <div style={{ marginTop: '8px', color: '#4CAF50' }}>
+              <span style={{ color: '#aaa' }}>Prices: </span>
+              {vendor.extraInfo.prices.join(', ')}
             </div>
           )}
           {vendor.extraInfo.hours && (
-            <div style={{ marginTop: '5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <span>🕐</span>
-              <span style={{ color: '#fff' }}>{vendor.extraInfo.hours}</span>
+            <div style={{ marginTop: '8px', color: '#fff' }}>
+              <span style={{ color: '#aaa' }}>Hours: </span>
+              {vendor.extraInfo.hours}
+            </div>
+          )}
+          {vendor.extraInfo.contact && (
+            <div style={{ marginTop: '8px', color: '#fff' }}>
+              <span style={{ color: '#aaa' }}>Contact: </span>
+              {vendor.extraInfo.contact}
+            </div>
+          )}
+          {vendor.extraInfo.features && vendor.extraInfo.features.length > 0 && (
+            <div style={{ marginTop: '8px' }}>
+              <span style={{ color: '#aaa' }}>Features: </span>
+              <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.features.join(' • ')}</span>
             </div>
           )}
         </div>
       )}
 
-      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>📍 {formatDate(vendor.createdAt)}</span>
-        {vendor.location?.lat && vendor.location?.lng && (
-          <button
-            onClick={() => {
-              const url = `https://www.google.com/maps/dir/?api=1&destination=${vendor.location.lat},${vendor.location.lng}`;
-              window.open(url, '_blank');
-            }}
-            style={{
-              padding: '5px 12px',
-              fontSize: '0.85em',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            🗺️ Get Directions
-          </button>
-        )}
+      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px' }}>
+        📍 Location: {vendor.location?.lat?.toFixed(4)}, {vendor.location?.lng?.toFixed(4)} • {formatDate(vendor.createdAt)}
       </div>
     </div>
   );
@@ -293,8 +270,8 @@ function App() {
     setError(null);
     setVendorData(null);
     setServerMsg(null);
-    setPreview(null); // Don't show preview
-    setLoadingProgress('Processing...');
+    setLoadingProgress('Loading image...');
+    setPreview(URL.createObjectURL(file));
 
     try {
       // Step 1: Wait for Puter.ai to load
@@ -344,11 +321,11 @@ function App() {
       const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
 {
-  "heading": "A short, descriptive title (e.g., 'Taco Stand', 'Coffee Cart', 'Food Truck', 'Vegetable Market Stall')",
+  "heading": "A short, descriptive title (e.g., 'Taco Stand', 'Coffee Cart', 'Food Truck')",
   "description": "A brief AI-generated description of what this vendor offers, their specialties, or notable features (2-3 sentences)",
   "extractedText": "All visible text from signs, menus, or labels (preserve line breaks)",
   "extraInfo": {
-    "items": ["List ALL visible items/products. For vegetable stalls, list all types of vegetables (e.g., 'Tomatoes', 'Cucumbers', 'Carrots', 'Lettuce', 'Onions'). For food vendors, list all menu items. For shops, list product categories or specific items visible."],
+    "items": ["List of items/products if visible"],
     "prices": ["Prices if visible"],
     "hours": "Operating hours if visible",
     "contact": "Phone number or contact info if visible",
@@ -356,13 +333,7 @@ function App() {
   }
 }
 
-IMPORTANT: 
-- For vegetable/fruit stalls: Carefully identify and list ALL types of vegetables, fruits, or produce visible in the image
-- For food vendors: List ALL menu items, dishes, or food types visible
-- For shops: List ALL product categories or specific items visible
-- Be thorough in identifying items - look at signs, displays, and visible products
-- If information is not visible, use null or empty arrays
-- Return ONLY valid JSON, no markdown formatting.`;
+Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
 
       // Check if Puter.ai is authenticated (might be required)
       let puterAuthError = null;
@@ -433,37 +404,16 @@ IMPORTANT:
       // Clean up object URL
       URL.revokeObjectURL(imageUrl);
 
-      // Parse Puter.ai response - response structure: {message: {content: string}, ...}
-      console.log('Puter.ai response structure:', puterResponse);
-      let puterText;
-      
-      if (typeof puterResponse === 'string') {
-        puterText = puterResponse;
-      } else if (puterResponse?.message?.content) {
-        // Standard Puter.ai response format
-        puterText = puterResponse.message.content;
-      } else if (puterResponse?.text) {
-        puterText = puterResponse.text;
-      } else if (puterResponse?.message) {
-        // Try to extract from message object
-        puterText = typeof puterResponse.message === 'string' 
-          ? puterResponse.message 
-          : JSON.stringify(puterResponse.message);
-      } else {
-        puterText = JSON.stringify(puterResponse);
-      }
-      
-      console.log('Extracted Puter.ai text:', puterText.substring(0, 200));
+      // Parse Puter.ai response
+      let puterText = typeof puterResponse === 'string' ? puterResponse : puterResponse.text || JSON.stringify(puterResponse);
       const cleanedText = puterText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
       let analyzeData;
       try {
         analyzeData = JSON.parse(cleanedText);
-        console.log('Parsed analyzeData:', analyzeData);
       } catch (parseError) {
         // If JSON parsing fails, create structured data from text
         console.error('Failed to parse Puter.ai response as JSON:', cleanedText);
-        console.error('Parse error:', parseError);
         analyzeData = {
           heading: 'Vendor',
           description: cleanedText.substring(0, 200) || 'A vendor or business',
@@ -477,28 +427,6 @@ IMPORTANT:
           }
         };
       }
-      
-      // Ensure required fields exist
-      if (!analyzeData.heading) {
-        analyzeData.heading = 'Vendor';
-      }
-      if (!analyzeData.description) {
-        analyzeData.description = analyzeData.extractedText ? analyzeData.extractedText.substring(0, 200) : 'A vendor or business';
-      }
-      if (!analyzeData.extractedText) {
-        analyzeData.extractedText = cleanedText;
-      }
-      if (!analyzeData.extraInfo) {
-        analyzeData.extraInfo = {
-          items: [],
-          prices: [],
-          hours: null,
-          contact: null,
-          features: []
-        };
-      }
-      
-      console.log('Final analyzeData to send:', analyzeData);
 
       setVendorData(analyzeData);
       setLoadingProgress('Getting location...');
@@ -549,25 +477,17 @@ IMPORTANT:
             
             if (!response.ok) {
               const errorText = await response.text();
-              console.error('Server error response:', {
-                status: response.status,
-                statusText: response.statusText,
-                body: errorText
-              });
               let errorData;
               try {
                 errorData = JSON.parse(errorText);
               } catch {
-                errorData = { error: `Server error: ${response.status} ${response.statusText}. Response: ${errorText}` };
+                errorData = { error: `Server error: ${response.status} ${response.statusText}` };
               }
-              throw new Error(errorData.error || `Server error: ${response.status} ${response.statusText}`);
+              throw new Error(errorData.error || 'Server error');
             }
             
             const data = await response.json();
-            // Clear preview and vendor data, show thanks message
-            setPreview(null);
-            setVendorData(null);
-            setServerMsg('Thank you! Your vendor has been added successfully.');
+            setServerMsg(data.message || 'Vendor info saved successfully');
             setLoading(false);
             setLoadingProgress('');
             
@@ -620,16 +540,80 @@ IMPORTANT:
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1 style={{ marginBottom: '20px' }}>Karts Vendor App</h1>
+      <header className="App-header" style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        padding: '20px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Decorative background elements */}
+        <div style={{
+          position: 'absolute',
+          top: '-50%',
+          right: '-10%',
+          width: '500px',
+          height: '500px',
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '50%',
+          filter: 'blur(80px)'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '-30%',
+          left: '-10%',
+          width: '400px',
+          height: '400px',
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '50%',
+          filter: 'blur(80px)'
+        }}></div>
+        
+        <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '800px' }}>
+          <div style={{
+            textAlign: 'center',
+            marginBottom: '40px',
+            padding: '30px',
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '20px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h1 style={{ 
+              marginBottom: '10px', 
+              fontSize: '2.5em',
+              fontWeight: 'bold',
+              background: 'linear-gradient(45deg, #fff, #e0e0e0)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+            }}>
+              🛒 Karts Vendor
+            </h1>
+            <p style={{ 
+              color: 'rgba(255, 255, 255, 0.9)', 
+              fontSize: '1.1em',
+              marginTop: '10px',
+              fontWeight: '300'
+            }}>
+              Discover local vendors, food carts, and markets near you
+            </p>
+          </div>
         
         {/* Puter.ai Authentication Status */}
         <div style={{ 
-          marginBottom: '20px', 
-          padding: '15px', 
-          background: puterAuthStatus === 'signed-in' ? '#1a4d1a' : puterAuthStatus === 'checking' ? '#333' : '#4d1a1a', 
-          borderRadius: '8px',
-          border: '1px solid #333'
+          marginBottom: '25px', 
+          padding: '15px 20px', 
+          background: puterAuthStatus === 'signed-in' 
+            ? 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' 
+            : puterAuthStatus === 'checking' 
+              ? 'rgba(255, 255, 255, 0.1)' 
+              : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
+          borderRadius: '12px',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+          backdropFilter: 'blur(10px)'
         }}>
           {puterAuthStatus === 'checking' && (
             <div style={{ color: '#aaa' }}>Checking Puter.ai authentication...</div>
@@ -681,17 +665,44 @@ IMPORTANT:
         </div>
         
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: '15px', 
+          marginBottom: '30px',
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
+          padding: '8px',
+          borderRadius: '15px',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+        }}>
           <button
             onClick={() => setActiveTab('add')}
             style={{
-              padding: '10px 20px',
+              flex: 1,
+              padding: '15px 25px',
               fontSize: '16px',
-              backgroundColor: activeTab === 'add' ? '#4CAF50' : '#333',
+              fontWeight: '600',
+              background: activeTab === 'add' 
+                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+                : 'transparent',
               color: 'white',
               border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer'
+              borderRadius: '12px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: activeTab === 'add' ? '0 4px 15px rgba(102, 126, 234, 0.4)' : 'none',
+              transform: activeTab === 'add' ? 'scale(1.02)' : 'scale(1)'
+            }}
+            onMouseEnter={(e) => {
+              if (activeTab !== 'add') {
+                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (activeTab !== 'add') {
+                e.target.style.background = 'transparent';
+              }
             }}
           >
             ➕ Add Vendor
@@ -699,23 +710,64 @@ IMPORTANT:
           <button
             onClick={() => setActiveTab('browse')}
             style={{
-              padding: '10px 20px',
+              flex: 1,
+              padding: '15px 25px',
               fontSize: '16px',
-              backgroundColor: activeTab === 'browse' ? '#4CAF50' : '#333',
+              fontWeight: '600',
+              background: activeTab === 'browse' 
+                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+                : 'transparent',
               color: 'white',
               border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer'
+              borderRadius: '12px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: activeTab === 'browse' ? '0 4px 15px rgba(102, 126, 234, 0.4)' : 'none',
+              transform: activeTab === 'browse' ? 'scale(1.02)' : 'scale(1)'
+            }}
+            onMouseEnter={(e) => {
+              if (activeTab !== 'browse') {
+                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (activeTab !== 'browse') {
+                e.target.style.background = 'transparent';
+              }
             }}
           >
-            🔍 Browse
+            🔍 Browse Vendors
           </button>
         </div>
 
         {/* Add Vendor Tab */}
         {activeTab === 'add' && (
-          <div>
-            <h2>Add Vendor</h2>
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            padding: '40px',
+            borderRadius: '20px',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h2 style={{ 
+              marginTop: 0, 
+              marginBottom: '30px',
+              fontSize: '2em',
+              color: 'white',
+              fontWeight: 'bold',
+              textAlign: 'center'
+            }}>
+              📸 Add a New Vendor
+            </h2>
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              textAlign: 'center',
+              marginBottom: '30px',
+              fontSize: '1.1em'
+            }}>
+              Capture a photo of a vendor, food cart, or market stall
+            </p>
             <input
               ref={fileInputRef}
               type="file"
@@ -724,20 +776,97 @@ IMPORTANT:
               onChange={handleImageCapture}
               style={{ display: 'none' }}
             />
-            <button onClick={handleCaptureAndSend} disabled={loading} style={{ padding: '15px 30px', fontSize: '18px', marginTop: '20px' }}>
-              {loading ? 'Processing...' : '📷 Capture & Send'}
-            </button>
-            {loading && (
-              <div style={{ marginTop: '15px', color: '#aaa', fontSize: '0.9em' }}>
-                {loadingProgress || 'Processing your image...'}
+            <div style={{ textAlign: 'center' }}>
+              <button 
+                onClick={handleCaptureAndSend} 
+                disabled={loading} 
+                style={{ 
+                  padding: '18px 40px', 
+                  fontSize: '18px',
+                  fontWeight: 'bold',
+                  background: loading 
+                    ? 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)'
+                    : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '15px',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  boxShadow: '0 6px 20px rgba(245, 87, 108, 0.4)',
+                  transition: 'all 0.3s ease',
+                  transform: loading ? 'scale(1)' : 'scale(1)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'scale(1.05)';
+                    e.target.style.boxShadow = '0 8px 25px rgba(245, 87, 108, 0.5)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'scale(1)';
+                    e.target.style.boxShadow = '0 6px 20px rgba(245, 87, 108, 0.4)';
+                  }
+                }}
+              >
+                {loading ? (loadingProgress || '⏳ Processing...') : '📷 Capture & Add Vendor'}
+              </button>
+            </div>
+            {preview && (
+              <div style={{ margin: '1em 0' }}>
+                <img src={preview} alt="preview" style={{ width: 220, borderRadius: 8 }} />
               </div>
             )}
-            {serverMsg && !loading && (
-              <div style={{ marginTop: '20px', padding: '20px', background: '#1a4d1a', borderRadius: '8px', color: '#4CAF50', fontSize: '1.1em', fontWeight: 'bold' }}>
-                ✅ {serverMsg}
+            {vendorData && (
+              <div style={{ marginTop: '1em', background: '#222', padding: '20px', borderRadius: 8, maxWidth: '90%', textAlign: 'left' }}>
+                <h3 style={{ marginTop: 0, color: '#4CAF50' }}>{vendorData.heading}</h3>
+                {vendorData.description && (
+                  <p style={{ color: '#ccc', margin: '10px 0' }}>{vendorData.description}</p>
+                )}
+                {vendorData.extractedText && (
+                  <div style={{ marginTop: '15px' }}>
+                    <b style={{ color: '#aaa' }}>Extracted Text:</b>
+                    <pre style={{ whiteSpace: 'pre-wrap', color: '#fff', marginTop: '5px' }}>{vendorData.extractedText}</pre>
+                  </div>
+                )}
+                {vendorData.extraInfo && (
+                  <div style={{ marginTop: '15px', fontSize: '0.9em' }}>
+                    {vendorData.extraInfo.items && vendorData.extraInfo.items.length > 0 && (
+                      <div style={{ marginTop: '10px' }}>
+                        <b style={{ color: '#aaa' }}>Items:</b>
+                        <ul style={{ color: '#fff', margin: '5px 0', paddingLeft: '20px' }}>
+                          {vendorData.extraInfo.items.map((item, i) => <li key={i}>{item}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {vendorData.extraInfo.prices && vendorData.extraInfo.prices.length > 0 && (
+                      <div style={{ marginTop: '10px', color: '#4CAF50' }}>
+                        <b>Prices:</b> {vendorData.extraInfo.prices.join(', ')}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.hours && (
+                      <div style={{ marginTop: '10px', color: '#fff' }}>
+                        <b>Hours:</b> {vendorData.extraInfo.hours}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.contact && (
+                      <div style={{ marginTop: '10px', color: '#fff' }}>
+                        <b>Contact:</b> {vendorData.extraInfo.contact}
+                      </div>
+                    )}
+                    {vendorData.extraInfo.features && vendorData.extraInfo.features.length > 0 && (
+                      <div style={{ marginTop: '10px' }}>
+                        <b style={{ color: '#aaa' }}>Features:</b>
+                        <div style={{ color: '#4CAF50', marginTop: '5px' }}>
+                          {vendorData.extraInfo.features.join(' • ')}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {serverMsg && <div style={{ color: 'lightgreen', fontSize: '0.95em', marginTop: '15px' }}>{serverMsg}</div>}
               </div>
             )}
-            {error && <p style={{ color: 'red', marginTop: '15px' }}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
           </div>
         )}
 
