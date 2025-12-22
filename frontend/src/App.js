@@ -314,11 +314,11 @@ function App() {
       const prompt = `Analyze this image of a vendor, food cart, or business. Extract and structure the information as JSON with the following format:
 
 {
-  "heading": "A short, descriptive title (e.g., 'Taco Stand', 'Coffee Cart', 'Food Truck')",
+  "heading": "A short, descriptive title (e.g., 'Taco Stand', 'Coffee Cart', 'Food Truck', 'Vegetable Market Stall')",
   "description": "A brief AI-generated description of what this vendor offers, their specialties, or notable features (2-3 sentences)",
   "extractedText": "All visible text from signs, menus, or labels (preserve line breaks)",
   "extraInfo": {
-    "items": ["List of items/products if visible"],
+    "items": ["List ALL visible items/products. For vegetable stalls, list all types of vegetables (e.g., 'Tomatoes', 'Cucumbers', 'Carrots', 'Lettuce', 'Onions'). For food vendors, list all menu items. For shops, list product categories or specific items visible."],
     "prices": ["Prices if visible"],
     "hours": "Operating hours if visible",
     "contact": "Phone number or contact info if visible",
@@ -326,7 +326,13 @@ function App() {
   }
 }
 
-Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
+IMPORTANT: 
+- For vegetable/fruit stalls: Carefully identify and list ALL types of vegetables, fruits, or produce visible in the image
+- For food vendors: List ALL menu items, dishes, or food types visible
+- For shops: List ALL product categories or specific items visible
+- Be thorough in identifying items - look at signs, displays, and visible products
+- If information is not visible, use null or empty arrays
+- Return ONLY valid JSON, no markdown formatting.`;
 
       // Check if Puter.ai is authenticated (might be required)
       let puterAuthError = null;
