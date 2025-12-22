@@ -723,6 +723,67 @@ Be concise but informative. If information is not visible, use null or empty arr
           {/* Add Vendor Tab */}
           {activeTab === 'add' && (
             <div>
+              {/* Puter.ai Authentication Status - Only on Add page */}
+              <div style={{ 
+                marginBottom: '30px', 
+                padding: '15px 20px', 
+                background: puterAuthStatus === 'signed-in' 
+                  ? '#f5f5f5' 
+                  : puterAuthStatus === 'checking' 
+                    ? '#f9f9f9' 
+                    : '#f5f5f5', 
+                borderRadius: '4px',
+                border: '1px solid #e0e0e0'
+              }}>
+                {puterAuthStatus === 'checking' && (
+                  <div style={{ color: '#666', fontSize: '0.9em' }}>Checking authentication...</div>
+                )}
+                {puterAuthStatus === 'signed-in' && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ color: '#000', fontSize: '0.9em' }}>
+                      Signed in {puterUser?.username && `as ${puterUser.username}`}
+                    </div>
+                    <button
+                      onClick={handlePuterSignOut}
+                      style={{
+                        padding: '6px 16px',
+                        fontSize: '0.85em',
+                        backgroundColor: 'transparent',
+                        color: '#666',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+                {puterAuthStatus === 'signed-out' && (
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ color: '#666', fontSize: '0.9em' }}>
+                      Sign in required for AI analysis
+                    </div>
+                    <button
+                      onClick={handlePuterSignIn}
+                      disabled={authLoading}
+                      style={{
+                        padding: '6px 16px',
+                        fontSize: '0.85em',
+                        backgroundColor: '#000',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: authLoading ? 'not-allowed' : 'pointer',
+                        opacity: authLoading ? 0.6 : 1
+                      }}
+                    >
+                      {authLoading ? 'Signing in...' : 'Sign In'}
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <input
                 ref={fileInputRef}
                 type="file"
