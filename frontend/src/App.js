@@ -57,43 +57,36 @@ function VendorCard({ vendor, formatDate }) {
         </div>
       )}
 
-      {vendor.extraInfo && (
+      {/* Show items if available, but not the full extraInfo box */}
+      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
         <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
-          {vendor.extraInfo.items && vendor.extraInfo.items.length > 0 && (
-            <div style={{ marginTop: '8px' }}>
-              <span style={{ color: '#aaa' }}>Items: </span>
-              <span style={{ color: '#fff' }}>{vendor.extraInfo.items.join(', ')}</span>
-            </div>
-          )}
-          {vendor.extraInfo.prices && vendor.extraInfo.prices.length > 0 && (
-            <div style={{ marginTop: '8px', color: '#4CAF50' }}>
-              <span style={{ color: '#aaa' }}>Prices: </span>
-              {vendor.extraInfo.prices.join(', ')}
-            </div>
-          )}
-          {vendor.extraInfo.hours && (
-            <div style={{ marginTop: '8px', color: '#fff' }}>
-              <span style={{ color: '#aaa' }}>Hours: </span>
-              {vendor.extraInfo.hours}
-            </div>
-          )}
-          {vendor.extraInfo.contact && (
-            <div style={{ marginTop: '8px', color: '#fff' }}>
-              <span style={{ color: '#aaa' }}>Contact: </span>
-              {vendor.extraInfo.contact}
-            </div>
-          )}
-          {vendor.extraInfo.features && vendor.extraInfo.features.length > 0 && (
-            <div style={{ marginTop: '8px' }}>
-              <span style={{ color: '#aaa' }}>Features: </span>
-              <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.features.join(' • ')}</span>
-            </div>
-          )}
+          <span style={{ color: '#aaa' }}>Items: </span>
+          <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.items.join(', ')}</span>
         </div>
       )}
 
-      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px' }}>
-        📍 Location: {vendor.location?.lat?.toFixed(4)}, {vendor.location?.lng?.toFixed(4)} • {formatDate(vendor.createdAt)}
+      <div style={{ fontSize: '0.85em', color: '#666', marginTop: '12px', borderTop: '1px solid #333', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>📍 {formatDate(vendor.createdAt)}</span>
+        {vendor.location?.lat && vendor.location?.lng && (
+          <button
+            onClick={() => {
+              const url = `https://www.google.com/maps/dir/?api=1&destination=${vendor.location.lat},${vendor.location.lng}`;
+              window.open(url, '_blank');
+            }}
+            style={{
+              padding: '5px 12px',
+              fontSize: '0.85em',
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            🗺️ Get Directions
+          </button>
+        )}
       </div>
     </div>
   );
