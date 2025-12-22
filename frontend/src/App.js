@@ -518,7 +518,10 @@ IMPORTANT:
             }
             
             const data = await response.json();
-            setServerMsg(data.message || 'Vendor info saved successfully');
+            // Clear preview and vendor data, show thanks message
+            setPreview(null);
+            setVendorData(null);
+            setServerMsg('Thank you! Your vendor has been added successfully.');
             setLoading(false);
             setLoadingProgress('');
             
