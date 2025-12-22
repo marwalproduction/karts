@@ -604,7 +604,8 @@ Be concise but informative. If information is not visible, use null or empty arr
         width: '100%',
         margin: '0 auto',
         position: 'relative',
-        paddingBottom: '80px'
+        paddingBottom: '80px',
+        overflowX: 'hidden'
       }}>
         {/* Header */}
         <div style={{
