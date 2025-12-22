@@ -541,97 +541,64 @@ Be concise but informative. If information is not visible, use null or empty arr
   return (
     <div className="App">
       <header className="App-header" style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#fff',
         minHeight: '100vh',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden'
+        padding: '40px 20px',
+        color: '#000'
       }}>
-        {/* Decorative background elements */}
-        <div style={{
-          position: 'absolute',
-          top: '-50%',
-          right: '-10%',
-          width: '500px',
-          height: '500px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '50%',
-          filter: 'blur(80px)'
-        }}></div>
-        <div style={{
-          position: 'absolute',
-          bottom: '-30%',
-          left: '-10%',
-          width: '400px',
-          height: '400px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '50%',
-          filter: 'blur(80px)'
-        }}></div>
-        
-        <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: '800px' }}>
+        <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
           <div style={{
             textAlign: 'center',
-            marginBottom: '40px',
-            padding: '30px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+            marginBottom: '50px'
           }}>
             <h1 style={{ 
               marginBottom: '10px', 
-              fontSize: '2.5em',
-              fontWeight: 'bold',
-              background: 'linear-gradient(45deg, #fff, #e0e0e0)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+              fontSize: '2em',
+              fontWeight: '300',
+              color: '#000',
+              letterSpacing: '2px'
             }}>
-              🛒 Karts Vendor
+              Karts Vendor
             </h1>
             <p style={{ 
-              color: 'rgba(255, 255, 255, 0.9)', 
-              fontSize: '1.1em',
+              color: '#666', 
+              fontSize: '0.9em',
               marginTop: '10px',
               fontWeight: '300'
             }}>
-              Discover local vendors, food carts, and markets near you
+              Discover local vendors near you
             </p>
           </div>
         
         {/* Puter.ai Authentication Status */}
         <div style={{ 
-          marginBottom: '25px', 
+          marginBottom: '30px', 
           padding: '15px 20px', 
           background: puterAuthStatus === 'signed-in' 
-            ? 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' 
+            ? '#f5f5f5' 
             : puterAuthStatus === 'checking' 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 
-          borderRadius: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-          backdropFilter: 'blur(10px)'
+              ? '#f9f9f9' 
+              : '#f5f5f5', 
+          borderRadius: '4px',
+          border: '1px solid #e0e0e0'
         }}>
           {puterAuthStatus === 'checking' && (
-            <div style={{ color: '#aaa' }}>Checking Puter.ai authentication...</div>
+            <div style={{ color: '#666', fontSize: '0.9em' }}>Checking authentication...</div>
           )}
           {puterAuthStatus === 'signed-in' && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ color: '#4CAF50' }}>
-                ✅ Signed in to Puter.ai {puterUser?.username && `as ${puterUser.username}`}
+              <div style={{ color: '#000', fontSize: '0.9em' }}>
+                Signed in {puterUser?.username && `as ${puterUser.username}`}
               </div>
               <button
                 onClick={handlePuterSignOut}
                 style={{
-                  padding: '5px 15px',
-                  fontSize: '14px',
-                  backgroundColor: '#666',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
+                  padding: '6px 16px',
+                  fontSize: '0.85em',
+                  backgroundColor: 'transparent',
+                  color: '#666',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
                   cursor: 'pointer'
                 }}
               >
@@ -641,24 +608,24 @@ Be concise but informative. If information is not visible, use null or empty arr
           )}
           {puterAuthStatus === 'signed-out' && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ color: '#ff6b6b' }}>
-                ⚠️ Sign in to Puter.ai required for AI image analysis
+              <div style={{ color: '#666', fontSize: '0.9em' }}>
+                Sign in required for AI analysis
               </div>
               <button
                 onClick={handlePuterSignIn}
                 disabled={authLoading}
                 style={{
-                  padding: '8px 20px',
-                  fontSize: '14px',
-                  backgroundColor: '#4CAF50',
-                  color: 'white',
+                  padding: '6px 16px',
+                  fontSize: '0.85em',
+                  backgroundColor: '#000',
+                  color: '#fff',
                   border: 'none',
-                  borderRadius: '5px',
+                  borderRadius: '4px',
                   cursor: authLoading ? 'not-allowed' : 'pointer',
                   opacity: authLoading ? 0.6 : 1
                 }}
               >
-                {authLoading ? 'Signing in...' : 'Sign in to Puter.ai'}
+                {authLoading ? 'Signing in...' : 'Sign In'}
               </button>
             </div>
           )}
@@ -667,107 +634,47 @@ Be concise but informative. If information is not visible, use null or empty arr
         {/* Tabs */}
         <div style={{ 
           display: 'flex', 
-          gap: '15px', 
-          marginBottom: '30px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          padding: '8px',
-          borderRadius: '15px',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
+          gap: '0', 
+          marginBottom: '40px',
+          borderBottom: '1px solid #e0e0e0'
         }}>
           <button
             onClick={() => setActiveTab('add')}
             style={{
-              flex: 1,
-              padding: '15px 25px',
-              fontSize: '16px',
-              fontWeight: '600',
-              background: activeTab === 'add' 
-                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                : 'transparent',
-              color: 'white',
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: '400',
+              background: 'transparent',
+              color: activeTab === 'add' ? '#000' : '#666',
               border: 'none',
-              borderRadius: '12px',
+              borderBottom: activeTab === 'add' ? '2px solid #000' : '2px solid transparent',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: activeTab === 'add' ? '0 4px 15px rgba(102, 126, 234, 0.4)' : 'none',
-              transform: activeTab === 'add' ? 'scale(1.02)' : 'scale(1)'
-            }}
-            onMouseEnter={(e) => {
-              if (activeTab !== 'add') {
-                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeTab !== 'add') {
-                e.target.style.background = 'transparent';
-              }
+              transition: 'all 0.2s ease'
             }}
           >
-            ➕ Add Vendor
+            Add Vendor
           </button>
           <button
             onClick={() => setActiveTab('browse')}
             style={{
-              flex: 1,
-              padding: '15px 25px',
-              fontSize: '16px',
-              fontWeight: '600',
-              background: activeTab === 'browse' 
-                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                : 'transparent',
-              color: 'white',
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: '400',
+              background: 'transparent',
+              color: activeTab === 'browse' ? '#000' : '#666',
               border: 'none',
-              borderRadius: '12px',
+              borderBottom: activeTab === 'browse' ? '2px solid #000' : '2px solid transparent',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: activeTab === 'browse' ? '0 4px 15px rgba(102, 126, 234, 0.4)' : 'none',
-              transform: activeTab === 'browse' ? 'scale(1.02)' : 'scale(1)'
-            }}
-            onMouseEnter={(e) => {
-              if (activeTab !== 'browse') {
-                e.target.style.background = 'rgba(255, 255, 255, 0.1)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeTab !== 'browse') {
-                e.target.style.background = 'transparent';
-              }
+              transition: 'all 0.2s ease'
             }}
           >
-            🔍 Browse Vendors
+            Browse
           </button>
         </div>
 
         {/* Add Vendor Tab */}
         {activeTab === 'add' && (
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            padding: '40px',
-            borderRadius: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h2 style={{ 
-              marginTop: 0, 
-              marginBottom: '30px',
-              fontSize: '2em',
-              color: 'white',
-              fontWeight: 'bold',
-              textAlign: 'center'
-            }}>
-              📸 Add a New Vendor
-            </h2>
-            <p style={{
-              color: 'rgba(255, 255, 255, 0.8)',
-              textAlign: 'center',
-              marginBottom: '30px',
-              fontSize: '1.1em'
-            }}>
-              Capture a photo of a vendor, food cart, or market stall
-            </p>
+          <div>
             <input
               ref={fileInputRef}
               type="file"
@@ -781,34 +688,18 @@ Be concise but informative. If information is not visible, use null or empty arr
                 onClick={handleCaptureAndSend} 
                 disabled={loading} 
                 style={{ 
-                  padding: '18px 40px', 
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  background: loading 
-                    ? 'linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%)'
-                    : 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                  color: 'white',
+                  padding: '14px 32px', 
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  background: loading ? '#f5f5f5' : '#000',
+                  color: loading ? '#999' : '#fff',
                   border: 'none',
-                  borderRadius: '15px',
+                  borderRadius: '4px',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 6px 20px rgba(245, 87, 108, 0.4)',
-                  transition: 'all 0.3s ease',
-                  transform: loading ? 'scale(1)' : 'scale(1)'
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) {
-                    e.target.style.transform = 'scale(1.05)';
-                    e.target.style.boxShadow = '0 8px 25px rgba(245, 87, 108, 0.5)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading) {
-                    e.target.style.transform = 'scale(1)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(245, 87, 108, 0.4)';
-                  }
+                  transition: 'all 0.2s ease'
                 }}
               >
-                {loading ? (loadingProgress || '⏳ Processing...') : '📷 Capture & Add Vendor'}
+                {loading ? (loadingProgress || 'Processing...') : 'Add Vendor'}
               </button>
             </div>
             {preview && (
@@ -872,57 +763,35 @@ Be concise but informative. If information is not visible, use null or empty arr
 
         {/* Browse Tab */}
         {activeTab === 'browse' && (
-          <div style={{ 
-            width: '100%', 
-            maxWidth: '800px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            backdropFilter: 'blur(10px)',
-            padding: '30px',
-            borderRadius: '20px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
-          }}>
-            <h2 style={{ 
-              marginTop: 0, 
-              marginBottom: '25px',
-              fontSize: '2em',
-              color: 'white',
-              fontWeight: 'bold',
-              textAlign: 'center'
-            }}>
-              🔍 Discover Vendors
-            </h2>
+          <div>
             {/* Search */}
-            <div style={{ marginBottom: '25px' }}>
+            <div style={{ marginBottom: '30px' }}>
               <input
                 type="text"
-                placeholder="🔍 Search vendors, items, or locations..."
+                placeholder="Search vendors..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   handleSearch(e.target.value);
                 }}
                 style={{ 
-                  padding: '15px 20px', 
-                  fontSize: '16px', 
+                  padding: '12px 16px', 
+                  fontSize: '14px', 
                   width: '100%', 
-                  borderRadius: '15px', 
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: 'white',
-                  backdropFilter: 'blur(10px)',
+                  borderRadius: '4px', 
+                  border: '1px solid #e0e0e0',
+                  background: '#fff',
+                  color: '#000',
                   outline: 'none'
                 }}
                 onFocus={(e) => {
-                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.4)';
-                  e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                  e.target.style.border = '1px solid #000';
                 }}
                 onBlur={(e) => {
-                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)';
-                  e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.border = '1px solid #e0e0e0';
                 }}
               />
-              {searchLoading && <p style={{ marginTop: '15px', color: 'rgba(255, 255, 255, 0.8)' }}>🔍 Searching...</p>}
+              {searchLoading && <p style={{ marginTop: '12px', color: '#666', fontSize: '0.9em' }}>Searching...</p>}
             </div>
 
             {/* Search Results */}
