@@ -1,0 +1,22 @@
+{
+  "id": "vendor-1766423864736-8zfwm9ulm",
+  "heading": "Real Estate Advertisement",
+  "description": "This vendor specializes in luxury residential properties, offering 3 BHK apartments starting from 1.99 Crores. Located on Pan Card Club Road, this development provides ready possession residences in a prime area near Westport.",
+  "extractedText": "SUMANKUNJ\n\nLUXURY THAT'S\nREADY NOW\n\n3 BHKs from 1.99 Cr (All Incl.)\n\nPAN CARD CLUB ROAD\nNear Westport\n\n080 6241 5145\n\nREADY POSSESSION RESIDENCES\n\n1300 SQFT. CARPET AREA",
+  "extraInfo": {
+    "items": [],
+    "prices": [
+      "1.99 Cr"
+    ],
+    "hours": null,
+    "contact": "080 6241 5145",
+    "features": [
+      "Ready possession residences"
+    ]
+  },
+  "location": {
+    "lat": 18.5587603,
+    "lng": 73.7776303
+  },
+  "createdAt": "2025-12-22T17:17:44.736Z"
+}
