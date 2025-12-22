@@ -1,0 +1,27 @@
+{
+  "id": "vendor-1766421077258-3rhlahfzr",
+  "heading": "Street Food Stall",
+  "description": "This vendor specializes in traditional Indian snacks, showcasing a vibrant array of freshly prepared items. The stall is busy with the preparation of mouth-watering dishes, offering a taste of local cuisine.",
+  "extractedText": "{\n  \"heading\": \"Street Food Stall\",\n  \"description\": \"This vendor specializes in traditional Indian snacks, showcasing a vibrant array of freshly prepared items. The stall is busy with the preparation of mouth-watering dishes, offering a taste of local cuisine.\",\n  \"extractedText\": \"\",\n  \"extraInfo\": {\n    \"items\": [\"Puri\", \"Chole\", \"Samosa\", \"Chutney\", \"Salad\"],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": [\"Outdoor seating\", \"Freshly prepared food\"]\n  }\n}",
+  "extraInfo": {
+    "items": [
+      "Puri",
+      "Chole",
+      "Samosa",
+      "Chutney",
+      "Salad"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Outdoor seating",
+      "Freshly prepared food"
+    ]
+  },
+  "location": {
+    "lat": 18.5604416,
+    "lng": 73.7793416
+  },
+  "createdAt": "2025-12-22T16:31:17.258Z"
+}
