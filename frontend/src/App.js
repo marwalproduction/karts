@@ -299,7 +299,14 @@ function App() {
 
       // Step 2: Create image URL for Puter.ai
       setLoadingProgress('Preparing image...');
-      const imageUrl = URL.createObjectURL(file);
+      // Convert file to data URL (Puter.ai might need this format)
+      const imageUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      console.log('Image prepared as data URL, length:', imageUrl.length);
 
       // Step 3: Analyze image with Puter.ai (client-side)
       setLoadingProgress('Analyzing image with AI...');
