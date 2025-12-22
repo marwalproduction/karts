@@ -37,40 +37,16 @@ function VendorCard({ vendor, formatDate }) {
         boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
       }}
     >
-      {/* Image placeholder */}
-      <div style={{
-        width: '100%',
-        height: '200px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '48px',
-        color: '#fff'
-      }}>
-        🛒
-      </div>
-      
       <div style={{ padding: '16px' }}>
         <h3 style={{ 
           marginTop: 0, 
-          marginBottom: '8px', 
+          marginBottom: '12px', 
           color: '#000', 
           fontSize: '18px',
           fontWeight: '600'
         }}>
           {vendor.heading || 'Vendor'}
         </h3>
-
-        {/* Rating */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', marginBottom: '12px' }}>
-          <div style={{ display: 'flex', gap: '2px' }}>
-            {'⭐'.repeat(5)}
-          </div>
-          <span style={{ fontSize: '13px', color: '#666' }}>5.0</span>
-          <span style={{ fontSize: '13px', color: '#999' }}>•</span>
-          <span style={{ fontSize: '13px', color: '#666' }}>{Math.floor(Math.random() * 50 + 10)} reviews</span>
-        </div>
         
         {/* Items */}
         {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
