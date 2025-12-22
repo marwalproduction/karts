@@ -397,16 +397,37 @@ Be concise but informative. If information is not visible, use null or empty arr
       // Clean up object URL
       URL.revokeObjectURL(imageUrl);
 
-      // Parse Puter.ai response
-      let puterText = typeof puterResponse === 'string' ? puterResponse : puterResponse.text || JSON.stringify(puterResponse);
+      // Parse Puter.ai response - response structure: {message: {content: string}, ...}
+      console.log('Puter.ai response structure:', puterResponse);
+      let puterText;
+      
+      if (typeof puterResponse === 'string') {
+        puterText = puterResponse;
+      } else if (puterResponse?.message?.content) {
+        // Standard Puter.ai response format
+        puterText = puterResponse.message.content;
+      } else if (puterResponse?.text) {
+        puterText = puterResponse.text;
+      } else if (puterResponse?.message) {
+        // Try to extract from message object
+        puterText = typeof puterResponse.message === 'string' 
+          ? puterResponse.message 
+          : JSON.stringify(puterResponse.message);
+      } else {
+        puterText = JSON.stringify(puterResponse);
+      }
+      
+      console.log('Extracted Puter.ai text:', puterText.substring(0, 200));
       const cleanedText = puterText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
       let analyzeData;
       try {
         analyzeData = JSON.parse(cleanedText);
+        console.log('Parsed analyzeData:', analyzeData);
       } catch (parseError) {
         // If JSON parsing fails, create structured data from text
         console.error('Failed to parse Puter.ai response as JSON:', cleanedText);
+        console.error('Parse error:', parseError);
         analyzeData = {
           heading: 'Vendor',
           description: cleanedText.substring(0, 200) || 'A vendor or business',
@@ -420,6 +441,28 @@ Be concise but informative. If information is not visible, use null or empty arr
           }
         };
       }
+      
+      // Ensure required fields exist
+      if (!analyzeData.heading) {
+        analyzeData.heading = 'Vendor';
+      }
+      if (!analyzeData.description) {
+        analyzeData.description = analyzeData.extractedText ? analyzeData.extractedText.substring(0, 200) : 'A vendor or business';
+      }
+      if (!analyzeData.extractedText) {
+        analyzeData.extractedText = cleanedText;
+      }
+      if (!analyzeData.extraInfo) {
+        analyzeData.extraInfo = {
+          items: [],
+          prices: [],
+          hours: null,
+          contact: null,
+          features: []
+        };
+      }
+      
+      console.log('Final analyzeData to send:', analyzeData);
 
       setVendorData(analyzeData);
       setLoadingProgress('Getting location...');
