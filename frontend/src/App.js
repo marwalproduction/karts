@@ -326,18 +326,34 @@ Be concise but informative. If information is not visible, use null or empty arr
       for (const model of modelsToTry) {
         try {
           console.log(`Trying model: ${model}`);
-          puterResponse = await window.puter.ai.chat(
-            prompt,
-            imageUrl,
-            { model: model }
-          );
-          console.log(`Success with model: ${model}`);
+          console.log('Puter.ai chat params:', { prompt: prompt.substring(0, 50) + '...', imageUrl, model });
+          
+          // Try different API formats
+          if (typeof window.puter.ai.chat === 'function') {
+            puterResponse = await window.puter.ai.chat(
+              prompt,
+              imageUrl,
+              { model: model }
+            );
+          } else {
+            throw new Error('puter.ai.chat is not a function. Available methods: ' + Object.keys(window.puter.ai || {}).join(', '));
+          }
+          
+          console.log(`Success with model: ${model}`, puterResponse);
           break; // Success, exit loop
         } catch (modelError) {
-          console.log(`Model ${model} failed:`, modelError.message);
+          const errorMsg = modelError?.message || modelError?.toString() || JSON.stringify(modelError);
+          const errorStatus = modelError?.status || modelError?.statusCode;
+          console.error(`Model ${model} failed:`, {
+            message: errorMsg,
+            status: errorStatus,
+            error: modelError,
+            fullError: JSON.stringify(modelError, Object.getOwnPropertyNames(modelError))
+          });
           lastError = modelError;
+          
           // If error mentions auth/401, stop trying other models
-          if (modelError.message && (modelError.message.includes('401') || modelError.message.includes('auth') || modelError.message.includes('unauthorized'))) {
+          if (errorStatus === 401 || (errorMsg && (errorMsg.includes('401') || errorMsg.includes('auth') || errorMsg.includes('unauthorized') || errorMsg.includes('sign in')))) {
             puterAuthError = 'Puter.ai authentication required. Please sign in to Puter.ai.';
             break;
           }
