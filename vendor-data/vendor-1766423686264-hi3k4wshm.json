@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766423686264-hi3k4wshm",
+  "heading": "Barber Shop",
+  "description": "This vendor offers a variety of hairstyling and grooming services. The shop showcases different hairstyles through images, indicating a focus on trendy cuts for both men and women.",
+  "extractedText": "लकी मेन्स पार्लर",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5586395,
+    "lng": 73.7775643
+  },
+  "createdAt": "2025-12-22T17:14:46.264Z"
+}
