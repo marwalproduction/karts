@@ -1,0 +1,27 @@
+{
+  "id": "vendor-1766422779773-fuobmlk6j",
+  "heading": "Snack and Grocery Stall",
+  "description": "This vendor offers a variety of packaged snacks and grocery items. The colorful displays feature an assortment of chips, biscuits, and beverages, catering to quick snack needs.",
+  "extractedText": "{\n  \"heading\": \"Snack and Grocery Stall\",\n  \"description\": \"This vendor offers a variety of packaged snacks and grocery items. The colorful displays feature an assortment of chips, biscuits, and beverages, catering to quick snack needs.\",\n  \"extractedText\": \"\",\n  \"extraInfo\": {\n    \"items\": [\"Chips\", \"Biscuits\", \"Snacks\", \"Beverages\", \"Sweets\"],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": [\"Wide variety of snacks\", \"Colorful packaging\"]\n  }\n}",
+  "extraInfo": {
+    "items": [
+      "Chips",
+      "Biscuits",
+      "Snacks",
+      "Beverages",
+      "Sweets"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Wide variety of snacks",
+      "Colorful packaging"
+    ]
+  },
+  "location": {
+    "lat": 18.5604309,
+    "lng": 73.7793443
+  },
+  "createdAt": "2025-12-22T16:59:39.779Z"
+}
