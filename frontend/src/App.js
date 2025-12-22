@@ -30,21 +30,20 @@ function VendorCard({ vendor, formatDate }) {
   return (
     <div
       style={{
-        background: '#222',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '15px',
+        background: '#fff',
+        padding: '24px',
+        borderRadius: '4px',
+        marginBottom: '16px',
         textAlign: 'left',
-        border: '1px solid #333'
+        border: '1px solid #e0e0e0'
       }}
     >
       <h3 style={{ 
         marginTop: 0, 
-        marginBottom: '10px', 
-        color: '#fff', 
-        fontSize: '1.4em',
-        fontWeight: 'bold',
-        textShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
+        marginBottom: '12px', 
+        color: '#000', 
+        fontSize: '1.2em',
+        fontWeight: '400'
       }}>
         {vendor.heading || 'Vendor'}
       </h3>
