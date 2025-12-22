@@ -42,17 +42,75 @@ function VendorCard({ vendor, formatDate }) {
         {vendor.heading || 'Vendor'}
       </h3>
       
+      {/* Show items right after heading with icons */}
+      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
+        <div style={{ marginTop: '8px', marginBottom: '10px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          {vendor.extraInfo.items.map((item, i) => {
+            // Get icon based on item type
+            const getIcon = (itemName) => {
+              const name = itemName.toLowerCase();
+              if (name.includes('vegetable') || name.includes('tomato') || name.includes('cucumber') || name.includes('carrot') || name.includes('onion') || name.includes('potato') || name.includes('lettuce') || name.includes('cabbage')) return '🥬';
+              if (name.includes('fruit') || name.includes('apple') || name.includes('banana') || name.includes('orange') || name.includes('mango')) return '🍎';
+              if (name.includes('tea') || name.includes('chai')) return '☕';
+              if (name.includes('coffee')) return '☕';
+              if (name.includes('food') || name.includes('meal') || name.includes('dish')) return '🍽️';
+              if (name.includes('taco') || name.includes('burrito')) return '🌮';
+              if (name.includes('pizza')) return '🍕';
+              if (name.includes('burger')) return '🍔';
+              if (name.includes('drink') || name.includes('juice') || name.includes('soda')) return '🥤';
+              if (name.includes('snack') || name.includes('chips')) return '🍿';
+              return '📦';
+            };
+            return (
+              <span key={i} style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '4px',
+                padding: '4px 8px',
+                background: '#333',
+                borderRadius: '12px',
+                fontSize: '0.85em',
+                color: '#4CAF50'
+              }}>
+                <span>{getIcon(item)}</span>
+                <span>{item}</span>
+              </span>
+            );
+          })}
+        </div>
+      )}
+      
       {vendor.description && (
-        <p style={{ color: '#aaa', margin: '8px 0', lineHeight: '1.4', fontSize: '0.85em' }}>
-          {vendor.description.length > 150 ? vendor.description.substring(0, 150) + '...' : vendor.description}
+        <p style={{ 
+          color: '#aaa', 
+          margin: '8px 0', 
+          lineHeight: '1.4', 
+          fontSize: '0.85em',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}>
+          {vendor.description}
         </p>
       )}
 
-      {/* Show items if available, but not the full extraInfo box */}
-      {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
-        <div style={{ marginTop: '12px', fontSize: '0.9em' }}>
-          <span style={{ color: '#aaa' }}>Items: </span>
-          <span style={{ color: '#4CAF50' }}>{vendor.extraInfo.items.join(', ')}</span>
+      {/* Show contact info if available */}
+      {(vendor.extraInfo?.contact || vendor.extraInfo?.hours) && (
+        <div style={{ marginTop: '10px', fontSize: '0.85em', color: '#aaa' }}>
+          {vendor.extraInfo.contact && (
+            <div style={{ marginTop: '5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span>📞</span>
+              <span style={{ color: '#fff' }}>{vendor.extraInfo.contact}</span>
+            </div>
+          )}
+          {vendor.extraInfo.hours && (
+            <div style={{ marginTop: '5px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span>🕐</span>
+              <span style={{ color: '#fff' }}>{vendor.extraInfo.hours}</span>
+            </div>
+          )}
         </div>
       )}
 
