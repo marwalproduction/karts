@@ -741,34 +741,6 @@ Be concise but informative. If information is not visible, use null or empty arr
             />
           </div>
 
-          {/* Category Tabs */}
-          <div style={{ 
-            display: 'flex', 
-            gap: '8px', 
-            marginBottom: '24px',
-            overflowX: 'auto',
-            paddingBottom: '4px'
-          }}>
-            {['All', 'Food', 'Vegetables', 'Beverages', 'Snacks'].map((cat) => (
-              <button
-                key={cat}
-                style={{
-                  padding: '8px 16px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  background: cat === 'All' ? '#000' : '#f5f5f5',
-                  color: cat === 'All' ? '#fff' : '#666',
-                  border: 'none',
-                  borderRadius: '20px',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
 
           {/* Add Vendor Tab */}
           {activeTab === 'add' && (
