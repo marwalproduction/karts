@@ -247,8 +247,8 @@ function App() {
     setError(null);
     setVendorData(null);
     setServerMsg(null);
-    setLoadingProgress('Loading image...');
-    setPreview(URL.createObjectURL(file));
+    setPreview(null); // Don't show preview
+    setLoadingProgress('Processing...');
 
     try {
       // Step 1: Wait for Puter.ai to load
