@@ -1,0 +1,24 @@
+{
+  "id": "vendor-1766424748210-hx3wcl93f",
+  "heading": "Car Care Service",
+  "description": "Trupti Car Care offers comprehensive vehicle services specializing in dent repairs, painting, and electrical work. They cater to various vehicle brands and ensure quality care for customers' automobiles.",
+  "extractedText": "Santosh Wagh\nTRUPTI CAR CARE\nSpecialist In: All Vehicle Services, Repairing Denting, Painting, Ac & Electrical Works.",
+  "extraInfo": {
+    "items": [
+      "All vehicle services",
+      "Denting repair",
+      "Painting",
+      "AC repair",
+      "Electrical works"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": "1800 633 2052\n900 2952",
+    "features": []
+  },
+  "location": {
+    "lat": 18.5595003,
+    "lng": 73.7798611
+  },
+  "createdAt": "2025-12-22T17:32:28.210Z"
+}
