@@ -43,8 +43,8 @@ function VendorCard({ vendor, formatDate }) {
       </h3>
       
       {vendor.description && (
-        <p style={{ color: '#ccc', margin: '10px 0', lineHeight: '1.5' }}>
-          {vendor.description}
+        <p style={{ color: '#aaa', margin: '8px 0', lineHeight: '1.4', fontSize: '0.85em' }}>
+          {vendor.description.length > 150 ? vendor.description.substring(0, 150) + '...' : vendor.description}
         </p>
       )}
 
