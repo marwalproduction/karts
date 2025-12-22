@@ -162,7 +162,7 @@ function VendorCard({ vendor, formatDate }) {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState('add'); // 'add' or 'browse'
+  const [activeTab, setActiveTab] = useState('browse'); // 'add', 'browse', or 'favorites'
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState('');
@@ -178,6 +178,32 @@ function App() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  
+  // Favorites state
+  const [favoritedVendors, setFavoritedVendors] = useState(() => {
+    const saved = localStorage.getItem('favoritedVendors');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Toggle favorite
+  const toggleFavorite = (vendor) => {
+    setFavoritedVendors(prev => {
+      const isFavorited = prev.some(v => v.id === vendor.id);
+      let newFavorites;
+      if (isFavorited) {
+        newFavorites = prev.filter(v => v.id !== vendor.id);
+      } else {
+        newFavorites = [...prev, vendor];
+      }
+      localStorage.setItem('favoritedVendors', JSON.stringify(newFavorites));
+      return newFavorites;
+    });
+  };
+
+  // Check if vendor is favorited
+  const isVendorFavorited = (vendorId) => {
+    return favoritedVendors.some(v => v.id === vendorId);
+  };
 
   // Puter.ai authentication state
   const [puterAuthStatus, setPuterAuthStatus] = useState('checking'); // 'checking', 'signed-in', 'signed-out'
@@ -873,12 +899,54 @@ Be concise but informative. If information is not visible, use null or empty arr
                 <p>Loading nearby vendors...</p>
               ) : nearbyVendors.length > 0 ? (
                 nearbyVendors.map((vendor) => (
-                  <VendorCard key={vendor.id} vendor={vendor} formatDate={formatDate} />
+                  <VendorCard 
+                    key={vendor.id} 
+                    vendor={vendor} 
+                    formatDate={formatDate}
+                    isFavorited={isVendorFavorited(vendor.id)}
+                    onToggleFavorite={toggleFavorite}
+                  />
                 ))
               ) : (
                 <p style={{ color: '#aaa' }}>No nearby vendors found. Be the first to add one!</p>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Favorites Tab */}
+        {activeTab === 'favorites' && (
+          <div>
+            <h2 style={{ 
+              marginTop: 0, 
+              marginBottom: '24px',
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#000'
+            }}>
+              ❤️ Favorites
+            </h2>
+            {favoritedVendors.length > 0 ? (
+              favoritedVendors.map((vendor) => (
+                <VendorCard 
+                  key={vendor.id} 
+                  vendor={vendor} 
+                  formatDate={formatDate}
+                  isFavorited={true}
+                  onToggleFavorite={toggleFavorite}
+                />
+              ))
+            ) : (
+              <div style={{ 
+                textAlign: 'center', 
+                padding: '40px 20px',
+                color: '#666'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>❤️</div>
+                <p style={{ fontSize: '16px', marginBottom: '8px' }}>No favorites yet</p>
+                <p style={{ fontSize: '14px', color: '#999' }}>Tap the heart icon on any vendor to add it to favorites</p>
+              </div>
+            )}
           </div>
         )}
         </div>
@@ -907,9 +975,22 @@ Be concise but informative. If information is not visible, use null or empty arr
               <div style={{ fontSize: '20px', marginBottom: '4px' }}>🏠</div>
               <div style={{ fontSize: '11px', color: activeTab === 'browse' ? '#000' : '#999', fontWeight: activeTab === 'browse' ? '600' : '400' }}>Home</div>
             </div>
-            <div style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}>
+            <div 
+              style={{ 
+                textAlign: 'center', 
+                cursor: 'pointer', 
+                flex: 1 
+              }}
+              onClick={() => setActiveTab('favorites')}
+            >
               <div style={{ fontSize: '20px', marginBottom: '4px' }}>❤️</div>
-              <div style={{ fontSize: '11px', color: '#999' }}>Favorites</div>
+              <div style={{ 
+                fontSize: '11px', 
+                color: activeTab === 'favorites' ? '#000' : '#999',
+                fontWeight: activeTab === 'favorites' ? '600' : '400'
+              }}>
+                Favorites
+              </div>
             </div>
             <div 
               style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}
