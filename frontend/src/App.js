@@ -492,6 +492,27 @@ Be concise but informative. If information is not visible, use null or empty arr
       let analyzeData;
       try {
         analyzeData = JSON.parse(cleanedText);
+        // Ensure required fields have defaults
+        if (!analyzeData.heading && !analyzeData.title) {
+          analyzeData.heading = 'Vendor';
+        } else if (!analyzeData.heading && analyzeData.title) {
+          analyzeData.heading = analyzeData.title;
+        }
+        if (!analyzeData.description) {
+          analyzeData.description = '';
+        }
+        if (!analyzeData.extractedText) {
+          analyzeData.extractedText = cleanedText;
+        }
+        if (!analyzeData.extraInfo) {
+          analyzeData.extraInfo = {
+            items: [],
+            prices: [],
+            hours: null,
+            contact: null,
+            features: []
+          };
+        }
       } catch (parseError) {
         // If JSON parsing fails, create structured data from text
         console.error('Failed to parse Puter.ai response as JSON:', cleanedText);
@@ -541,18 +562,31 @@ Be concise but informative. If information is not visible, use null or empty arr
           try {
             const uploadUrl = `${apiUrl}/api/upload`;
             
+            // Ensure required fields are present
+            const heading = analyzeData.heading || analyzeData.title || 'Vendor';
+            const description = analyzeData.description || '';
+            const extractedText = analyzeData.extractedText || cleanedText || '';
+            const extraInfo = analyzeData.extraInfo || {};
+            const lat = location.lat;
+            const lng = location.lng;
+            
+            // Validate required fields
+            if (!heading || lat === undefined || lng === undefined) {
+              throw new Error(`Missing required fields: heading=${heading}, lat=${lat}, lng=${lng}`);
+            }
+            
             const response = await fetch(uploadUrl, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                heading: analyzeData.heading,
-                description: analyzeData.description,
-                extractedText: analyzeData.extractedText,
-                extraInfo: analyzeData.extraInfo,
-                lat: location.lat,
-                lng: location.lng,
+                heading: heading,
+                description: description,
+                extractedText: extractedText,
+                extraInfo: extraInfo,
+                lat: lat,
+                lng: lng,
               }),
             });
             
