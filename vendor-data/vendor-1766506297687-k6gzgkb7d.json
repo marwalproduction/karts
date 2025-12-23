@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766506297687-k6gzgkb7d",
+  "heading": "Vendor",
+  "description": "",
+  "extractedText": "{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"heading\\\": \\\"Pottery Vendor\\\",\\n  \\\"description\\\": \\\"This vendor specializes in handcrafted clay pottery, offering a variety of traditional and decorative pieces. Their collection features unique designs and sizes, suitable for both functional use and decor.\\\",\\n  \\\"extractedText\\\": \\\"\\\",\\n  \\\"extraInfo\\\": {\\n    \\\"items\\\": [],\\n    \\\"prices\\\": [],\\n    \\\"hours\\\": null,\\n    \\\"contact\\\": null,\\n    \\\"features\\\": []\\n  }\\n}\",\"refusal\":null,\"annotations\":[]},\"logprobs\":null,\"finish_reason\":\"stop\",\"usage\":{\"prompt_tokens\":14378,\"completion_tokens\":91,\"cached_tokens\":0},\"via_ai_chat_service\":true}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5604049,
+    "lng": 73.7793138
+  },
+  "createdAt": "2025-12-23T16:11:37.687Z"
+}
