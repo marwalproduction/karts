@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766563676806-22ynolatk",
+  "heading": "Vendor",
+  "description": "",
+  "extractedText": "{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"heading\\\": \\\"Welcome Juice Centre\\\",\\n  \\\"description\\\": \\\"A vibrant juice vendor offering a wide variety of fresh fruits and juices. The colorful display of fruits suggests a focus on health and freshness, making it an ideal stop for refreshing drinks.\\\",\\n  \\\"extractedText\\\": \\\"Welcome Juice Centre\\\\nPAYTM\\\\nPAYTM\\\\n\\\",\\n  \\\"extraInfo\\\": {\\n    \\\"items\\\": [],\\n    \\\"prices\\\": [],\\n    \\\"hours\\\": null,\\n    \\\"contact\\\": null,\\n    \\\"features\\\": []\\n  }\\n}\",\"refusal\":null,\"annotations\":[]},\"logprobs\":null,\"finish_reason\":\"stop\",\"usage\":{\"prompt_tokens\":37046,\"completion_tokens\":105,\"cached_tokens\":0},\"via_ai_chat_service\":true}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5582902,
+    "lng": 73.7774465
+  },
+  "createdAt": "2025-12-24T08:07:56.806Z"
+}
