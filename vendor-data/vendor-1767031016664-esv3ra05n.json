@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1767031016664-esv3ra05n",
+  "heading": "Vendor",
+  "description": "",
+  "extractedText": "{\n  \"heading\": null,\n  \"description\": null,\n  \"extractedText\": null,\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": []\n  }\n}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5603991,
+    "lng": 73.7793432
+  },
+  "createdAt": "2025-12-29T17:56:56.664Z"
+}
