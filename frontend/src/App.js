@@ -370,6 +370,95 @@ function App() {
     setError(null);
     setVendorData(null);
     setServerMsg(null);
+    setLoadingProgress('Getting location...');
+    setPreview(URL.createObjectURL(file));
+
+    try {
+      // Get location first
+      if (!navigator.geolocation) {
+        setError('Geolocation is not supported by your browser');
+        setLoading(false);
+        setLoadingProgress('');
+        return;
+      }
+
+      const position = await new Promise((resolve, reject) => {
+        const geoTimeout = setTimeout(() => {
+          reject(new Error('Location request timed out'));
+        }, 10000);
+        
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            clearTimeout(geoTimeout);
+            resolve(pos);
+          },
+          (err) => {
+            clearTimeout(geoTimeout);
+            reject(err);
+          },
+          {
+            timeout: 10000,
+            enableHighAccuracy: false,
+            maximumAge: 60000
+          }
+        );
+      });
+
+      const location = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+
+      // Upload image and location to backend
+      setLoadingProgress('Uploading image...');
+      
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('lat', location.lat.toString());
+      formData.append('lng', location.lng.toString());
+
+      const response = await fetch(`${apiUrl}/api/upload-image`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const data = await response.json();
+      setServerMsg(data.message || 'Image uploaded! Processing in background. Vendor will appear shortly.');
+      setLoading(false);
+      setLoadingProgress('');
+      
+      // Refresh nearby vendors after a delay to show the new vendor
+      setTimeout(() => {
+        if (activeTab === 'browse' && userLocation) {
+          fetchNearbyVendors(userLocation.lat, userLocation.lng);
+        }
+      }, 5000);
+
+    } catch (err) {
+      setError(err.message || 'Failed to upload image');
+      setLoading(false);
+      setLoadingProgress('');
+    }
+
+    // Reset file input
+    e.target.value = '';
+  };
+
+  // Old function removed - using simplified backend processing now
+  /*
+  const handleImageCapture_OLD = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    setError(null);
+    setVendorData(null);
+    setServerMsg(null);
     setLoadingProgress('Loading image...');
     setPreview(URL.createObjectURL(file));
 
@@ -743,6 +832,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
     // Reset file input
     e.target.value = '';
   };
+  */
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

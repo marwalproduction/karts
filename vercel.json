@@ -6,6 +6,9 @@
     "api/upload.js": {
       "maxDuration": 60
     },
+    "api/upload-image.js": {
+      "maxDuration": 300
+    },
     "api/search.js": {
       "maxDuration": 10
     },
