@@ -70,7 +70,7 @@ function VendorCard({ vendor, formatDate }) {
       <div style={{ padding: '16px' }}>
         <h3 style={{ 
           marginTop: 0, 
-          marginBottom: '12px', 
+          marginBottom: '8px', 
           color: '#000', 
           fontSize: '18px',
           fontWeight: '600',
@@ -78,6 +78,20 @@ function VendorCard({ vendor, formatDate }) {
         }}>
           {vendor.heading || 'Vendor'}
         </h3>
+        
+        {/* Description */}
+        {vendor.description && (
+          <p style={{
+            marginTop: 0,
+            marginBottom: '12px',
+            color: '#666',
+            fontSize: '14px',
+            lineHeight: '1.5',
+            paddingRight: '40px'
+          }}>
+            {vendor.description}
+          </p>
+        )}
         
         {/* Items */}
         {vendor.extraInfo?.items && vendor.extraInfo.items.length > 0 && (
