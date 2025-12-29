@@ -2,13 +2,25 @@
   "id": "vendor-1767031353761-r5z7zrvrw",
   "heading": "Culinary Delights",
   "description": "This vendor offers a vibrant array of savory and sweet treats wrapped in fresh leaves. Specialty items often include unique combinations of nuts, spices, and fruits, making every bite a flavorful experience.",
-  "extractedText": "{\n  \"heading\": \"Culinary Delights\",\n  \"description\": \"This vendor offers a vibrant array of savory and sweet treats wrapped in fresh leaves. Specialty items often include unique combinations of nuts, spices, and fruits, making every bite a flavorful experience.\",\n  \"extractedText\": \"\",\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": []\n  }\n}",
+  "extractedText": "",
   "extraInfo": {
-    "items": [],
+    "items": [
+      "Leaf-wrapped Treats",
+      "Savory Snacks",
+      "Sweet Treats",
+      "Nuts & Spices Mix",
+      "Fruit Combinations",
+      "Traditional Snacks",
+      "Fresh Leaf Wraps"
+    ],
     "prices": [],
     "hours": null,
     "contact": null,
-    "features": []
+    "features": [
+      "Fresh leaves",
+      "Traditional recipes",
+      "Unique flavor combinations"
+    ]
   },
   "location": {
     "lat": 18.560333247746616,

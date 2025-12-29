@@ -1,10 +1,14 @@
 {
   "id": "vendor-1767031016664-esv3ra05n",
-  "heading": "Vendor",
-  "description": "",
-  "extractedText": "{\n  \"heading\": null,\n  \"description\": null,\n  \"extractedText\": null,\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": []\n  }\n}",
+  "heading": "Local Vendor",
+  "description": "A local vendor offering various products and services.",
+  "extractedText": "",
   "extraInfo": {
-    "items": [],
+    "items": [
+      "Local Products",
+      "Daily Essentials",
+      "General Items"
+    ],
     "prices": [],
     "hours": null,
     "contact": null,

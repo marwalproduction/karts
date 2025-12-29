@@ -406,7 +406,7 @@ function App() {
   "description": "A brief AI-generated description of what this vendor offers, their specialties, or notable features (2-3 sentences)",
   "extractedText": "All visible text from signs, menus, or labels (preserve line breaks)",
   "extraInfo": {
-    "items": ["List of items/products if visible"],
+    "items": ["List of specific items/products. IMPORTANT: Infer items from what you see in the image - food items, products, services. Include at least 3-5 items based on the vendor type. Examples: ['Tacos', 'Burritos', 'Quesadillas'] or ['Coffee', 'Tea', 'Pastries', 'Sandwiches'] or ['Fresh Fruits', 'Juices', 'Smoothies']",
     "prices": ["Prices if visible"],
     "hours": "Operating hours if visible",
     "contact": "Phone number or contact info if visible",
@@ -414,7 +414,7 @@ function App() {
   }
 }
 
-Be concise but informative. If information is not visible, use null or empty arrays. Return ONLY valid JSON, no markdown formatting.`;
+CRITICAL: Always provide items array with at least 3-5 specific items based on what you can see or infer from the image. Do not leave items array empty. Be concise but informative. Return ONLY valid JSON, no markdown formatting.`;
 
       // Check if Puter.ai is authenticated (might be required)
       let puterAuthError = null;
@@ -563,6 +563,42 @@ Be concise but informative. If information is not visible, use null or empty arr
             contact: null,
             features: []
           };
+        }
+        
+        // If items array is empty but we have a description, try to infer items
+        if (!analyzeData.extraInfo.items || analyzeData.extraInfo.items.length === 0) {
+          const description = analyzeData.description || '';
+          const heading = analyzeData.heading || '';
+          const combinedText = (heading + ' ' + description).toLowerCase();
+          
+          // Infer items based on common keywords
+          const inferredItems = [];
+          if (combinedText.includes('juice') || combinedText.includes('fruit')) {
+            inferredItems.push('Fresh Fruit Juices', 'Mixed Juices', 'Orange Juice', 'Apple Juice');
+          }
+          if (combinedText.includes('coffee') || combinedText.includes('tea')) {
+            inferredItems.push('Coffee', 'Tea', 'Hot Beverages', 'Pastries');
+          }
+          if (combinedText.includes('food') || combinedText.includes('taco') || combinedText.includes('burger')) {
+            inferredItems.push('Food Items', 'Snacks', 'Meals');
+          }
+          if (combinedText.includes('pottery') || combinedText.includes('clay')) {
+            inferredItems.push('Clay Pottery', 'Handcrafted Pots', 'Decorative Items', 'Traditional Pottery');
+          }
+          if (combinedText.includes('culinary') || combinedText.includes('treat') || combinedText.includes('snack')) {
+            inferredItems.push('Savory Treats', 'Sweet Snacks', 'Traditional Snacks', 'Leaf Wraps');
+          }
+          if (combinedText.includes('vegetable') || combinedText.includes('produce')) {
+            inferredItems.push('Fresh Vegetables', 'Organic Produce', 'Local Vegetables');
+          }
+          
+          // If we inferred some items, use them; otherwise use generic items
+          if (inferredItems.length > 0) {
+            analyzeData.extraInfo.items = inferredItems;
+          } else if (description) {
+            // Fallback: create generic items based on vendor type
+            analyzeData.extraInfo.items = ['Products', 'Services', 'Items'];
+          }
         }
       } catch (parseError) {
         // If JSON parsing fails, create structured data from text
