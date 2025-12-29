@@ -208,6 +208,15 @@ function App() {
   // Get user location on mount
   useEffect(() => {
     if (activeTab === 'browse' && navigator.geolocation) {
+      // Check if location was previously denied
+      const locationDenied = localStorage.getItem('locationDenied') === 'true';
+      
+      if (locationDenied) {
+        // Skip location request if previously denied
+        return;
+      }
+
+      // Request location silently
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const location = {
@@ -216,14 +225,18 @@ function App() {
           };
           setUserLocation(location);
           fetchNearbyVendors(location.lat, location.lng);
+          // Clear denied flag if successful
+          localStorage.removeItem('locationDenied');
         },
         (err) => {
-          // Silently handle geolocation errors - don't spam console
-          // Location is optional for browsing
-          console.warn('Location not available for nearby vendors:', err.message);
+          // Silently handle - no console output
+          // Mark as denied if permission denied
+          if (err.code === 1) { // PERMISSION_DENIED
+            localStorage.setItem('locationDenied', 'true');
+          }
         },
         {
-          timeout: 10000,
+          timeout: 8000,
           enableHighAccuracy: false,
           maximumAge: 300000 // 5 minutes cache
         }
@@ -299,8 +312,7 @@ function App() {
               },
               (err) => {
                 clearTimeout(geoTimeout);
-                // Don't reject - just log and continue without location
-                console.warn('Geolocation error (non-blocking):', err.message);
+                // Silently handle - no console output
                 reject(err);
               },
               {
@@ -316,13 +328,9 @@ function App() {
             lng: position.coords.longitude,
           };
         } catch (geoError) {
-          // Location failed, but continue without it
-          console.warn('Could not get location, continuing without it:', geoError.message);
-          // Use a default location (center of a common area) or null
-          // For now, we'll use null and backend will handle it
+          // Location failed, but continue without it - silently
+          // Use default location (0,0) which backend will handle
         }
-      } else {
-        console.warn('Geolocation not supported by browser');
       }
 
       // Upload image and location to backend (location can be null)
