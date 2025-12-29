@@ -1,29 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
-// Wait for Puter.ai to load
-const waitForPuter = () => {
-  return new Promise((resolve, reject) => {
-    if (typeof window !== 'undefined' && window.puter) {
-      resolve(window.puter);
-      return;
-    }
-    
-    let attempts = 0;
-    const maxAttempts = 50; // 5 seconds max wait
-    
-    const checkPuter = setInterval(() => {
-      attempts++;
-      if (window.puter) {
-        clearInterval(checkPuter);
-        resolve(window.puter);
-      } else if (attempts >= maxAttempts) {
-        clearInterval(checkPuter);
-        reject(new Error('Puter.ai failed to load. Please refresh the page.'));
-      }
-    }, 100);
-  });
-};
+// Puter.ai removed - using backend processing now
 
 // Vendor Card Component for displaying structured vendor listings
 function VendorCard({ vendor, formatDate }) {
@@ -224,85 +202,8 @@ function App() {
     return favoritedVendors.some(v => v.id === vendorId);
   };
 
-  // Puter.ai authentication state
-  const [puterAuthStatus, setPuterAuthStatus] = useState('checking'); // 'checking', 'signed-in', 'signed-out'
-  const [puterUser, setPuterUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(false);
-
+  // Puter.ai removed - using backend processing now
   const apiUrl = process.env.REACT_APP_API_URL || '';
-
-  // Check Puter.ai authentication status on mount
-  useEffect(() => {
-    const checkPuterAuth = async () => {
-      try {
-        await waitForPuter();
-        
-        if (window.puter && window.puter.auth) {
-          const isSignedIn = window.puter.auth.isSignedIn();
-          if (isSignedIn) {
-            try {
-              const user = window.puter.auth.getUser();
-              setPuterUser(user);
-              setPuterAuthStatus('signed-in');
-            } catch (err) {
-              console.error('Error getting user:', err);
-              setPuterAuthStatus('signed-out');
-            }
-          } else {
-            setPuterAuthStatus('signed-out');
-          }
-        } else {
-          setPuterAuthStatus('signed-out');
-        }
-      } catch (err) {
-        console.error('Puter.ai not available:', err);
-        setPuterAuthStatus('signed-out');
-      }
-    };
-
-    checkPuterAuth();
-  }, []);
-
-  // Sign in to Puter.ai
-  const handlePuterSignIn = async () => {
-    setAuthLoading(true);
-    setError(null);
-    
-    try {
-      await waitForPuter();
-      
-      if (!window.puter || !window.puter.auth) {
-        throw new Error('Puter.ai is not available. Please refresh the page.');
-      }
-
-      const user = await window.puter.auth.signIn();
-      setPuterUser(user);
-      setPuterAuthStatus('signed-in');
-      setError(null);
-    } catch (err) {
-      console.error('Sign-in error:', err);
-      setError(`Sign-in failed: ${err.message || 'Unknown error'}`);
-      setPuterAuthStatus('signed-out');
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  // Sign out from Puter.ai
-  const handlePuterSignOut = async () => {
-    try {
-      await waitForPuter();
-      
-      if (window.puter && window.puter.auth && window.puter.auth.signOut) {
-        await window.puter.auth.signOut();
-      }
-      
-      setPuterUser(null);
-      setPuterAuthStatus('signed-out');
-    } catch (err) {
-      console.error('Sign-out error:', err);
-    }
-  };
 
   // Get user location on mount
   useEffect(() => {
@@ -953,67 +854,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
           {/* Add Vendor Tab */}
           {activeTab === 'add' && (
             <div>
-              {/* Puter.ai Authentication Status - Only on Add page */}
-              <div style={{ 
-                marginBottom: '30px', 
-                padding: '15px 20px', 
-                background: puterAuthStatus === 'signed-in' 
-                  ? '#f5f5f5' 
-                  : puterAuthStatus === 'checking' 
-                    ? '#f9f9f9' 
-                    : '#f5f5f5', 
-                borderRadius: '4px',
-                border: '1px solid #e0e0e0'
-              }}>
-                {puterAuthStatus === 'checking' && (
-                  <div style={{ color: '#666', fontSize: '0.9em' }}>Checking authentication...</div>
-                )}
-                {puterAuthStatus === 'signed-in' && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ color: '#000', fontSize: '0.9em' }}>
-                      Signed in {puterUser?.username && `as ${puterUser.username}`}
-                    </div>
-                    <button
-                      onClick={handlePuterSignOut}
-                      style={{
-                        padding: '6px 16px',
-                        fontSize: '0.85em',
-                        backgroundColor: 'transparent',
-                        color: '#666',
-                        border: '1px solid #ddd',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                )}
-                {puterAuthStatus === 'signed-out' && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ color: '#666', fontSize: '0.9em' }}>
-                      Sign in required for AI analysis
-                    </div>
-                    <button
-                      onClick={handlePuterSignIn}
-                      disabled={authLoading}
-                      style={{
-                        padding: '6px 16px',
-                        fontSize: '0.85em',
-                        backgroundColor: '#000',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: authLoading ? 'not-allowed' : 'pointer',
-                        opacity: authLoading ? 0.6 : 1
-                      }}
-                    >
-                      {authLoading ? 'Signing in...' : 'Sign In'}
-                    </button>
-                  </div>
-                )}
-              </div>
-
+              {/* Puter.ai removed - using backend processing now */}
               <input
                 ref={fileInputRef}
                 type="file"
