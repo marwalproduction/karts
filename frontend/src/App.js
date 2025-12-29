@@ -298,12 +298,16 @@ function App() {
       // Try to get location, but make it optional
       let location = null;
       
-      if (navigator.geolocation) {
+      // Check if location was previously denied - skip request if so
+      const locationDenied = localStorage.getItem('locationDenied') === 'true';
+      
+      if (navigator.geolocation && !locationDenied) {
         try {
+          // Use very short timeout to avoid triggering system errors
           const position = await new Promise((resolve, reject) => {
             const geoTimeout = setTimeout(() => {
               reject(new Error('Location request timed out'));
-            }, 8000); // Reduced timeout to 8 seconds
+            }, 3000); // Very short timeout - 3 seconds
             
             navigator.geolocation.getCurrentPosition(
               (pos) => {
@@ -312,13 +316,16 @@ function App() {
               },
               (err) => {
                 clearTimeout(geoTimeout);
-                // Silently handle - no console output
+                // Mark as denied if permission denied to avoid future requests
+                if (err.code === 1) { // PERMISSION_DENIED
+                  localStorage.setItem('locationDenied', 'true');
+                }
                 reject(err);
               },
               {
-                timeout: 8000,
+                timeout: 3000, // Very short timeout
                 enableHighAccuracy: false,
-                maximumAge: 300000 // 5 minutes cache
+                maximumAge: 600000 // 10 minutes cache - use cached if available
               }
             );
           });
@@ -327,6 +334,8 @@ function App() {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
+          // Clear denied flag if successful
+          localStorage.removeItem('locationDenied');
         } catch (geoError) {
           // Location failed, but continue without it - silently
           // Use default location (0,0) which backend will handle
