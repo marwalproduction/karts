@@ -1,0 +1,21 @@
+{
+  "id": "vendor-1766423754117-9wvr6pg70",
+  "heading": "Snack Vendor",
+  "description": "This vendor specializes in traditional Indian snacks, featuring a variety of popular items. Notable offerings include vada pav and misal pav, making it a favorite spot for quick bites.",
+  "extractedText": "राम जी चायवाले नास्ता\n\nमिसल\n\nवाडा पाव\n\nमहाराष्ट्रातील विशेष पदार्थ",
+  "extraInfo": {
+    "items": [
+      "Misal Pav",
+      "Vada Pav"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5586864,
+    "lng": 73.7776612
+  },
+  "createdAt": "2025-12-22T17:15:54.117Z"
+}

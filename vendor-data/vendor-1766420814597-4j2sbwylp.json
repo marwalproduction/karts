@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766420814597-4j2sbwylp",
+  "heading": "Tea Stall",
+  "description": "This vendor specializes in serving a variety of teas, emphasizing its appeal to tea enthusiasts. The stall creates a vibrant atmosphere where customers can enjoy their beverages while socializing.",
+  "extractedText": "चाय\n\"T for Teaaholic\"",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5604064,
+    "lng": 73.779345
+  },
+  "createdAt": "2025-12-22T16:26:54.597Z"
+}

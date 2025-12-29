@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.App {
+  text-align: center;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.App-header {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Responsive design */
+@media (min-width: 600px) {
+  .App-header {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .App-header {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .App-header {
+    max-width: 1024px;
+  }
+}

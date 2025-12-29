@@ -1,0 +1,31 @@
+{
+  "id": "vendor-1766506297687-k6gzgkb7d",
+  "heading": "Pottery Vendor",
+  "description": "This vendor specializes in handcrafted clay pottery, offering a variety of traditional and decorative pieces. Their collection features unique designs and sizes, suitable for both functional use and decor.",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "Clay Pottery",
+      "Handcrafted Pots",
+      "Decorative Pottery",
+      "Traditional Pottery",
+      "Functional Pottery",
+      "Ceramic Vessels",
+      "Earthenware"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Handcrafted",
+      "Traditional designs",
+      "Decorative pieces",
+      "Functional items"
+    ]
+  },
+  "location": {
+    "lat": 18.5604049,
+    "lng": 73.7793138
+  },
+  "createdAt": "2025-12-23T16:11:37.687Z"
+}

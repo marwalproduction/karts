@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766420045945-c8y1kzsqh",
+  "heading": "Vegetable Market Stall",
+  "description": "This vibrant vendor specializes in fresh, locally sourced vegetables, offering a colorful array of produce from cucumbers to leafy greens. The stall features a wide variety of seasonal vegetables, appealing to health-conscious customers and cooking enthusiasts alike.",
+  "extractedText": "{\n  \"heading\": \"Vegetable Market Stall\",\n  \"description\": \"This vibrant vendor specializes in fresh, locally sourced vegetables, offering a colorful array of produce from cucumbers to leafy greens. The stall features a wide variety of seasonal vegetables, appealing to health-conscious customers and cooking enthusiasts alike.\",\n  \"extractedText\": null,\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": []\n  }\n}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.5604064,
+    "lng": 73.779345
+  },
+  "createdAt": "2025-12-22T16:14:05.946Z"
+}

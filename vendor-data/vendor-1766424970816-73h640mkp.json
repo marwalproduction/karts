@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1766424970816-73h640mkp",
+  "heading": "Vendor",
+  "description": "A vendor or business",
+  "extractedText": "{\n  \"heading\": null,\n  \"description\": null,\n  \"extractedText\": null,\n  \"extraInfo\": {\n    \"items\": [],\n    \"prices\": [],\n    \"hours\": null,\n    \"contact\": null,\n    \"features\": []\n  }\n}",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.9066601,
+    "lng": 75.895894
+  },
+  "createdAt": "2025-12-22T17:36:10.817Z"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "vendor-1766421671664-suh9jcjfv",
+  "heading": "Footwear Repair Stall",
+  "description": "This vendor offers shoe repair services, specializing in mending and refurbishing various types of footwear. The stall features a mix of tools and supplies necessary for shoe maintenance, providing a practical service to the local community.",
+  "extractedText": "I WAS\nBORN TO\nBE\nPERFECT\nDON'T\nJUDGE",
+  "extraInfo": {
+    "items": [
+      "Shoes",
+      "Boots",
+      "Sandals",
+      "Shoe repair tools"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Outdoor setup",
+      "Repair services"
+    ]
+  },
+  "location": {
+    "lat": 18.5604229,
+    "lng": 73.7793411
+  },
+  "createdAt": "2025-12-22T16:41:11.665Z"
+}
