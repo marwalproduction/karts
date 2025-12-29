@@ -87,7 +87,12 @@ function VendorCard({ vendor, formatDate }) {
             color: '#666',
             fontSize: '14px',
             lineHeight: '1.5',
-            paddingRight: '40px'
+            paddingRight: '40px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}>
             {vendor.description}
           </p>
