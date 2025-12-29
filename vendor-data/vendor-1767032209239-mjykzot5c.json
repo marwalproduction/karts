@@ -1,0 +1,27 @@
+{
+  "id": "vendor-1767032209239-mjykzot5c",
+  "heading": "Pharmacy",
+  "description": "This pharmacy offers a wide range of health and wellness products, including over-the-counter medications and personal care items. Customers can find various treatments and supplements for everyday ailments.",
+  "extractedText": "ENO\nPain\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+  "extraInfo": {
+    "items": [
+      "Pain relievers",
+      "Vitamins",
+      "Cough syrups",
+      "Antiseptics",
+      "Herbal supplements"
+    ],
+    "prices": [],
+    "hours": "",
+    "contact": "",
+    "features": [
+      "Wide selection of medications",
+      "Personal care products"
+    ]
+  },
+  "location": {
+    "lat": 18.560333250348794,
+    "lng": 73.77938844292116
+  },
+  "createdAt": "2025-12-29T18:16:49.240Z"
+}
