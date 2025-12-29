@@ -68,9 +68,18 @@ module.exports = async function handler(req, res) {
       message: 'Image uploaded successfully. Processing in background...'
     });
 
+    // Log that image was received
+    console.log('Image received:', {
+      size: imageBuffer.length,
+      lat: lat,
+      lng: lng,
+      timestamp: new Date().toISOString()
+    });
+
     // Process in background (don't await - let it run async)
     processImageWithPuter(imageBuffer, lat, lng).catch(err => {
       console.error('Background processing error:', err);
+      console.error('Error stack:', err.stack);
     });
 
   } catch (error) {
@@ -160,7 +169,15 @@ async function processImageWithPuter(imageBuffer, lat, lng) {
     }
 
     // Save vendor to GitHub
-    await saveVendor({
+    console.log('Saving vendor to GitHub:', {
+      heading: analyzeData.heading,
+      hasDescription: !!analyzeData.description,
+      itemsCount: analyzeData.extraInfo?.items?.length || 0,
+      lat: lat,
+      lng: lng
+    });
+    
+    const vendor = await saveVendor({
       heading: analyzeData.heading,
       description: analyzeData.description,
       extractedText: analyzeData.extractedText,
@@ -169,7 +186,7 @@ async function processImageWithPuter(imageBuffer, lat, lng) {
       lng: lng
     });
 
-    console.log('Vendor processed and saved successfully');
+    console.log('Vendor processed and saved successfully:', vendor.id);
 
   } catch (error) {
     console.error('Error processing image:', error);
@@ -239,11 +256,17 @@ CRITICAL: Always provide items array with at least 3-5 specific items. Return ON
 
 // Basic inference fallback (when no AI API available)
 async function processWithBasicInference(imageBuffer) {
+  console.log('Using basic inference (no OpenAI API key available)');
+  console.log('Image size:', imageBuffer.length, 'bytes');
+  
   // For testing: return a basic vendor structure
-  // In production, you could use Tesseract OCR here
+  // NOTE: Without OpenAI API, we can't analyze the image properly
+  // This will create a generic vendor entry
+  // To get proper AI analysis, add OPENAI_API_KEY to Vercel environment variables
+  
   return {
     heading: 'Vendor',
-    description: 'A local vendor offering various products and services.',
+    description: 'A local vendor offering various products and services. (Note: Image analysis requires OpenAI API key for proper detection)',
     extractedText: '',
     extraInfo: {
       items: ['Products', 'Services', 'Items'],
