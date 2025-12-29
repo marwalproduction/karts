@@ -218,7 +218,14 @@ function App() {
           fetchNearbyVendors(location.lat, location.lng);
         },
         (err) => {
-          console.error('Geolocation error:', err);
+          // Silently handle geolocation errors - don't spam console
+          // Location is optional for browsing
+          console.warn('Location not available for nearby vendors:', err.message);
+        },
+        {
+          timeout: 10000,
+          enableHighAccuracy: false,
+          maximumAge: 300000 // 5 minutes cache
         }
       );
     }
@@ -275,48 +282,63 @@ function App() {
     setPreview(URL.createObjectURL(file));
 
     try {
-      // Get location first
-      if (!navigator.geolocation) {
-        setError('Geolocation is not supported by your browser');
-        setLoading(false);
-        setLoadingProgress('');
-        return;
+      // Try to get location, but make it optional
+      let location = null;
+      
+      if (navigator.geolocation) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            const geoTimeout = setTimeout(() => {
+              reject(new Error('Location request timed out'));
+            }, 8000); // Reduced timeout to 8 seconds
+            
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                clearTimeout(geoTimeout);
+                resolve(pos);
+              },
+              (err) => {
+                clearTimeout(geoTimeout);
+                // Don't reject - just log and continue without location
+                console.warn('Geolocation error (non-blocking):', err.message);
+                reject(err);
+              },
+              {
+                timeout: 8000,
+                enableHighAccuracy: false,
+                maximumAge: 300000 // 5 minutes cache
+              }
+            );
+          });
+
+          location = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+        } catch (geoError) {
+          // Location failed, but continue without it
+          console.warn('Could not get location, continuing without it:', geoError.message);
+          // Use a default location (center of a common area) or null
+          // For now, we'll use null and backend will handle it
+        }
+      } else {
+        console.warn('Geolocation not supported by browser');
       }
 
-      const position = await new Promise((resolve, reject) => {
-        const geoTimeout = setTimeout(() => {
-          reject(new Error('Location request timed out'));
-        }, 10000);
-        
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            clearTimeout(geoTimeout);
-            resolve(pos);
-          },
-          (err) => {
-            clearTimeout(geoTimeout);
-            reject(err);
-          },
-          {
-            timeout: 10000,
-            enableHighAccuracy: false,
-            maximumAge: 60000
-          }
-        );
-      });
-
-      const location = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-
-      // Upload image and location to backend
+      // Upload image and location to backend (location can be null)
       setLoadingProgress('Uploading image...');
       
       const formData = new FormData();
       formData.append('image', file);
-      formData.append('lat', location.lat.toString());
-      formData.append('lng', location.lng.toString());
+      if (location) {
+        formData.append('lat', location.lat.toString());
+        formData.append('lng', location.lng.toString());
+      } else {
+        // Use default location if not available (optional - backend can handle null)
+        // For testing, you can use a default location
+        formData.append('lat', '0');
+        formData.append('lng', '0');
+      }
 
       const response = await fetch(`${apiUrl}/api/upload-image`, {
         method: 'POST',
@@ -329,7 +351,10 @@ function App() {
       }
 
       const data = await response.json();
-      setServerMsg(data.message || 'Image uploaded! Processing in background. Vendor will appear shortly.');
+      const message = location 
+        ? data.message || 'Image uploaded! Processing in background. Vendor will appear shortly.'
+        : 'Image uploaded! Processing in background. (Location not available - vendor will be saved without location)';
+      setServerMsg(message);
       setLoading(false);
       setLoadingProgress('');
       
@@ -341,9 +366,38 @@ function App() {
       }, 5000);
 
     } catch (err) {
-      setError(err.message || 'Failed to upload image');
-      setLoading(false);
-      setLoadingProgress('');
+      // Only show error if it's not a geolocation error
+      if (!err.message.includes('Location') && !err.message.includes('Geolocation')) {
+        setError(err.message || 'Failed to upload image');
+      } else {
+        // For location errors, just continue with upload
+        setLoadingProgress('Uploading without location...');
+        // Retry upload without location
+        try {
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('lat', '0');
+          formData.append('lng', '0');
+          
+          const response = await fetch(`${apiUrl}/api/upload-image`, {
+            method: 'POST',
+            body: formData,
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            setServerMsg(data.message || 'Image uploaded! (Location not available)');
+            setLoading(false);
+            setLoadingProgress('');
+          } else {
+            throw new Error('Upload failed');
+          }
+        } catch (retryErr) {
+          setError('Failed to upload image. Please try again.');
+          setLoading(false);
+          setLoadingProgress('');
+        }
+      }
     }
 
     // Reset file input

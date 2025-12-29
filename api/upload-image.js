@@ -50,8 +50,16 @@ module.exports = async function handler(req, res) {
       req.pipe(busboy);
     });
 
-    if (!imageBuffer || lat === null || lng === null) {
-      return res.status(400).json({ error: 'image, lat, and lng are required' });
+    if (!imageBuffer) {
+      return res.status(400).json({ error: 'image is required' });
+    }
+
+    // Location is optional - use default if not provided
+    if (lat === null || lng === null || lat === 0 || lng === 0) {
+      // Use a default location (you can change this to a common area)
+      lat = lat || 0;
+      lng = lng || 0;
+      console.log('No location provided, using default:', lat, lng);
     }
 
     // Return immediately - processing happens in background
