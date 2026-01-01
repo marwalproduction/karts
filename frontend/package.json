@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/camera": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
     "cra-template-pwa": "2.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
@@ -12,9 +16,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:open": "npx cap open android",
+    "cap:run": "npm run cap:sync && npx cap open android",
+    "android:dev": "npm run build && npx cap sync android && npx cap open android"
   },
   "eslintConfig": {
     "extends": [

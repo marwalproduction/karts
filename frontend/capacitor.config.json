@@ -1,0 +1,29 @@
+{
+  "appId": "com.marwalproduction.karts",
+  "appName": "Karts",
+  "webDir": "build",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost",
+    "cleartext": true
+  },
+  "android": {
+    "minVersion": 22,
+    "targetSdkVersion": 33,
+    "allowMixedContent": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#000000"
+    },
+    "Camera": {
+      "permissions": {
+        "camera": "This app needs camera access to take photos of vendors.",
+        "photos": "This app needs photo library access to select images."
+      }
+    }
+  }
+}
+

@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Camera, CameraSource, CameraDirection } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 import './App.css';
 
 // Puter.ai removed - using backend processing now
@@ -282,7 +284,8 @@ function App() {
   };
 
   // Puter.ai removed - using backend processing now
-  const apiUrl = process.env.REACT_APP_API_URL || '';
+  // API URL - use environment variable or default to Vercel deployment
+  const apiUrl = process.env.REACT_APP_API_URL || 'https://karts-tau.vercel.app';
 
   // Fetch pending images for admin
   const fetchPendingImages = async () => {
@@ -411,9 +414,9 @@ function App() {
           }
         },
         {
-          timeout: 8000,
+          timeout: 5000, // 5 seconds - faster
           enableHighAccuracy: false,
-          maximumAge: 300000 // 5 minutes cache
+          maximumAge: 600000 // 10 minutes cache - use cached location longer
         }
       );
     }
@@ -454,77 +457,90 @@ function App() {
     }
   };
 
-  const handleCaptureAndSend = () => {
-    fileInputRef.current?.click();
-  };
+  // Check if running on native platform (Android/iOS)
+  const isNativePlatform = Capacitor.isNativePlatform();
 
-  // Helper function to get location with retry
-  const getLocationWithRetry = async (useHighAccuracy = false) => {
-    return new Promise((resolve, reject) => {
-      const geoTimeout = setTimeout(() => {
-        reject(new Error('Location request timed out. Please check your location settings and try again.'));
-      }, 20000); // 20 seconds timeout
-      
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          clearTimeout(geoTimeout);
-          const location = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          };
-          
-          // Validate location
-          if (!location.lat || !location.lng || 
-              isNaN(location.lat) || isNaN(location.lng) ||
-              location.lat === 0 || location.lng === 0 ||
-              Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) {
-            reject(new Error('Invalid location received. Please try again.'));
-            return;
+  const handleCaptureAndSend = async () => {
+    // Always try to use native camera if Capacitor is available
+    // Check if we're in a native environment
+    const platform = Capacitor.getPlatform();
+    const isNative = platform === 'android' || platform === 'ios';
+    
+    console.log('Platform detected:', platform, 'isNative:', isNative);
+    
+    if (isNative) {
+      try {
+        setLoading(true);
+        setError(null);
+        setLoadingProgress('Opening camera...');
+
+        // Check camera permissions first
+        try {
+          const cameraPermission = await Camera.checkPermissions();
+          console.log('Camera permission status:', cameraPermission);
+          if (cameraPermission.camera !== 'granted') {
+            setLoadingProgress('Requesting camera permission...');
+            const permissionResult = await Camera.requestPermissions({ permissions: ['camera'] });
+            console.log('Permission request result:', permissionResult);
+            if (permissionResult.camera !== 'granted') {
+              throw new Error('Camera permission is required to take photos');
+            }
           }
-          
-          console.log('Location captured:', location);
-          resolve(location);
-        },
-        (err) => {
-          clearTimeout(geoTimeout);
-          let errorMessage = 'Failed to get location. ';
-          
-          switch (err.code) {
-            case 1: // PERMISSION_DENIED
-              errorMessage += 'Please allow location access in your browser settings and try again.';
-              localStorage.setItem('locationDenied', 'true');
-              break;
-            case 2: // POSITION_UNAVAILABLE
-              errorMessage += 'Location information is unavailable. Please check your device location settings.';
-              break;
-            case 3: // TIMEOUT
-              errorMessage += 'Location request timed out. Please try again.';
-              break;
-            default:
-              errorMessage += 'Please enable location services and try again.';
-          }
-          
-          reject(new Error(errorMessage));
-        },
-        {
-          timeout: 20000, // 20 seconds
-          enableHighAccuracy: useHighAccuracy,
-          maximumAge: 60000 // 1 minute cache - use recent cached location if available
+        } catch (permError) {
+          console.log('Permission check error (may not be available):', permError);
+          // Continue anyway - some versions don't have checkPermissions
         }
-      );
-    });
+
+        console.log('Opening camera with CameraSource.Camera...');
+        // Request camera permission and take photo - FORCE CAMERA ONLY (no gallery option)
+        // Use string literal for source to ensure compatibility
+        const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: 'base64',
+          source: 'CAMERA', // Use string literal - CameraSource.Camera might not work on all versions
+          direction: 'REAR' // Use string literal for direction
+        });
+        
+        console.log('Image captured successfully');
+
+        if (!image.base64String) {
+          throw new Error('Failed to capture image');
+        }
+
+        // Convert base64 to File object
+        const byteCharacters = atob(image.base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: `image/${image.format || 'jpeg'}` });
+        const file = new File([blob], `photo.${image.format || 'jpg'}`, { type: `image/${image.format || 'jpeg'}` });
+
+        // Create preview URL
+        setPreview(`data:image/${image.format || 'jpeg'};base64,${image.base64String}`);
+
+        // Process the captured image
+        await processCapturedImage(file);
+
+      } catch (err) {
+        console.error('Camera error:', err);
+        setError(err.message || 'Failed to open camera. Please check camera permissions.');
+        setLoading(false);
+        setLoadingProgress('');
+      }
+    } else {
+      // Use file input for web browsers
+      fileInputRef.current?.click();
+    }
   };
 
-  const handleImageCapture = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setLoading(true);
-    setError(null);
+  // Process captured image (extracted from handleImageCapture)
+  const processCapturedImage = async (file) => {
     setVendorData(null);
     setServerMsg(null);
     setLoadingProgress('Getting location...');
-    setPreview(URL.createObjectURL(file));
 
     try {
       // Location is REQUIRED - check if geolocation is available
@@ -540,28 +556,22 @@ function App() {
 
       let location = null;
       
-      // First, try to use existing userLocation if available and recent
+      // OPTIMIZED: Use cached location more aggressively
+      // First, try to use existing userLocation if available (no age check - use it!)
       if (userLocation && userLocation.lat && userLocation.lng) {
-        console.log('Using existing user location:', userLocation);
+        console.log('Using cached user location (fast):', userLocation);
         location = userLocation;
+        setLoadingProgress('Using cached location...');
       } else {
-        // Get location with retry logic
+        // Get location - FAST MODE: low accuracy only, no retry
         try {
-          setLoadingProgress('Requesting location permission...');
+          setLoadingProgress('Getting location...');
           
-          // First try with low accuracy (faster, more reliable)
-          try {
-            location = await getLocationWithRetry(false);
-            console.log('Location captured with low accuracy:', location);
-          } catch (lowAccError) {
-            // If low accuracy fails, try high accuracy
-            console.log('Low accuracy failed, trying high accuracy...');
-            setLoadingProgress('Getting precise location...');
-            location = await getLocationWithRetry(true);
-            console.log('Location captured with high accuracy:', location);
-          }
+          // Only try low accuracy (fastest) - no high accuracy fallback to save time
+          location = await getLocationWithRetry(false);
+          console.log('Location captured:', location);
           
-          // Update userLocation state for future use
+          // Update userLocation state for future use (cache it)
           if (location) {
             setUserLocation(location);
           }
@@ -622,6 +632,78 @@ function App() {
       setLoading(false);
       setLoadingProgress('');
     }
+  };
+
+  // Helper function to get location - OPTIMIZED FOR SPEED
+  const getLocationWithRetry = async (useHighAccuracy = false) => {
+    return new Promise((resolve, reject) => {
+      // Reduced timeout to 5 seconds for faster failure
+      const geoTimeout = setTimeout(() => {
+        reject(new Error('Location request timed out. Please check your location settings and try again.'));
+      }, 5000); // 5 seconds timeout - much faster
+      
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          clearTimeout(geoTimeout);
+          const location = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          };
+          
+          // Validate location
+          if (!location.lat || !location.lng || 
+              isNaN(location.lat) || isNaN(location.lng) ||
+              location.lat === 0 || location.lng === 0 ||
+              Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) {
+            reject(new Error('Invalid location received. Please try again.'));
+            return;
+          }
+          
+          console.log('Location captured:', location);
+          resolve(location);
+        },
+        (err) => {
+          clearTimeout(geoTimeout);
+          let errorMessage = 'Failed to get location. ';
+          
+          switch (err.code) {
+            case 1: // PERMISSION_DENIED
+              errorMessage += 'Please allow location access in your browser settings and try again.';
+              localStorage.setItem('locationDenied', 'true');
+              break;
+            case 2: // POSITION_UNAVAILABLE
+              errorMessage += 'Location information is unavailable. Please check your device location settings.';
+              break;
+            case 3: // TIMEOUT
+              errorMessage += 'Location request timed out. Please try again.';
+              break;
+            default:
+              errorMessage += 'Please enable location services and try again.';
+          }
+          
+          reject(new Error(errorMessage));
+        },
+        {
+          timeout: 5000, // 5 seconds - much faster
+          enableHighAccuracy: useHighAccuracy,
+          maximumAge: 600000 // 10 minutes cache - use cached location if available (much longer cache)
+        }
+      );
+    });
+  };
+
+  const handleImageCapture = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    setError(null);
+    setVendorData(null);
+    setServerMsg(null);
+    setPreview(URL.createObjectURL(file));
+
+    // Use the same processing function
+    await processCapturedImage(file);
 
     // Reset file input
     e.target.value = '';
@@ -1139,6 +1221,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                 capture="environment"
                 onChange={handleImageCapture}
                 style={{ display: 'none' }}
+                // Only used as fallback for web browsers
               />
               <div style={{ 
                 background: '#fff',
