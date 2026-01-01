@@ -308,17 +308,45 @@ function App() {
         body: JSON.stringify(vendorData)
       });
       
+      // Check if response has content before parsing
+      const contentType = response.headers.get('content-type');
+      const hasJsonContent = contentType && contentType.includes('application/json');
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to approve');
+        let errorMessage = 'Failed to approve vendor';
+        if (hasJsonContent) {
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.error || errorMessage;
+          } catch (parseError) {
+            // If JSON parsing fails, try to get text
+            const text = await response.text();
+            errorMessage = text || `Server error: ${response.status} ${response.statusText}`;
+          }
+        } else {
+          const text = await response.text();
+          errorMessage = text || `Server error: ${response.status} ${response.statusText}`;
+        }
+        throw new Error(errorMessage);
       }
       
-      const data = await response.json();
+      // Parse successful response
+      let data = {};
+      if (hasJsonContent) {
+        try {
+          data = await response.json();
+        } catch (parseError) {
+          console.error('Failed to parse response JSON:', parseError);
+          // If JSON parsing fails but status is OK, continue anyway
+        }
+      }
+      
       // Refresh list
       fetchPendingImages();
       setSelectedPending(null);
       alert('Vendor approved and created successfully!');
     } catch (err) {
+      console.error('Error approving vendor:', err);
       alert('Error approving vendor: ' + err.message);
     }
   };

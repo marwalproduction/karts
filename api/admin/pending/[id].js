@@ -56,29 +56,54 @@ module.exports = async function handler(req, res) {
         req.on('error', reject);
       });
       
-      const body = chunks.length > 0 ? JSON.parse(Buffer.concat(chunks).toString()) : {};
+      let body = {};
+      if (chunks.length > 0) {
+        try {
+          const bodyText = Buffer.concat(chunks).toString();
+          if (bodyText.trim()) {
+            body = JSON.parse(bodyText);
+          }
+        } catch (parseError) {
+          console.error('Error parsing request body:', parseError);
+          return res.status(400).json({ error: 'Invalid JSON in request body' });
+        }
+      }
+      
       const { heading, description, extractedText, extraInfo } = body;
 
       // Save as vendor
-      const vendor = await saveVendor({
-        heading: heading || 'Vendor',
-        description: description || '',
-        extractedText: extractedText || '',
-        extraInfo: extraInfo || {
-          items: [],
-          prices: [],
-          hours: null,
-          contact: null,
-          features: []
-        },
-        lat: pendingImage.location.lat,
-        lng: pendingImage.location.lng
-      });
+      let vendor;
+      try {
+        vendor = await saveVendor({
+          heading: heading || 'Vendor',
+          description: description || '',
+          extractedText: extractedText || '',
+          extraInfo: extraInfo || {
+            items: [],
+            prices: [],
+            hours: null,
+            contact: null,
+            features: []
+          },
+          lat: pendingImage.location.lat,
+          lng: pendingImage.location.lng
+        });
+      } catch (saveError) {
+        console.error('Error saving vendor:', saveError);
+        return res.status(500).json({ 
+          error: 'Failed to save vendor: ' + (saveError.message || 'Unknown error')
+        });
+      }
 
       // Delete pending image
-      await deletePendingImage(imageId);
+      try {
+        await deletePendingImage(imageId);
+      } catch (deleteError) {
+        console.error('Error deleting pending image:', deleteError);
+        // Continue even if delete fails - vendor is already created
+      }
 
-      res.json({ 
+      res.status(200).json({ 
         success: true, 
         message: 'Vendor approved and created',
         vendor 
