@@ -442,67 +442,88 @@ function App() {
     setPreview(URL.createObjectURL(file));
 
     try {
-      // Try to get location, but make it optional
-      let location = null;
-      
-      // Check if location was previously denied - skip request if so
-      const locationDenied = localStorage.getItem('locationDenied') === 'true';
-      
-      if (navigator.geolocation && !locationDenied) {
-        try {
-          // Use very short timeout to avoid triggering system errors
-          const position = await new Promise((resolve, reject) => {
-            const geoTimeout = setTimeout(() => {
-              reject(new Error('Location request timed out'));
-            }, 3000); // Very short timeout - 3 seconds
-            
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                clearTimeout(geoTimeout);
-                resolve(pos);
-              },
-              (err) => {
-                clearTimeout(geoTimeout);
-                // Mark as denied if permission denied to avoid future requests
-                if (err.code === 1) { // PERMISSION_DENIED
-                  localStorage.setItem('locationDenied', 'true');
-                }
-                reject(err);
-              },
-              {
-                timeout: 3000, // Very short timeout
-                enableHighAccuracy: false,
-                maximumAge: 600000 // 10 minutes cache - use cached if available
-              }
-            );
-          });
-
-          location = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          // Clear denied flag if successful
-          localStorage.removeItem('locationDenied');
-        } catch (geoError) {
-          // Location failed, but continue without it - silently
-          // Use default location (0,0) which backend will handle
-        }
+      // Location is REQUIRED - check if geolocation is available
+      if (!navigator.geolocation) {
+        setLoading(false);
+        setLoadingProgress('');
+        setError('Location services are not available on this device. Please enable location services to upload images.');
+        return;
       }
 
-      // Upload image and location to backend (location can be null)
+      // Clear any previous location denial flag to allow retry
+      localStorage.removeItem('locationDenied');
+
+      let location = null;
+      
+      // Get location with longer timeout and better error handling
+      try {
+        const position = await new Promise((resolve, reject) => {
+          const geoTimeout = setTimeout(() => {
+            reject(new Error('Location request timed out. Please check your location settings and try again.'));
+          }, 15000); // 15 seconds timeout - more reasonable
+          
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              clearTimeout(geoTimeout);
+              resolve(pos);
+            },
+            (err) => {
+              clearTimeout(geoTimeout);
+              let errorMessage = 'Failed to get location. ';
+              
+              switch (err.code) {
+                case 1: // PERMISSION_DENIED
+                  errorMessage += 'Please allow location access in your browser settings and try again.';
+                  localStorage.setItem('locationDenied', 'true');
+                  break;
+                case 2: // POSITION_UNAVAILABLE
+                  errorMessage += 'Location information is unavailable. Please check your device location settings.';
+                  break;
+                case 3: // TIMEOUT
+                  errorMessage += 'Location request timed out. Please try again.';
+                  break;
+                default:
+                  errorMessage += 'Please enable location services and try again.';
+              }
+              
+              reject(new Error(errorMessage));
+            },
+            {
+              timeout: 15000, // 15 seconds
+              enableHighAccuracy: true, // Try to get accurate location
+              maximumAge: 300000 // 5 minutes cache - use cached if available
+            }
+          );
+        });
+
+        location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        
+        // Clear denied flag if successful
+        localStorage.removeItem('locationDenied');
+        
+        // Validate location is not (0,0) or invalid
+        if (!location.lat || !location.lng || location.lat === 0 || location.lng === 0) {
+          throw new Error('Invalid location received. Please try again.');
+        }
+        
+      } catch (geoError) {
+        // Location is REQUIRED - don't continue without it
+        setLoading(false);
+        setLoadingProgress('');
+        setError(geoError.message || 'Location is required to upload images. Please enable location services and try again.');
+        return;
+      }
+
+      // Upload image and location to backend (location is now required)
       setLoadingProgress('Uploading image...');
       
       const formData = new FormData();
       formData.append('image', file);
-      if (location) {
-        formData.append('lat', location.lat.toString());
-        formData.append('lng', location.lng.toString());
-      } else {
-        // Use default location if not available (optional - backend can handle null)
-        // For testing, you can use a default location
-        formData.append('lat', '0');
-        formData.append('lng', '0');
-      }
+      formData.append('lat', location.lat.toString());
+      formData.append('lng', location.lng.toString());
 
       const response = await fetch(`${apiUrl}/api/upload-image`, {
         method: 'POST',
@@ -528,38 +549,10 @@ function App() {
       }, 5000);
 
     } catch (err) {
-      // Only show error if it's not a geolocation error
-      if (!err.message.includes('Location') && !err.message.includes('Geolocation')) {
-        setError(err.message || 'Failed to upload image');
-      } else {
-        // For location errors, just continue with upload
-        setLoadingProgress('Uploading without location...');
-        // Retry upload without location
-        try {
-          const formData = new FormData();
-          formData.append('image', file);
-          formData.append('lat', '0');
-          formData.append('lng', '0');
-          
-          const response = await fetch(`${apiUrl}/api/upload-image`, {
-            method: 'POST',
-            body: formData,
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            setServerMsg(data.message || 'Image uploaded! (Location not available)');
-            setLoading(false);
-            setLoadingProgress('');
-          } else {
-            throw new Error('Upload failed');
-          }
-        } catch (retryErr) {
-          setError('Failed to upload image. Please try again.');
-          setLoading(false);
-          setLoadingProgress('');
-        }
-      }
+      // Show all errors - location is required
+      setError(err.message || 'Failed to upload image');
+      setLoading(false);
+      setLoadingProgress('');
     }
 
     // Reset file input
@@ -1093,6 +1086,8 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                 </div>
                 <div style={{ fontSize: '14px', color: '#666', marginBottom: '24px' }}>
                   Capture a photo of a vendor or food cart
+                  <br />
+                  <span style={{ fontSize: '12px', color: '#999' }}>📍 Location is required</span>
                 </div>
                 <button 
                   onClick={handleCaptureAndSend} 
