@@ -325,7 +325,7 @@ function App() {
 
   // Reject/delete pending image
   const rejectPendingImage = async (imageId) => {
-    if (!confirm('Are you sure you want to delete this pending image?')) return;
+    if (!window.confirm('Are you sure you want to delete this pending image?')) return;
     
     try {
       const response = await fetch(`${apiUrl}/api/admin/pending/${imageId}`, {
