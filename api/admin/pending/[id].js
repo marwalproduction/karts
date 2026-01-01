@@ -11,26 +11,38 @@ module.exports = async function handler(req, res) {
   }
 
   // Extract image ID from URL
-  // In Vercel, the path might be in req.url or we need to parse it
+  // In Vercel, dynamic route params are available in req.query
   let imageId = null;
   
-  // Try to get from query parameter first
+  // Vercel puts dynamic route params in req.query
+  // For route /api/admin/pending/[id].js, the param is available as req.query.id
   if (req.query && req.query.id) {
     imageId = req.query.id;
   } else {
-    // Parse from URL path
-    const urlMatch = req.url.match(/\/pending\/([^\/\?]+)/);
+    // Fallback: parse from URL path
+    // URL format: /api/admin/pending/pending-xxx-xxx
+    const urlPath = req.url || '';
+    const urlMatch = urlPath.match(/\/pending\/([^\/\?]+)/);
     if (urlMatch) {
       imageId = urlMatch[1];
     } else {
-      // Fallback: get last part of URL
-      const urlParts = req.url.split('/').filter(p => p);
-      imageId = urlParts[urlParts.length - 1];
+      // Last resort: get last part of URL path
+      const urlParts = urlPath.split('/').filter(p => p);
+      if (urlParts.length > 0) {
+        imageId = urlParts[urlParts.length - 1];
+      }
     }
   }
   
+  console.log('Admin pending request:', {
+    method: req.method,
+    url: req.url,
+    query: req.query,
+    imageId: imageId
+  });
+  
   if (!imageId) {
-    return res.status(400).json({ error: 'Image ID is required' });
+    return res.status(400).json({ error: 'Image ID is required. URL: ' + (req.url || 'unknown') });
   }
 
   try {

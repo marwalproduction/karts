@@ -302,7 +302,7 @@ function App() {
   // Approve pending image and create vendor
   const approvePendingImage = async (imageId, vendorData) => {
     try {
-      const response = await fetch(`${apiUrl}/api/admin/pending/${imageId}`, {
+      const response = await fetch(`${apiUrl}/api/admin/pending?id=${encodeURIComponent(imageId)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(vendorData)
@@ -356,7 +356,7 @@ function App() {
     if (!window.confirm('Are you sure you want to delete this pending image?')) return;
     
     try {
-      const response = await fetch(`${apiUrl}/api/admin/pending/${imageId}`, {
+      const response = await fetch(`${apiUrl}/api/admin/pending?id=${encodeURIComponent(imageId)}`, {
         method: 'DELETE'
       });
       
