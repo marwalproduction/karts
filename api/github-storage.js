@@ -138,33 +138,88 @@ async function saveVendor(vendorData) {
       }
     }
 
-    // Create the vendor file
-    try {
-      await octokit.repos.createOrUpdateFileContents({
-        owner: OWNER,
-        repo: REPO,
-        path: filename,
-        message: `Add vendor: ${vendorId}`,
-        content: encodedContent,
-      });
-    } catch (error) {
-      console.error('GitHub API error details:', {
-        status: error.status,
-        message: error.message,
-        owner: OWNER,
-        repo: REPO,
-        path: filename
-      });
-      
-      if (error.status === 401) {
-        throw new Error('GitHub authentication failed. Please check your GITHUB_TOKEN.');
-      } else if (error.status === 403) {
-        throw new Error('GitHub access forbidden. Check token permissions and repository access.');
-      } else if (error.status === 404) {
-        throw new Error(`Repository not found: ${OWNER}/${REPO}. Check GITHUB_OWNER and GITHUB_REPO environment variables.`);
-      } else {
-        throw new Error(`GitHub API error: ${error.message || 'Unknown error'}`);
+    // Create or update the vendor file with retry logic for SHA conflicts
+    let retries = 3;
+    let lastError = null;
+    
+    while (retries > 0) {
+      try {
+        // First, try to get the file to see if it exists and get its SHA
+        let fileSha = null;
+        try {
+          const existingFile = await octokit.repos.getContent({
+            owner: OWNER,
+            repo: REPO,
+            path: filename,
+          });
+          
+          if (existingFile.data && existingFile.data.sha) {
+            fileSha = existingFile.data.sha;
+          }
+        } catch (getError) {
+          // File doesn't exist yet, that's fine - we'll create it
+          if (getError.status !== 404) {
+            throw getError;
+          }
+        }
+        
+        // Create or update the file
+        const updateParams = {
+          owner: OWNER,
+          repo: REPO,
+          path: filename,
+          message: fileSha ? `Update vendor: ${vendorId}` : `Add vendor: ${vendorId}`,
+          content: encodedContent,
+        };
+        
+        // Only include SHA if file exists (for updates)
+        if (fileSha) {
+          updateParams.sha = fileSha;
+        }
+        
+        await octokit.repos.createOrUpdateFileContents(updateParams);
+        
+        // Success - break out of retry loop
+        break;
+      } catch (error) {
+        lastError = error;
+        
+        // Check if it's a SHA mismatch error (409 conflict)
+        if (error.status === 409 || error.message.includes('but expected')) {
+          console.log(`SHA conflict detected, retrying... (${retries} retries left)`);
+          retries--;
+          
+          // Wait a bit before retrying (exponential backoff)
+          if (retries > 0) {
+            await new Promise(resolve => setTimeout(resolve, 500 * (4 - retries)));
+            continue;
+          }
+        }
+        
+        // For other errors, log and throw immediately
+        console.error('GitHub API error details:', {
+          status: error.status,
+          message: error.message,
+          owner: OWNER,
+          repo: REPO,
+          path: filename
+        });
+        
+        if (error.status === 401) {
+          throw new Error('GitHub authentication failed. Please check your GITHUB_TOKEN.');
+        } else if (error.status === 403) {
+          throw new Error('GitHub access forbidden. Check token permissions and repository access.');
+        } else if (error.status === 404) {
+          throw new Error(`Repository not found: ${OWNER}/${REPO}. Check GITHUB_OWNER and GITHUB_REPO environment variables.`);
+        } else {
+          throw new Error(`GitHub API error: ${error.message || 'Unknown error'}`);
+        }
       }
+    }
+    
+    // If we exhausted retries, throw the last error
+    if (retries === 0 && lastError) {
+      throw new Error(`GitHub API error: Failed after retries. ${lastError.message || 'Unknown error'}`);
     }
 
     return vendor;
