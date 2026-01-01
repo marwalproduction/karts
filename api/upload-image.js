@@ -54,12 +54,21 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'image is required' });
     }
 
-    // Location is optional - use default if not provided
-    if (lat === null || lng === null || lat === 0 || lng === 0) {
-      lat = lat || 0;
-      lng = lng || 0;
-      console.log('No location provided, using default:', lat, lng);
+    // Location is REQUIRED - validate it
+    if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) {
+      return res.status(400).json({ error: 'Location (lat and lng) is required' });
     }
+
+    // Validate location coordinates
+    if (lat === 0 && lng === 0) {
+      return res.status(400).json({ error: 'Invalid location. Please enable location services and try again.' });
+    }
+
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) {
+      return res.status(400).json({ error: 'Invalid location coordinates' });
+    }
+
+    console.log('Image upload received with location:', { lat, lng, imageSize: imageBuffer.length });
 
     // Save image and metadata to pending folder
     const timestamp = new Date().toISOString();

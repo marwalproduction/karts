@@ -430,6 +430,63 @@ function App() {
     fileInputRef.current?.click();
   };
 
+  // Helper function to get location with retry
+  const getLocationWithRetry = async (useHighAccuracy = false) => {
+    return new Promise((resolve, reject) => {
+      const geoTimeout = setTimeout(() => {
+        reject(new Error('Location request timed out. Please check your location settings and try again.'));
+      }, 20000); // 20 seconds timeout
+      
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          clearTimeout(geoTimeout);
+          const location = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          };
+          
+          // Validate location
+          if (!location.lat || !location.lng || 
+              isNaN(location.lat) || isNaN(location.lng) ||
+              location.lat === 0 || location.lng === 0 ||
+              Math.abs(location.lat) > 90 || Math.abs(location.lng) > 180) {
+            reject(new Error('Invalid location received. Please try again.'));
+            return;
+          }
+          
+          console.log('Location captured:', location);
+          resolve(location);
+        },
+        (err) => {
+          clearTimeout(geoTimeout);
+          let errorMessage = 'Failed to get location. ';
+          
+          switch (err.code) {
+            case 1: // PERMISSION_DENIED
+              errorMessage += 'Please allow location access in your browser settings and try again.';
+              localStorage.setItem('locationDenied', 'true');
+              break;
+            case 2: // POSITION_UNAVAILABLE
+              errorMessage += 'Location information is unavailable. Please check your device location settings.';
+              break;
+            case 3: // TIMEOUT
+              errorMessage += 'Location request timed out. Please try again.';
+              break;
+            default:
+              errorMessage += 'Please enable location services and try again.';
+          }
+          
+          reject(new Error(errorMessage));
+        },
+        {
+          timeout: 20000, // 20 seconds
+          enableHighAccuracy: useHighAccuracy,
+          maximumAge: 60000 // 1 minute cache - use recent cached location if available
+        }
+      );
+    });
+  };
+
   const handleImageCapture = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -455,70 +512,53 @@ function App() {
 
       let location = null;
       
-      // Get location with longer timeout and better error handling
-      try {
-        const position = await new Promise((resolve, reject) => {
-          const geoTimeout = setTimeout(() => {
-            reject(new Error('Location request timed out. Please check your location settings and try again.'));
-          }, 15000); // 15 seconds timeout - more reasonable
+      // First, try to use existing userLocation if available and recent
+      if (userLocation && userLocation.lat && userLocation.lng) {
+        console.log('Using existing user location:', userLocation);
+        location = userLocation;
+      } else {
+        // Get location with retry logic
+        try {
+          setLoadingProgress('Requesting location permission...');
           
-          navigator.geolocation.getCurrentPosition(
-            (pos) => {
-              clearTimeout(geoTimeout);
-              resolve(pos);
-            },
-            (err) => {
-              clearTimeout(geoTimeout);
-              let errorMessage = 'Failed to get location. ';
-              
-              switch (err.code) {
-                case 1: // PERMISSION_DENIED
-                  errorMessage += 'Please allow location access in your browser settings and try again.';
-                  localStorage.setItem('locationDenied', 'true');
-                  break;
-                case 2: // POSITION_UNAVAILABLE
-                  errorMessage += 'Location information is unavailable. Please check your device location settings.';
-                  break;
-                case 3: // TIMEOUT
-                  errorMessage += 'Location request timed out. Please try again.';
-                  break;
-                default:
-                  errorMessage += 'Please enable location services and try again.';
-              }
-              
-              reject(new Error(errorMessage));
-            },
-            {
-              timeout: 15000, // 15 seconds
-              enableHighAccuracy: true, // Try to get accurate location
-              maximumAge: 300000 // 5 minutes cache - use cached if available
-            }
-          );
-        });
-
-        location = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        
-        // Clear denied flag if successful
-        localStorage.removeItem('locationDenied');
-        
-        // Validate location is not (0,0) or invalid
-        if (!location.lat || !location.lng || location.lat === 0 || location.lng === 0) {
-          throw new Error('Invalid location received. Please try again.');
+          // First try with low accuracy (faster, more reliable)
+          try {
+            location = await getLocationWithRetry(false);
+            console.log('Location captured with low accuracy:', location);
+          } catch (lowAccError) {
+            // If low accuracy fails, try high accuracy
+            console.log('Low accuracy failed, trying high accuracy...');
+            setLoadingProgress('Getting precise location...');
+            location = await getLocationWithRetry(true);
+            console.log('Location captured with high accuracy:', location);
+          }
+          
+          // Update userLocation state for future use
+          if (location) {
+            setUserLocation(location);
+          }
+          
+        } catch (geoError) {
+          // Location is REQUIRED - don't continue without it
+          console.error('Location error:', geoError);
+          setLoading(false);
+          setLoadingProgress('');
+          setError(geoError.message || 'Location is required to upload images. Please enable location services and try again.');
+          return;
         }
-        
-      } catch (geoError) {
-        // Location is REQUIRED - don't continue without it
-        setLoading(false);
-        setLoadingProgress('');
-        setError(geoError.message || 'Location is required to upload images. Please enable location services and try again.');
-        return;
       }
 
       // Upload image and location to backend (location is now required)
-      setLoadingProgress('Uploading image...');
+      setLoadingProgress('Uploading image with location...');
+      
+      // Validate location one more time before upload
+      if (!location || !location.lat || !location.lng || 
+          isNaN(location.lat) || isNaN(location.lng) ||
+          location.lat === 0 || location.lng === 0) {
+        throw new Error('Invalid location. Please try again.');
+      }
+      
+      console.log('Uploading with location:', location);
       
       const formData = new FormData();
       formData.append('image', file);
@@ -1424,3 +1464,4 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
 }
 
 export default App;
+
