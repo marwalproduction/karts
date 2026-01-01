@@ -3,6 +3,80 @@ import './App.css';
 
 // Puter.ai removed - using backend processing now
 
+// Vendor Form Component for admin to enter vendor details
+function VendorForm({ pending, onApprove, onCancel }) {
+  const [heading, setHeading] = useState('');
+  const [description, setDescription] = useState('');
+  const [items, setItems] = useState('');
+  const [contact, setContact] = useState('');
+  const [hours, setHours] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onApprove({
+      heading: heading || 'Vendor',
+      description: description,
+      extractedText: '',
+      extraInfo: {
+        items: items.split(',').map(i => i.trim()).filter(i => i),
+        prices: [],
+        hours: hours || null,
+        contact: contact || null,
+        features: []
+      }
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ marginTop: '16px' }}>
+      <input
+        type="text"
+        placeholder="Vendor Name/Heading *"
+        value={heading}
+        onChange={(e) => setHeading(e.target.value)}
+        required
+        style={{ width: '100%', padding: '12px', marginBottom: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '15px', boxSizing: 'border-box' }}
+      />
+      <textarea
+        placeholder="Description (2-3 sentences)"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows="3"
+        style={{ width: '100%', padding: '12px', marginBottom: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '15px', boxSizing: 'border-box', fontFamily: 'inherit' }}
+      />
+      <input
+        type="text"
+        placeholder="Items (comma separated, e.g., Coffee, Tea, Pastries)"
+        value={items}
+        onChange={(e) => setItems(e.target.value)}
+        style={{ width: '100%', padding: '12px', marginBottom: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '15px', boxSizing: 'border-box' }}
+      />
+      <input
+        type="text"
+        placeholder="Contact (Phone number)"
+        value={contact}
+        onChange={(e) => setContact(e.target.value)}
+        style={{ width: '100%', padding: '12px', marginBottom: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '15px', boxSizing: 'border-box' }}
+      />
+      <input
+        type="text"
+        placeholder="Hours (e.g., Mon-Fri 9am-5pm)"
+        value={hours}
+        onChange={(e) => setHours(e.target.value)}
+        style={{ width: '100%', padding: '12px', marginBottom: '12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '15px', boxSizing: 'border-box' }}
+      />
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button type="submit" style={{ flex: 1, padding: '12px 20px', background: '#000', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '15px', fontWeight: '600' }}>
+          ✅ Approve & Create Vendor
+        </button>
+        <button type="button" onClick={onCancel} style={{ padding: '12px 20px', background: '#f5f5f5', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer', fontSize: '15px' }}>
+          Cancel
+        </button>
+      </div>
+    </form>
+  );
+}
+
 // Vendor Card Component for displaying structured vendor listings
 function VendorCard({ vendor, formatDate }) {
   const [isFavorited, setIsFavorited] = useState(false);
@@ -159,7 +233,7 @@ function VendorCard({ vendor, formatDate }) {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState('browse'); // 'add', 'browse', or 'favorites'
+  const [activeTab, setActiveTab] = useState('browse'); // 'add', 'browse', 'favorites', or 'admin'
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState('');
@@ -175,6 +249,11 @@ function App() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [nearbyLoading, setNearbyLoading] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  
+  // Admin state
+  const [pendingImages, setPendingImages] = useState([]);
+  const [selectedPending, setSelectedPending] = useState(null);
+  const [adminLoading, setAdminLoading] = useState(false);
   
   // Favorites state
   const [favoritedVendors, setFavoritedVendors] = useState(() => {
@@ -204,6 +283,74 @@ function App() {
 
   // Puter.ai removed - using backend processing now
   const apiUrl = process.env.REACT_APP_API_URL || '';
+
+  // Fetch pending images for admin
+  const fetchPendingImages = async () => {
+    setAdminLoading(true);
+    try {
+      const response = await fetch(`${apiUrl}/api/admin/pending`);
+      const data = await response.json();
+      setPendingImages(data.pendingImages || []);
+    } catch (err) {
+      console.error('Error fetching pending images:', err);
+      setPendingImages([]);
+    } finally {
+      setAdminLoading(false);
+    }
+  };
+
+  // Approve pending image and create vendor
+  const approvePendingImage = async (imageId, vendorData) => {
+    try {
+      const response = await fetch(`${apiUrl}/api/admin/pending/${imageId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(vendorData)
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to approve');
+      }
+      
+      const data = await response.json();
+      // Refresh list
+      fetchPendingImages();
+      setSelectedPending(null);
+      alert('Vendor approved and created successfully!');
+    } catch (err) {
+      alert('Error approving vendor: ' + err.message);
+    }
+  };
+
+  // Reject/delete pending image
+  const rejectPendingImage = async (imageId) => {
+    if (!confirm('Are you sure you want to delete this pending image?')) return;
+    
+    try {
+      const response = await fetch(`${apiUrl}/api/admin/pending/${imageId}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete');
+      }
+      
+      fetchPendingImages();
+      setSelectedPending(null);
+      alert('Pending image deleted');
+    } catch (err) {
+      alert('Error deleting: ' + err.message);
+    }
+  };
+
+  // Load pending images when admin tab is active
+  useEffect(() => {
+    if (activeTab === 'admin') {
+      fetchPendingImages();
+    }
+  }, [activeTab]);
 
   // Get user location on mount
   useEffect(() => {
@@ -368,9 +515,7 @@ function App() {
       }
 
       const data = await response.json();
-      const message = location 
-        ? data.message || 'Image uploaded! Processing in background. Vendor will appear shortly.'
-        : 'Image uploaded! Processing in background. (Location not available - vendor will be saved without location)';
+      const message = data.message || 'Image uploaded successfully! Waiting for admin approval.';
       setServerMsg(message);
       setLoading(false);
       setLoadingProgress('');
@@ -1109,6 +1254,116 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
             )}
           </div>
         )}
+
+        {/* Admin Tab */}
+        {activeTab === 'admin' && (
+          <div>
+            <h2 style={{ 
+              marginTop: 0, 
+              marginBottom: '24px',
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#000'
+            }}>
+              🔧 Admin Dashboard
+            </h2>
+            
+            {adminLoading ? (
+              <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>Loading pending images...</p>
+            ) : pendingImages.length === 0 ? (
+              <div style={{ 
+                textAlign: 'center', 
+                padding: '40px 20px',
+                color: '#666'
+              }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
+                <p style={{ fontSize: '16px', marginBottom: '8px' }}>No pending images</p>
+                <p style={{ fontSize: '14px', color: '#999' }}>Uploaded images will appear here for review</p>
+              </div>
+            ) : (
+              <div>
+                <p style={{ marginBottom: '20px', color: '#666', fontSize: '14px' }}>
+                  {pendingImages.length} pending image{pendingImages.length !== 1 ? 's' : ''} waiting for review
+                </p>
+                {pendingImages.map((pending) => (
+                  <div key={pending.id} style={{
+                    background: '#fff',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    marginBottom: '20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                  }}>
+                    <img 
+                      src={pending.imageUrl} 
+                      alt="Pending" 
+                      style={{ 
+                        width: '100%', 
+                        maxWidth: '400px', 
+                        borderRadius: '8px', 
+                        marginBottom: '16px',
+                        display: 'block'
+                      }}
+                    />
+                    <div style={{ marginBottom: '12px', fontSize: '14px', color: '#666' }}>
+                      <div style={{ marginBottom: '6px' }}>
+                        <strong>Uploaded:</strong> {new Date(pending.uploadedAt).toLocaleString()}
+                      </div>
+                      <div style={{ marginBottom: '6px' }}>
+                        <strong>Location:</strong> {pending.location.lat !== 0 && pending.location.lng !== 0 
+                          ? `${pending.location.lat.toFixed(6)}, ${pending.location.lng.toFixed(6)}`
+                          : 'Not available'}
+                      </div>
+                      <div>
+                        <strong>ID:</strong> {pending.id}
+                      </div>
+                    </div>
+                    
+                    {selectedPending?.id === pending.id ? (
+                      <VendorForm 
+                        pending={pending}
+                        onApprove={(data) => approvePendingImage(pending.id, data)}
+                        onCancel={() => setSelectedPending(null)}
+                      />
+                    ) : (
+                      <div style={{ display: 'flex', gap: '12px' }}>
+                        <button 
+                          onClick={() => setSelectedPending(pending)}
+                          style={{
+                            flex: 1,
+                            padding: '12px 20px',
+                            background: '#000',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '15px',
+                            fontWeight: '600'
+                          }}
+                        >
+                          ✏️ Process & Approve
+                        </button>
+                        <button 
+                          onClick={() => rejectPendingImage(pending.id)}
+                          style={{
+                            padding: '12px 20px',
+                            background: '#f5f5f5',
+                            color: '#666',
+                            border: '1px solid #ddd',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '15px'
+                          }}
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         </div>
 
         {/* Bottom Navigation */}
@@ -1127,7 +1382,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
           boxShadow: '0 -2px 10px rgba(0,0,0,0.05)',
           zIndex: 100
         }}>
-          <div style={{ display: 'flex', gap: '40px', maxWidth: '428px', width: '100%', justifyContent: 'space-around' }}>
+          <div style={{ display: 'flex', gap: '20px', maxWidth: '428px', width: '100%', justifyContent: 'space-around' }}>
             <div 
               style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}
               onClick={() => setActiveTab('browse')}
@@ -1158,6 +1413,13 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
             >
               <div style={{ fontSize: '20px', marginBottom: '4px' }}>➕</div>
               <div style={{ fontSize: '11px', color: activeTab === 'add' ? '#000' : '#999', fontWeight: activeTab === 'add' ? '600' : '400' }}>Add</div>
+            </div>
+            <div 
+              style={{ textAlign: 'center', cursor: 'pointer', flex: 1 }}
+              onClick={() => setActiveTab('admin')}
+            >
+              <div style={{ fontSize: '20px', marginBottom: '4px' }}>🔧</div>
+              <div style={{ fontSize: '11px', color: activeTab === 'admin' ? '#000' : '#999', fontWeight: activeTab === 'admin' ? '600' : '400' }}>Admin</div>
             </div>
           </div>
         </div>

@@ -7,7 +7,13 @@
       "maxDuration": 60
     },
     "api/upload-image.js": {
-      "maxDuration": 300
+      "maxDuration": 60
+    },
+    "api/admin/pending.js": {
+      "maxDuration": 30
+    },
+    "api/admin/pending/[id].js": {
+      "maxDuration": 60
     },
     "api/search.js": {
       "maxDuration": 10

@@ -16,6 +16,7 @@ function getOctokit() {
 const OWNER = process.env.GITHUB_OWNER || 'marwalproduction';
 const REPO = process.env.GITHUB_REPO || 'karts';
 const DATA_PATH = 'vendor-data'; // Directory in repo to store vendor files
+const PENDING_PATH = 'pending-images'; // Directory for pending images
 
 // Calculate distance between two coordinates (Haversine formula)
 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -218,10 +219,201 @@ async function getNearbyVendors(lat, lng, radius = 5000) {
     });
 }
 
+// Save pending image to GitHub
+async function savePendingImage({ imageBuffer, lat, lng, timestamp }) {
+  try {
+    const octokit = getOctokit();
+    const imageId = `pending-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Save image file
+    const imageBase64 = imageBuffer.toString('base64');
+    const imageFilename = `${PENDING_PATH}/${imageId}.jpg`;
+    
+    // Check if directory exists, create if not
+    try {
+      await octokit.repos.getContent({
+        owner: OWNER,
+        repo: REPO,
+        path: PENDING_PATH,
+      });
+    } catch (error) {
+      if (error.status === 404) {
+        try {
+          await octokit.repos.createOrUpdateFileContents({
+            owner: OWNER,
+            repo: REPO,
+            path: `${PENDING_PATH}/.gitkeep`,
+            message: 'Create pending images directory',
+            content: Buffer.from('').toString('base64'),
+          });
+        } catch (createError) {
+          console.error('Error creating pending directory:', createError);
+        }
+      } else {
+        throw error;
+      }
+    }
+
+    // Save image
+    await octokit.repos.createOrUpdateFileContents({
+      owner: OWNER,
+      repo: REPO,
+      path: imageFilename,
+      message: `Add pending image: ${imageId}`,
+      content: imageBase64,
+    });
+
+    // Save metadata JSON
+    const metadata = {
+      id: imageId,
+      imagePath: imageFilename,
+      location: {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
+      },
+      uploadedAt: timestamp || new Date().toISOString(),
+      status: 'pending'
+    };
+
+    const metadataFilename = `${PENDING_PATH}/${imageId}.json`;
+    const metadataContent = JSON.stringify(metadata, null, 2);
+    const encodedMetadata = Buffer.from(metadataContent).toString('base64');
+
+    await octokit.repos.createOrUpdateFileContents({
+      owner: OWNER,
+      repo: REPO,
+      path: metadataFilename,
+      message: `Add pending image metadata: ${imageId}`,
+      content: encodedMetadata,
+    });
+
+    return metadata;
+  } catch (error) {
+    console.error('Error saving pending image:', error);
+    throw error;
+  }
+}
+
+// Get all pending images
+async function getAllPendingImages() {
+  try {
+    const octokit = getOctokit();
+    let files = [];
+    
+    try {
+      const { data } = await octokit.repos.getContent({
+        owner: OWNER,
+        repo: REPO,
+        path: PENDING_PATH,
+      });
+      
+      if (Array.isArray(data)) {
+        files = data.filter(item => item.type === 'file' && item.name.endsWith('.json'));
+      }
+    } catch (error) {
+      if (error.status === 404) {
+        return [];
+      }
+      throw error;
+    }
+
+    const pendingImages = [];
+    for (const file of files) {
+      try {
+        const { data } = await octokit.repos.getContent({
+          owner: OWNER,
+          repo: REPO,
+          path: file.path,
+        });
+        
+        const content = Buffer.from(data.content, 'base64').toString('utf-8');
+        const metadata = JSON.parse(content);
+        
+        // Get image URL from GitHub
+        const imageUrl = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${metadata.imagePath}`;
+        metadata.imageUrl = imageUrl;
+        
+        pendingImages.push(metadata);
+      } catch (error) {
+        console.error(`Error reading file ${file.path}:`, error);
+      }
+    }
+
+    return pendingImages.sort((a, b) => 
+      new Date(b.uploadedAt) - new Date(a.uploadedAt)
+    );
+  } catch (error) {
+    console.error('Error fetching pending images:', error);
+    throw error;
+  }
+}
+
+// Get single pending image
+async function getPendingImage(imageId) {
+  const allPending = await getAllPendingImages();
+  return allPending.find(img => img.id === imageId);
+}
+
+// Delete pending image
+async function deletePendingImage(imageId) {
+  try {
+    const octokit = getOctokit();
+    const metadata = await getPendingImage(imageId);
+    
+    if (!metadata) {
+      throw new Error('Pending image not found');
+    }
+
+    // Delete image file
+    try {
+      const imageData = await octokit.repos.getContent({
+        owner: OWNER,
+        repo: REPO,
+        path: metadata.imagePath,
+      });
+      
+      await octokit.repos.deleteFile({
+        owner: OWNER,
+        repo: REPO,
+        path: metadata.imagePath,
+        message: `Delete pending image: ${imageId}`,
+        sha: imageData.data.sha
+      });
+    } catch (err) {
+      console.warn('Error deleting image file:', err);
+    }
+
+    // Delete metadata file
+    const metadataPath = `${PENDING_PATH}/${imageId}.json`;
+    const metadataData = await octokit.repos.getContent({
+      owner: OWNER,
+      repo: REPO,
+      path: metadataPath,
+    });
+
+    await octokit.repos.deleteFile({
+      owner: OWNER,
+      repo: REPO,
+      path: metadataPath,
+      message: `Delete pending image metadata: ${imageId}`,
+      sha: metadataData.data.sha
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting pending image:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   saveVendor,
   searchVendors,
   getNearbyVendors,
-  getAllVendors
+  getAllVendors,
+  savePendingImage,
+  getAllPendingImages,
+  getPendingImage,
+  deletePendingImage
 };
 
