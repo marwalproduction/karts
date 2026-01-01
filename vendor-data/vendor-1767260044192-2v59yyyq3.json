@@ -1,0 +1,22 @@
+{
+  "id": "vendor-1767260044192-2v59yyyq3",
+  "heading": "test",
+  "description": "test dddddd",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "car",
+      "bus",
+      "jeep"
+    ],
+    "prices": [],
+    "hours": "8887877887",
+    "contact": "565656565",
+    "features": []
+  },
+  "location": {
+    "lat": 18.56061728161847,
+    "lng": 73.77925241223556
+  },
+  "createdAt": "2026-01-01T09:34:04.192Z"
+}
