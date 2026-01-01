@@ -1,0 +1,23 @@
+{
+  "id": "vendor-1767259727201-e2lnged27",
+  "heading": "test carpanter",
+  "description": "itssssss just test ",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "car",
+      "bus",
+      "jeep",
+      "truck"
+    ],
+    "prices": [],
+    "hours": "hhghghghg",
+    "contact": "1234567898",
+    "features": []
+  },
+  "location": {
+    "lat": 18.56061728161847,
+    "lng": 73.77925241223556
+  },
+  "createdAt": "2026-01-01T09:28:47.202Z"
+}
