@@ -25,16 +25,30 @@ async function getImageBuffer(imagePath) {
       path: imagePath,
     });
     
+    // Check if data.content exists
+    if (!data.content) {
+      throw new Error('GitHub API returned no content for image');
+    }
+    
     // GitHub API returns base64 encoded content
     // Remove any whitespace/newlines that GitHub might add
     const base64Content = data.content.replace(/\s/g, '');
     
+    if (!base64Content || base64Content.length === 0) {
+      throw new Error('Base64 content is empty after cleaning');
+    }
+    
     // Decode base64 to buffer
-    const imageBuffer = Buffer.from(base64Content, 'base64');
+    let imageBuffer;
+    try {
+      imageBuffer = Buffer.from(base64Content, 'base64');
+    } catch (decodeError) {
+      throw new Error(`Failed to decode base64: ${decodeError.message}`);
+    }
     
     // Validate buffer
     if (!imageBuffer || imageBuffer.length === 0) {
-      throw new Error('Image buffer is empty');
+      throw new Error('Image buffer is empty after decoding');
     }
     
     // Validate it's a valid image (check for common image file signatures)
@@ -45,9 +59,10 @@ async function getImageBuffer(imagePath) {
     
     if (!isValidImage && imageBuffer.length > 10) {
       console.warn(`Image ${imagePath} might be corrupted - invalid file signature. First bytes: ${imageBuffer.slice(0, 4).toString('hex')}`);
+      // Don't throw - still return the buffer, let the caller decide
     }
     
-    console.log(`Fetched image ${imagePath}: ${imageBuffer.length} bytes`);
+    console.log(`✓ Fetched image ${imagePath}: ${imageBuffer.length} bytes`);
     
     return imageBuffer;
   } catch (error) {
@@ -107,6 +122,10 @@ module.exports = async function handler(req, res) {
     csvRows.push('ID,Image Filename,Latitude,Longitude,Timestamp,Date,Time,Heading,Description,Items,Prices,Hours,Contact,Features');
     
     // CSV Data rows and add images to ZIP
+    console.log(`Processing ${pendingImages.length} pending images...`);
+    let successCount = 0;
+    let failCount = 0;
+    
     for (const image of pendingImages) {
       const timestamp = image.uploadedAt || image.timestamp || new Date().toISOString();
       const date = new Date(timestamp);
@@ -115,6 +134,8 @@ module.exports = async function handler(req, res) {
       
       // Get image buffer from GitHub
       const imagePath = image.imagePath || `pending-images/${image.id}.jpg`;
+      console.log(`Fetching image: ${imagePath} for ID: ${image.id}`);
+      
       const imageBuffer = await getImageBuffer(imagePath);
       
       // Determine image filename (preserve original extension if available)
@@ -129,9 +150,12 @@ module.exports = async function handler(req, res) {
       // Add image to ZIP only if buffer is valid
       if (imageBuffer && imageBuffer.length > 0) {
         archive.append(imageBuffer, { name: `images/${imageFilename}` });
-        console.log(`Added image ${imageFilename} to ZIP (${imageBuffer.length} bytes)`);
+        console.log(`✓ Added image ${imageFilename} to ZIP (${imageBuffer.length} bytes)`);
+        successCount++;
       } else {
-        console.warn(`Skipping image ${imagePath} - buffer is empty or invalid`);
+        console.error(`✗ Failed to fetch image ${imagePath} for ID ${image.id} - buffer is empty or invalid`);
+        failCount++;
+        // Still add to CSV but mark as missing
       }
       
       // Escape CSV values (handle commas and quotes)
@@ -165,6 +189,8 @@ module.exports = async function handler(req, res) {
     // Add CSV to ZIP
     const csvContent = csvRows.join('\n');
     archive.append(Buffer.from('\ufeff' + csvContent, 'utf-8'), { name: 'pending-images.csv' });
+    
+    console.log(`ZIP creation summary: ${successCount} images added, ${failCount} images failed out of ${pendingImages.length} total`);
     
     // Finalize the archive
     await archive.finalize();
