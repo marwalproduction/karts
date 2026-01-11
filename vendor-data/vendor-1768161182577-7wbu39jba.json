@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161182577-7wbu39jba",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Visakhapatnam. Quality services and products.",
+  "extractedText": "Books, Magazines, Comics, Notebooks, Pens",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.666605549926025,
+    "lng": 83.18675116521565
+  },
+  "createdAt": "2026-01-11T19:53:02.577Z"
+}
