@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160602286-v4lmjzybh",
+  "heading": "Shri Hotel",
+  "description": "Food & Beverages in Indore. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.748820050340225,
+    "lng": 75.86821180216822
+  },
+  "createdAt": "2026-01-11T19:43:22.286Z"
+}
