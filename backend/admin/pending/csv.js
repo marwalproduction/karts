@@ -38,11 +38,13 @@ async function getImageBuffer(imagePath) {
     }
     
     // Validate it's a valid image (check for common image file signatures)
-    const isValidImage = imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8 || // JPEG
-                         imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50 || // PNG
-                         imageBuffer[0] === 0x47 && imageBuffer[1] === 0x49;   // GIF
+    const isJPEG = imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8;
+    const isPNG = imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50 && imageBuffer[2] === 0x4E && imageBuffer[3] === 0x47;
+    const isGIF = imageBuffer[0] === 0x47 && imageBuffer[1] === 0x49 && imageBuffer[2] === 0x46;
+    const isValidImage = isJPEG || isPNG || isGIF;
+    
     if (!isValidImage && imageBuffer.length > 10) {
-      console.warn(`Image ${imagePath} might be corrupted - invalid file signature`);
+      console.warn(`Image ${imagePath} might be corrupted - invalid file signature. First bytes: ${imageBuffer.slice(0, 4).toString('hex')}`);
     }
     
     console.log(`Fetched image ${imagePath}: ${imageBuffer.length} bytes`);
