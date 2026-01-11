@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161128284-1fb188wmd",
+  "heading": "Super Store",
+  "description": "Retail & Shopping in Mumbai. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.111952364168225,
+    "lng": 72.89724448690323
+  },
+  "createdAt": "2026-01-11T19:52:08.284Z"
+}
