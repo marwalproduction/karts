@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160940170-6uxiyqkwp",
+  "heading": "Express Garage",
+  "description": "Automotive in Indore. Quality services and products.",
+  "extractedText": "Towing Service, Flat Tire, Jump Start, Lockout Service, Fuel Delivery, Roadside Assistance",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.721273201753043,
+    "lng": 75.84909770593625
+  },
+  "createdAt": "2026-01-11T19:49:00.170Z"
+}
