@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161107905-fe4wfq4ga",
+  "heading": "Super Boutique",
+  "description": "Retail & Shopping in Jaipur. Quality services and products.",
+  "extractedText": "Home Decor, Furniture, Kitchenware, Bedding, Curtains",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.923713471387067,
+    "lng": 75.75172268914591
+  },
+  "createdAt": "2026-01-11T19:51:47.905Z"
+}
