@@ -53,6 +53,11 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // Verify archiver is available
+    if (!archiver) {
+      throw new Error('archiver package is not available. Please ensure it is installed.');
+    }
+    
     const pendingImages = await getAllPendingImages();
     
     // Set headers for ZIP download
