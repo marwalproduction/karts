@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160745839-gopf1zu9j",
+  "heading": "City Dhaba",
+  "description": "Food & Beverages in Bhopal. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.251801465203005,
+    "lng": 77.38696232067598
+  },
+  "createdAt": "2026-01-11T19:45:45.839Z"
+}
