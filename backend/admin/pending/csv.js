@@ -58,10 +58,10 @@ async function getImageBuffer(imagePath) {
         console.log(`File too large (${data.size} bytes), fetching from download_url: ${data.download_url}`);
         // Fetch image from raw URL using node-fetch
         const urlResponse = await fetch(data.download_url);
-        if (!response.ok) {
-          throw new Error(`Failed to download image from URL: ${response.statusText}`);
+        if (!urlResponse.ok) {
+          throw new Error(`Failed to download image from URL: ${urlResponse.statusText} (${urlResponse.status})`);
         }
-        const imageBuffer = await response.buffer();
+        const imageBuffer = await urlResponse.buffer();
         console.log(`✓ Downloaded image from URL: ${imageBuffer.length} bytes`);
         return imageBuffer;
       }
