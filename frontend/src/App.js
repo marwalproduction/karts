@@ -1212,8 +1212,18 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
 
           {/* Add Vendor Tab */}
           {activeTab === 'add' && (
-            <div>
-              {/* Puter.ai removed - using backend processing now */}
+            <div style={{ 
+              minHeight: 'calc(100vh - 200px)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '40px 20px',
+              background: 'linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              {/* Hidden file input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -1221,102 +1231,221 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                 capture="environment"
                 onChange={handleImageCapture}
                 style={{ display: 'none' }}
-                // Only used as fallback for web browsers
               />
-              <div style={{ 
-                background: '#fff',
-                borderRadius: '16px',
-                padding: '40px 20px',
-                textAlign: 'center',
-                border: '2px dashed #e0e0e0',
-                marginBottom: '20px'
+              
+              {/* Illustration/Visual Section */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: '500px',
+                marginBottom: '40px',
+                textAlign: 'center'
               }}>
-                <div style={{ fontSize: '48px', marginBottom: '16px' }}>📷</div>
-                <div style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px', color: '#000' }}>
-                  Add a Vendor
-                </div>
-                <div style={{ fontSize: '14px', color: '#666', marginBottom: '24px' }}>
-                  Capture a photo of a vendor or food cart
-                  <br />
-                  <span style={{ fontSize: '12px', color: '#999' }}>📍 Location is required</span>
-                </div>
-                <button 
-                  onClick={handleCaptureAndSend} 
-                  disabled={loading} 
-                  style={{ 
-                    padding: '14px 32px', 
-                    fontSize: '15px',
-                    fontWeight: '600',
-                    background: loading ? '#f5f5f5' : '#000',
-                    color: loading ? '#999' : '#fff',
-                    border: 'none',
-                    borderRadius: '12px',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    width: '100%'
+                {/* Main illustration image */}
+                <img 
+                  src={`${process.env.PUBLIC_URL || ''}/upload-illustration.png`}
+                  alt="Capture a cart illustration"
+                  style={{
+                    width: '100%',
+                    maxWidth: '500px',
+                    height: 'auto',
+                    display: 'block',
+                    margin: '0 auto'
                   }}
-                >
-                  {loading ? (loadingProgress || 'Processing...') : 'Capture Photo'}
-                </button>
+                  onError={(e) => {
+                    // Fallback if image not found
+                    e.target.style.display = 'none';
+                  }}
+                />
               </div>
-            {preview && (
-              <div style={{ margin: '1em 0' }}>
-                <img src={preview} alt="preview" style={{ width: 220, borderRadius: 8 }} />
-              </div>
-            )}
-            {vendorData && (
-              <div style={{ marginTop: '1em', background: '#222', padding: '20px', borderRadius: 8, maxWidth: '90%', textAlign: 'left' }}>
-                <h3 style={{ marginTop: 0, color: '#4CAF50' }}>{vendorData.heading}</h3>
-                {vendorData.description && (
-                  <p style={{ color: '#ccc', margin: '10px 0' }}>{vendorData.description}</p>
-                )}
-                {vendorData.extractedText && (
-                  <div style={{ marginTop: '15px' }}>
-                    <b style={{ color: '#aaa' }}>Extracted Text:</b>
-                    <pre style={{ whiteSpace: 'pre-wrap', color: '#fff', marginTop: '5px' }}>{vendorData.extractedText}</pre>
+
+              {/* Capture Button - Using image as button */}
+              <button 
+                onClick={handleCaptureAndSend} 
+                disabled={loading} 
+                style={{ 
+                  position: 'relative',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  padding: 0,
+                  margin: '0 auto',
+                  display: 'block',
+                  opacity: loading ? 0.6 : 1,
+                  transition: 'all 0.3s ease',
+                  zIndex: 3
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.filter = 'brightness(1.1)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.filter = 'brightness(1)';
+                  }
+                }}
+              >
+                <img 
+                  src={`${process.env.PUBLIC_URL || ''}/capture-button.png`}
+                  alt="Capture Now"
+                  style={{
+                    width: '100%',
+                    maxWidth: '300px',
+                    height: 'auto',
+                    display: 'block'
+                  }}
+                  onError={(e) => {
+                    // Fallback to styled button if image not found
+                    e.target.style.display = 'none';
+                    const button = e.target.parentElement;
+                    button.innerHTML = `
+                      <div style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 12px;
+                        padding: 18px 40px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        background: ${loading ? '#94a3b8' : '#2563eb'};
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        min-width: 200px;
+                      ">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M2 8.5C2 7.67157 2.67157 7 3.5 7H5.43094C5.97758 7 6.49083 6.74057 6.81066 6.30026L7.68934 5.19974C8.00917 4.75943 8.52242 4.5 9.06906 4.5H14.9309C15.4776 4.5 15.9908 4.75943 16.3107 5.19974L17.1893 6.30026C17.5092 6.74057 18.0224 7 18.5691 7H20.5C21.3284 7 22 7.67157 22 8.5V17.5C22 18.3284 21.3284 19 20.5 19H3.5C2.67157 19 2 18.3284 2 17.5V8.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>${loading ? (loadingProgress || 'Processing...') : 'Capture Now'}</span>
+                      </div>
+                    `;
+                  }}
+                />
+              </button>
+
+              {/* Preview Section */}
+              {preview && (
+                <div style={{ 
+                  marginTop: '40px',
+                  textAlign: 'center',
+                  zIndex: 3
+                }}>
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '8px',
+                    background: '#fff',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                  }}>
+                    <img 
+                      src={preview} 
+                      alt="preview" 
+                      style={{ 
+                        width: '280px',
+                        maxWidth: '90vw',
+                        height: 'auto',
+                        borderRadius: '12px',
+                        display: 'block'
+                      }} 
+                    />
                   </div>
-                )}
-                {vendorData.extraInfo && (
-                  <div style={{ marginTop: '15px', fontSize: '0.9em' }}>
-                    {vendorData.extraInfo.items && vendorData.extraInfo.items.length > 0 && (
-                      <div style={{ marginTop: '10px' }}>
-                        <b style={{ color: '#aaa' }}>Items:</b>
-                        <ul style={{ color: '#fff', margin: '5px 0', paddingLeft: '20px' }}>
-                          {vendorData.extraInfo.items.map((item, i) => <li key={i}>{item}</li>)}
-                        </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Success Message - shown after upload */}
+          {activeTab === 'add' && vendorData && (
+            <div style={{ 
+              marginTop: '40px',
+              padding: '24px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: '16px',
+              maxWidth: '90%',
+              textAlign: 'left',
+              color: '#fff',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              zIndex: 3
+            }}>
+              <h3 style={{ marginTop: 0, color: '#fff', fontSize: '20px', fontWeight: '600' }}>{vendorData.heading}</h3>
+              {vendorData.description && (
+                <p style={{ color: 'rgba(255,255,255,0.9)', margin: '10px 0', fontSize: '15px', lineHeight: '1.5' }}>{vendorData.description}</p>
+              )}
+              {vendorData.extractedText && (
+                <div style={{ marginTop: '15px' }}>
+                  <b style={{ color: 'rgba(255,255,255,0.8)' }}>Extracted Text:</b>
+                  <pre style={{ whiteSpace: 'pre-wrap', color: 'rgba(255,255,255,0.9)', marginTop: '5px', fontSize: '13px' }}>{vendorData.extractedText}</pre>
+                </div>
+              )}
+              {vendorData.extraInfo && (
+                <div style={{ marginTop: '15px', fontSize: '14px' }}>
+                  {vendorData.extraInfo.items && vendorData.extraInfo.items.length > 0 && (
+                    <div style={{ marginTop: '10px' }}>
+                      <b style={{ color: 'rgba(255,255,255,0.8)' }}>Items:</b>
+                      <ul style={{ color: 'rgba(255,255,255,0.9)', margin: '5px 0', paddingLeft: '20px' }}>
+                        {vendorData.extraInfo.items.map((item, i) => <li key={i}>{item}</li>)}
+                      </ul>
+                    </div>
+                  )}
+                  {vendorData.extraInfo.prices && vendorData.extraInfo.prices.length > 0 && (
+                    <div style={{ marginTop: '10px', color: 'rgba(255,255,255,0.9)' }}>
+                      <b>Prices:</b> {vendorData.extraInfo.prices.join(', ')}
+                    </div>
+                  )}
+                  {vendorData.extraInfo.hours && (
+                    <div style={{ marginTop: '10px', color: 'rgba(255,255,255,0.9)' }}>
+                      <b>Hours:</b> {vendorData.extraInfo.hours}
+                    </div>
+                  )}
+                  {vendorData.extraInfo.contact && (
+                    <div style={{ marginTop: '10px', color: 'rgba(255,255,255,0.9)' }}>
+                      <b>Contact:</b> {vendorData.extraInfo.contact}
+                    </div>
+                  )}
+                  {vendorData.extraInfo.features && vendorData.extraInfo.features.length > 0 && (
+                    <div style={{ marginTop: '10px' }}>
+                      <b style={{ color: 'rgba(255,255,255,0.8)' }}>Features:</b>
+                      <div style={{ color: 'rgba(255,255,255,0.9)', marginTop: '5px' }}>
+                        {vendorData.extraInfo.features.join(' • ')}
                       </div>
-                    )}
-                    {vendorData.extraInfo.prices && vendorData.extraInfo.prices.length > 0 && (
-                      <div style={{ marginTop: '10px', color: '#4CAF50' }}>
-                        <b>Prices:</b> {vendorData.extraInfo.prices.join(', ')}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.hours && (
-                      <div style={{ marginTop: '10px', color: '#fff' }}>
-                        <b>Hours:</b> {vendorData.extraInfo.hours}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.contact && (
-                      <div style={{ marginTop: '10px', color: '#fff' }}>
-                        <b>Contact:</b> {vendorData.extraInfo.contact}
-                      </div>
-                    )}
-                    {vendorData.extraInfo.features && vendorData.extraInfo.features.length > 0 && (
-                      <div style={{ marginTop: '10px' }}>
-                        <b style={{ color: '#aaa' }}>Features:</b>
-                        <div style={{ color: '#4CAF50', marginTop: '5px' }}>
-                          {vendorData.extraInfo.features.join(' • ')}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {serverMsg && <div style={{ color: 'lightgreen', fontSize: '0.95em', marginTop: '15px' }}>{serverMsg}</div>}
-              </div>
-            )}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-          </div>
-        )}
+                    </div>
+                  )}
+                </div>
+              )}
+              {serverMsg && (
+                <div style={{ 
+                  color: 'rgba(255,255,255,0.9)', 
+                  fontSize: '15px', 
+                  marginTop: '15px', 
+                  fontWeight: '500',
+                  textAlign: 'center',
+                  padding: '12px',
+                  background: 'rgba(255,255,255,0.1)',
+                  borderRadius: '8px'
+                }}>
+                  {serverMsg}
+                </div>
+              )}
+              {error && (
+                <div style={{ 
+                  color: '#fff', 
+                  fontSize: '15px', 
+                  marginTop: '20px',
+                  padding: '12px',
+                  background: 'rgba(239, 68, 68, 0.2)',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  border: '1px solid rgba(239, 68, 68, 0.3)'
+                }}>
+                  {error}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Browse Tab */}
           {activeTab === 'browse' && (
@@ -1414,6 +1543,201 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
               🔧 Admin Dashboard
             </h2>
             
+            {/* CSV Export/Import Buttons - Always visible */}
+            <div style={{ 
+              display: 'flex', 
+              gap: '12px',
+              marginBottom: '24px',
+              flexWrap: 'wrap'
+            }}>
+              <button
+                onClick={async () => {
+                  try {
+                    setAdminLoading(true);
+                    const response = await fetch(`${apiUrl}/api/admin/pending/csv`);
+                    if (!response.ok) {
+                      throw new Error('Failed to export CSV');
+                    }
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `pending-images-${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    alert('CSV exported successfully! You can now process the images offline.');
+                  } catch (err) {
+                    console.error('Error exporting CSV:', err);
+                    alert('Error exporting CSV: ' + err.message);
+                  } finally {
+                    setAdminLoading(false);
+                  }
+                }}
+                disabled={adminLoading}
+                style={{
+                  flex: 1,
+                  minWidth: '150px',
+                  padding: '12px 20px',
+                  background: adminLoading ? '#ccc' : '#FF8A2A',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: adminLoading ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                📥 Export CSV
+              </button>
+              <input
+                type="file"
+                accept=".csv"
+                id="csv-upload-input"
+                style={{ display: 'none' }}
+                onChange={async (e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  
+                  try {
+                    setAdminLoading(true);
+                    const text = await file.text();
+                    
+                    // Parse CSV (handle quoted values with commas)
+                    const lines = text.split('\n').filter(line => line.trim());
+                    if (lines.length < 2) {
+                      throw new Error('CSV file must have at least a header and one data row');
+                    }
+                    
+                    // Helper function to parse CSV row (handles quoted values)
+                    const parseCSVRow = (row) => {
+                      const result = [];
+                      let current = '';
+                      let inQuotes = false;
+                      
+                      for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        if (char === '"') {
+                          if (inQuotes && row[i + 1] === '"') {
+                            current += '"';
+                            i++; // Skip next quote
+                          } else {
+                            inQuotes = !inQuotes;
+                          }
+                        } else if (char === ',' && !inQuotes) {
+                          result.push(current.trim());
+                          current = '';
+                        } else {
+                          current += char;
+                        }
+                      }
+                      result.push(current.trim()); // Add last column
+                      return result;
+                    };
+                    
+                    // Skip header row
+                    const dataRows = lines.slice(1);
+                    const vendors = [];
+                    
+                    for (const row of dataRows) {
+                      if (!row.trim()) continue;
+                      
+                      const columns = parseCSVRow(row);
+                      if (columns.length < 8) {
+                        console.warn('Skipping row with insufficient columns:', row);
+                        continue;
+                      }
+                      
+                      const [id, imageUrl, downloadUrl, lat, lng, timestamp, date, time, heading, description, items, prices, hours, contact, features] = columns;
+                      
+                      // Validate required fields
+                      if (!id || !lat || !lng || parseFloat(lat) === 0 || parseFloat(lng) === 0) {
+                        console.warn('Skipping row with invalid location:', row);
+                        continue;
+                      }
+                      
+                      // Parse vendor data from CSV
+                      // Expected format: ID, Image URL, Download URL, Latitude, Longitude, Timestamp, Date, Time, Heading, Description, Items, Prices, Hours, Contact, Features
+                      vendors.push({
+                        id: id.trim(),
+                        lat: parseFloat(lat),
+                        lng: parseFloat(lng),
+                        heading: (heading || '').trim() || 'Vendor',
+                        description: (description || '').trim(),
+                        extractedText: (description || '').trim(), // Use description as extracted text if available
+                        extraInfo: {
+                          items: (items || '').trim() ? items.split(/[,;]/).map(i => i.trim()).filter(i => i) : [],
+                          prices: (prices || '').trim() ? prices.split(/[,;]/).map(p => p.trim()).filter(p => p) : [],
+                          hours: (hours || '').trim() || null,
+                          contact: (contact || '').trim() || null,
+                          features: (features || '').trim() ? features.split(/[,;]/).map(f => f.trim()).filter(f => f) : []
+                        }
+                      });
+                    }
+                    
+                    if (vendors.length === 0) {
+                      throw new Error('No valid vendor data found in CSV');
+                    }
+                    
+                    // Upload via bulk upload endpoint
+                    const response = await fetch(`${apiUrl}/api/admin/pending/bulk-upload`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ vendors })
+                    });
+                    
+                    if (!response.ok) {
+                      const errorData = await response.json();
+                      throw new Error(errorData.error || 'Failed to upload CSV');
+                    }
+                    
+                    const result = await response.json();
+                    alert(`Successfully processed ${result.results.success.length} vendors! ${result.results.errors.length > 0 ? `${result.results.errors.length} errors occurred.` : ''}`);
+                    
+                    // Refresh pending images
+                    fetchPendingImages();
+                    
+                    // Reset file input
+                    e.target.value = '';
+                  } catch (err) {
+                    console.error('Error uploading CSV:', err);
+                    alert('Error uploading CSV: ' + err.message);
+                  } finally {
+                    setAdminLoading(false);
+                  }
+                }}
+              />
+              <button
+                onClick={() => {
+                  document.getElementById('csv-upload-input')?.click();
+                }}
+                disabled={adminLoading}
+                style={{
+                  flex: 1,
+                  minWidth: '150px',
+                  padding: '12px 20px',
+                  background: adminLoading ? '#ccc' : '#000',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: adminLoading ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                📤 Upload Processed CSV
+              </button>
+            </div>
+            
             {adminLoading ? (
               <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>Loading pending images...</p>
             ) : pendingImages.length === 0 ? (
@@ -1425,6 +1749,9 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
                 <p style={{ fontSize: '16px', marginBottom: '8px' }}>No pending images</p>
                 <p style={{ fontSize: '14px', color: '#999' }}>Uploaded images will appear here for review</p>
+                <p style={{ fontSize: '13px', color: '#999', marginTop: '12px' }}>
+                  Use "Export CSV" to download all pending images, process them offline, then use "Upload Processed CSV" to bulk approve them.
+                </p>
               </div>
             ) : (
               <div>
