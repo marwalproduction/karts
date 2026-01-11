@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160363526-rzju1qvkb",
+  "heading": "City Emporium",
+  "description": "Retail & Shopping in Jaipur. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.896534078144615,
+    "lng": 75.77805435834011
+  },
+  "createdAt": "2026-01-11T19:39:23.526Z"
+}
