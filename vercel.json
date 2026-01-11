@@ -16,7 +16,7 @@
       "maxDuration": 60
     },
     "api/admin/pending/csv.js": {
-      "maxDuration": 30
+      "maxDuration": 60
     },
     "api/admin/pending/bulk-upload.js": {
       "maxDuration": 60

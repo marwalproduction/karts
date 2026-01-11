@@ -1556,21 +1556,21 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                     setAdminLoading(true);
                     const response = await fetch(`${apiUrl}/api/admin/pending/csv`);
                     if (!response.ok) {
-                      throw new Error('Failed to export CSV');
+                      throw new Error('Failed to export ZIP');
                     }
                     const blob = await response.blob();
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `pending-images-${new Date().toISOString().split('T')[0]}.csv`;
+                    a.download = `pending-images-${new Date().toISOString().split('T')[0]}.zip`;
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
                     document.body.removeChild(a);
-                    alert('CSV exported successfully! You can now process the images offline.');
+                    alert('ZIP file exported successfully! The ZIP contains CSV and images folder. You can now process the images offline.');
                   } catch (err) {
                     console.error('Error exporting CSV:', err);
-                    alert('Error exporting CSV: ' + err.message);
+                    alert('Error exporting ZIP: ' + err.message);
                   } finally {
                     setAdminLoading(false);
                   }
@@ -1593,7 +1593,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                   gap: '8px'
                 }}
               >
-                📥 Export CSV
+                📥 Export ZIP (CSV + Images)
               </button>
               <input
                 type="file"
@@ -1750,7 +1750,7 @@ CRITICAL: Always provide items array with at least 3-5 specific items based on w
                 <p style={{ fontSize: '16px', marginBottom: '8px' }}>No pending images</p>
                 <p style={{ fontSize: '14px', color: '#999' }}>Uploaded images will appear here for review</p>
                 <p style={{ fontSize: '13px', color: '#999', marginTop: '12px' }}>
-                  Use "Export CSV" to download all pending images, process them offline, then use "Upload Processed CSV" to bulk approve them.
+                  Use "Export ZIP" to download all pending images (ZIP contains CSV + images folder), process them offline with AI tools, then use "Upload Processed CSV" to bulk approve them.
                 </p>
               </div>
             ) : (
