@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160293345-q9d9mth0q",
+  "heading": "City Medical",
+  "description": "Healthcare in Mumbai. Quality services and products.",
+  "extractedText": "Pharmacy Services, Medicine Delivery, Health Advice, Chronic Disease, Homeopathy",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.116999726353324,
+    "lng": 72.87331739688503
+  },
+  "createdAt": "2026-01-11T19:38:13.345Z"
+}
