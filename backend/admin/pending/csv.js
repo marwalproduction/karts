@@ -55,10 +55,9 @@ async function getImageBuffer(imagePath) {
       
       // If file is too large (>1MB), GitHub returns download_url instead of content
       if (data.download_url) {
-        console.log(`File too large, fetching from download_url: ${data.download_url}`);
+        console.log(`File too large (${data.size} bytes), fetching from download_url: ${data.download_url}`);
         // Fetch image from raw URL using node-fetch
-        const fetch = require('node-fetch');
-        const response = await fetch(data.download_url);
+        const urlResponse = await fetch(data.download_url);
         if (!response.ok) {
           throw new Error(`Failed to download image from URL: ${response.statusText}`);
         }
