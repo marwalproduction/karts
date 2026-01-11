@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160427888-1n8crcg6o",
+  "heading": "City Shop",
+  "description": "Retail & Shopping in Delhi. Quality services and products.",
+  "extractedText": "Books, Magazines, Comics, Notebooks, Pens",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.622682157206143,
+    "lng": 77.17003703403225
+  },
+  "createdAt": "2026-01-11T19:40:27.888Z"
+}
