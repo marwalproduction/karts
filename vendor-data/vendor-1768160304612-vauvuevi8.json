@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160304612-vauvuevi8",
+  "heading": "Shri Restaurant",
+  "description": "Food & Beverages in Pune. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.55005188725263,
+    "lng": 73.8885900625494
+  },
+  "createdAt": "2026-01-11T19:38:24.612Z"
+}
