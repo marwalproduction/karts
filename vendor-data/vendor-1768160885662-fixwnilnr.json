@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160885662-fixwnilnr",
+  "heading": "Super Shop",
+  "description": "Retail & Shopping in Chennai. Quality services and products.",
+  "extractedText": "Home Decor, Furniture, Kitchenware, Bedding, Curtains",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.044955360082756,
+    "lng": 80.31158104684044
+  },
+  "createdAt": "2026-01-11T19:48:05.662Z"
+}
