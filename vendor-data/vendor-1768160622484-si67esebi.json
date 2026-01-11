@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160622484-si67esebi",
+  "heading": "Big Emporium",
+  "description": "Retail & Shopping in Bhopal. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.284696035921144,
+    "lng": 77.39776458445971
+  },
+  "createdAt": "2026-01-11T19:43:42.484Z"
+}
