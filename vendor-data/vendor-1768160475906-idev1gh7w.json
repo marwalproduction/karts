@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160475906-idev1gh7w",
+  "heading": "Express Garage",
+  "description": "Automotive in Jaipur. Quality services and products.",
+  "extractedText": "Car Wash, Polish, Tinting, Accessories, Insurance",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.949762036619184,
+    "lng": 75.7793900322563
+  },
+  "createdAt": "2026-01-11T19:41:15.906Z"
+}

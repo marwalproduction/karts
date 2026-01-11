@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160457408-7pqgckx9s",
+  "heading": "Med Hospital",
+  "description": "Healthcare in Jaipur. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.942918580643756,
+    "lng": 75.74082065140081
+  },
+  "createdAt": "2026-01-11T19:40:57.408Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160500714-801ghqeyr",
+  "heading": "Happy Kitchen",
+  "description": "Food & Beverages in Bhopal. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.30304968784552,
+    "lng": 77.4045583590936
+  },
+  "createdAt": "2026-01-11T19:41:40.714Z"
+}

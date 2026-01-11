@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160357652-e84jg3zqe",
+  "heading": "Life Hospital",
+  "description": "Healthcare in Kanpur. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology, Pediatrics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.462563180651003,
+    "lng": 80.2941657436509
+  },
+  "createdAt": "2026-01-11T19:39:17.652Z"
+}

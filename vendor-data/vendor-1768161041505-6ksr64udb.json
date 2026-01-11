@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161041505-6ksr64udb",
+  "heading": "Super Boutique",
+  "description": "Retail & Shopping in Bhopal. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.210813575254335,
+    "lng": 77.43970254263074
+  },
+  "createdAt": "2026-01-11T19:50:41.505Z"
+}

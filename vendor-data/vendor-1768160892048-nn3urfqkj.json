@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160892048-nn3urfqkj",
+  "heading": "Health Medical",
+  "description": "Healthcare in Bangalore. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.01053511763471,
+    "lng": 77.5878002148068
+  },
+  "createdAt": "2026-01-11T19:48:12.048Z"
+}

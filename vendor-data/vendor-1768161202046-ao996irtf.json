@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161202046-ao996irtf",
+  "heading": "City Hospital",
+  "description": "Healthcare in Ahmedabad. Quality services and products.",
+  "extractedText": "Pharmacy Services, Medicine Delivery, Health Advice, Chronic Disease, Homeopathy",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.011054248026912,
+    "lng": 72.52571473388613
+  },
+  "createdAt": "2026-01-11T19:53:22.046Z"
+}

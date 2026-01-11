@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160718635-asz7rgfwd",
+  "heading": "Elite Mart",
+  "description": "Retail & Shopping in Ghaziabad. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.682206180131658,
+    "lng": 77.42682645894284
+  },
+  "createdAt": "2026-01-11T19:45:18.635Z"
+}

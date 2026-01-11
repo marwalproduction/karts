@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160478401-1e0ehhpoe",
+  "heading": "City Kitchen",
+  "description": "Food & Beverages in Indore. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.7659152080881,
+    "lng": 75.84831035188012
+  },
+  "createdAt": "2026-01-11T19:41:18.401Z"
+}

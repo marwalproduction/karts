@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160656689-8r7bo56tk",
+  "heading": "Life Care",
+  "description": "Healthcare in Ahmedabad. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.03124263402098,
+    "lng": 72.56543656264652
+  },
+  "createdAt": "2026-01-11T19:44:16.689Z"
+}

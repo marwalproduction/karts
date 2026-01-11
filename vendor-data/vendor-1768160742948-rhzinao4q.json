@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160742948-rhzinao4q",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Bhopal. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.283921559040678,
+    "lng": 77.39924472270793
+  },
+  "createdAt": "2026-01-11T19:45:42.948Z"
+}

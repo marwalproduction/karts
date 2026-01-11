@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160749733-egkdaecrv",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Indore. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.693813344540413,
+    "lng": 75.85215564732054
+  },
+  "createdAt": "2026-01-11T19:45:49.733Z"
+}

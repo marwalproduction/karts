@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160335159-zcgorc3n6",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.954399642284784,
+    "lng": 77.59413180611402
+  },
+  "createdAt": "2026-01-11T19:38:55.160Z"
+}

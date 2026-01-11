@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160598628-wslbr6q4k",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Bangalore. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.97172224377952,
+    "lng": 77.62324568719465
+  },
+  "createdAt": "2026-01-11T19:43:18.628Z"
+}

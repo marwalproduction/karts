@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161225201-2mg8yguq6",
+  "heading": "City Restaurant",
+  "description": "Food & Beverages in Kanpur. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice, Ice Cream",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.404795836663514,
+    "lng": 80.37976214093933
+  },
+  "createdAt": "2026-01-11T19:53:45.201Z"
+}

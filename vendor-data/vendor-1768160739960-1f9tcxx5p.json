@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160739960-1f9tcxx5p",
+  "heading": "Shine Salon",
+  "description": "Beauty & Wellness in Bangalore. Quality services and products.",
+  "extractedText": "Massage, Body Scrub, Facials, Hair Care, Skin Care",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.921954641250855,
+    "lng": 77.64314830320744
+  },
+  "createdAt": "2026-01-11T19:45:39.960Z"
+}

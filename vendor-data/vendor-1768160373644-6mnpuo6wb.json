@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160373644-6mnpuo6wb",
+  "heading": "Big Store",
+  "description": "Retail & Shopping in Mumbai. Quality services and products.",
+  "extractedText": "Books, Magazines, Comics, Notebooks, Pens, Art Supplies",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.05607257566924,
+    "lng": 72.88000713857484
+  },
+  "createdAt": "2026-01-11T19:39:33.644Z"
+}

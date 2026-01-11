@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160851780-76j3nshyi",
+  "heading": "New Dhaba",
+  "description": "Food & Beverages in Hyderabad. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.362067928360645,
+    "lng": 78.52211508544117
+  },
+  "createdAt": "2026-01-11T19:47:31.780Z"
+}

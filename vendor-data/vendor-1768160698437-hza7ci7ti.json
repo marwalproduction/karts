@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160698437-hza7ci7ti",
+  "heading": "Health Hospital",
+  "description": "Healthcare in Ahmedabad. Quality services and products.",
+  "extractedText": "24x7 Pharmacy, Emergency Medicines, Prescription Filling, Health Consultation, Lab Sample Collection",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.00374606157917,
+    "lng": 72.60231914593477
+  },
+  "createdAt": "2026-01-11T19:44:58.437Z"
+}

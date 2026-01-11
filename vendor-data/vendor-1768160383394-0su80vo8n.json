@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160383394-0su80vo8n",
+  "heading": "New Kitchen",
+  "description": "Food & Beverages in Kolkata. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.563368660668594,
+    "lng": 88.41339936667943
+  },
+  "createdAt": "2026-01-11T19:39:43.394Z"
+}

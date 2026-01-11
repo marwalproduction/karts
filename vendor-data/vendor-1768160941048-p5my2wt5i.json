@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160941048-p5my2wt5i",
+  "heading": "Life Care",
+  "description": "Healthcare in Lucknow. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.8787064669821,
+    "lng": 80.92656401207839
+  },
+  "createdAt": "2026-01-11T19:49:01.048Z"
+}

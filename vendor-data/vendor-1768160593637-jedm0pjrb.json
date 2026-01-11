@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160593637-jedm0pjrb",
+  "heading": "Perfect Salon",
+  "description": "Beauty & Wellness in Bhopal. Quality services and products.",
+  "extractedText": "Haircut, Hair Color, Hair Spa, Facial, Waxing",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.30108681525644,
+    "lng": 77.39265512270629
+  },
+  "createdAt": "2026-01-11T19:43:13.637Z"
+}

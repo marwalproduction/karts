@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160306258-frgjv79km",
+  "heading": "Happy Hotel",
+  "description": "Food & Beverages in Jaipur. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney, Coffee",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.949056005168252,
+    "lng": 75.80659782863515
+  },
+  "createdAt": "2026-01-11T19:38:26.258Z"
+}

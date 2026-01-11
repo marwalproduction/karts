@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160299490-sh3a493yl",
+  "heading": "Maa Dhaba",
+  "description": "Food & Beverages in Visakhapatnam. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.73024997628257,
+    "lng": 83.21926691675617
+  },
+  "createdAt": "2026-01-11T19:38:19.490Z"
+}

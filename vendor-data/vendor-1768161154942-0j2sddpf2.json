@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161154942-0j2sddpf2",
+  "heading": "Happy Restaurant",
+  "description": "Food & Beverages in Delhi. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.65346894742463,
+    "lng": 77.20275738537414
+  },
+  "createdAt": "2026-01-11T19:52:34.942Z"
+}

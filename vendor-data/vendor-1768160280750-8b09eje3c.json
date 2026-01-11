@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160280750-8b09eje3c",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Bhopal. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.226113272506623,
+    "lng": 77.38195851411166
+  },
+  "createdAt": "2026-01-11T19:38:00.750Z"
+}

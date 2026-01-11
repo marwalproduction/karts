@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160839988-b1wqkls5u",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Jaipur. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.8938051509205,
+    "lng": 75.81988828955926
+  },
+  "createdAt": "2026-01-11T19:47:19.988Z"
+}

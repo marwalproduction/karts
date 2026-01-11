@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160535228-773z54s5y",
+  "heading": "Med Hospital",
+  "description": "Healthcare in Surat. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.18230722510194,
+    "lng": 72.83828547730509
+  },
+  "createdAt": "2026-01-11T19:42:15.228Z"
+}

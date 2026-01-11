@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161162541-d2iten1os",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Hyderabad. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches, Jewelry",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.36348635089047,
+    "lng": 78.46098226802614
+  },
+  "createdAt": "2026-01-11T19:52:42.541Z"
+}

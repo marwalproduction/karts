@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160692233-08hf677v3",
+  "heading": "Express Garage",
+  "description": "Automotive in Pune. Quality services and products.",
+  "extractedText": "Towing Service, Flat Tire, Jump Start, Lockout Service, Fuel Delivery, Roadside Assistance",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.48748019989373,
+    "lng": 73.88360087223549
+  },
+  "createdAt": "2026-01-11T19:44:52.233Z"
+}

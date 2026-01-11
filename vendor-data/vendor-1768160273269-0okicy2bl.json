@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160273269-0okicy2bl",
+  "heading": "Med Health Center",
+  "description": "Healthcare in Nagpur. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.110802073829557,
+    "lng": 79.07279173286838
+  },
+  "createdAt": "2026-01-11T19:37:53.269Z"
+}

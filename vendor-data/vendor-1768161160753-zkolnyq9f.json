@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161160753-zkolnyq9f",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Patna. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney, Coffee",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 25.56146211509244,
+    "lng": 85.09779917533254
+  },
+  "createdAt": "2026-01-11T19:52:40.753Z"
+}

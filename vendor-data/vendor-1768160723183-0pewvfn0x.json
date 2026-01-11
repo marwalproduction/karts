@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160723183-0pewvfn0x",
+  "heading": "Quick Garage",
+  "description": "Automotive in Ghaziabad. Quality services and products.",
+  "extractedText": "Oil Change, Engine Service, Battery Replacement, Tire Service, AC Service, Brake Service",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.62953813414825,
+    "lng": 77.41500352672347
+  },
+  "createdAt": "2026-01-11T19:45:23.183Z"
+}

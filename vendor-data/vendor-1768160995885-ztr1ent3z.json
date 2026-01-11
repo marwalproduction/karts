@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160995885-ztr1ent3z",
+  "heading": "Life Health Center",
+  "description": "Healthcare in Delhi. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.619042785958513,
+    "lng": 77.186164731806
+  },
+  "createdAt": "2026-01-11T19:49:55.885Z"
+}

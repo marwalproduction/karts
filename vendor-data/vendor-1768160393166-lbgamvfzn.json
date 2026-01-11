@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160393166-lbgamvfzn",
+  "heading": "City Hotel",
+  "description": "Food & Beverages in Vadodara. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.266536577846352,
+    "lng": 73.14085037234877
+  },
+  "createdAt": "2026-01-11T19:39:53.166Z"
+}

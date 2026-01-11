@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160382416-a3rhgcqh5",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Kolkata. Quality services and products.",
+  "extractedText": "Mobile Phones, Accessories, Cases, Chargers, Headphones, Cables",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.61307561405104,
+    "lng": 88.3600916306198
+  },
+  "createdAt": "2026-01-11T19:39:42.416Z"
+}

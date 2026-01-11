@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160455774-m7agsezbg",
+  "heading": "Happy Hotel",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney, Coffee",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.94214177617089,
+    "lng": 77.60948394372747
+  },
+  "createdAt": "2026-01-11T19:40:55.774Z"
+}

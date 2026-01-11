@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160711953-5b5669696",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Vadodara. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.272804923397413,
+    "lng": 73.15363202832243
+  },
+  "createdAt": "2026-01-11T19:45:11.953Z"
+}

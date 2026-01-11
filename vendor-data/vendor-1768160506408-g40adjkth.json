@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160506408-g40adjkth",
+  "heading": "Big Bazaar",
+  "description": "Retail & Shopping in Bangalore. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.003328420075283,
+    "lng": 77.6166525777045
+  },
+  "createdAt": "2026-01-11T19:41:46.408Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161042409-hdvjonbwq",
+  "heading": "Royal Spa",
+  "description": "Beauty & Wellness in Pune. Quality services and products.",
+  "extractedText": "Hair Wash, Haircut, Beard Trim, Hair Styling, Hair Color",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.517692130689735,
+    "lng": 73.82996163160938
+  },
+  "createdAt": "2026-01-11T19:50:42.409Z"
+}

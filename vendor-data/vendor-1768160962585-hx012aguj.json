@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160962585-hx012aguj",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Mumbai. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.11086073977627,
+    "lng": 72.91042542999662
+  },
+  "createdAt": "2026-01-11T19:49:22.585Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160862357-fyvg2k1ts",
+  "heading": "City Restaurant",
+  "description": "Food & Beverages in Hyderabad. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice, Ice Cream",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.359632299486307,
+    "lng": 78.50919283452805
+  },
+  "createdAt": "2026-01-11T19:47:42.357Z"
+}

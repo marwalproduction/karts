@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160717678-uwmy8tgcm",
+  "heading": "Elite Salon",
+  "description": "Beauty & Wellness in Mumbai. Quality services and products.",
+  "extractedText": "Facial, Cleanup, Bleach, Hair Removal, Threading",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.081503640416763,
+    "lng": 72.83405072700543
+  },
+  "createdAt": "2026-01-11T19:45:17.678Z"
+}

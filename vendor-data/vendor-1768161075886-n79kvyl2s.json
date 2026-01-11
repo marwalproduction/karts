@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161075886-n79kvyl2s",
+  "heading": "Big Boutique",
+  "description": "Retail & Shopping in Bangalore. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches, Jewelry",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.980588365222532,
+    "lng": 77.56249670765114
+  },
+  "createdAt": "2026-01-11T19:51:15.886Z"
+}

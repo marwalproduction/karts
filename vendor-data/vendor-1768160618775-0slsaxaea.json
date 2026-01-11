@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160618775-0slsaxaea",
+  "heading": "Maa Restaurant",
+  "description": "Food & Beverages in Hyderabad. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice, Sweets",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.37980723579595,
+    "lng": 78.44746907219275
+  },
+  "createdAt": "2026-01-11T19:43:38.775Z"
+}

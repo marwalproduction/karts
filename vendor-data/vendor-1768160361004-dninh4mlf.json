@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160361004-dninh4mlf",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Ahmedabad. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.009992406674126,
+    "lng": 72.55215904127336
+  },
+  "createdAt": "2026-01-11T19:39:21.004Z"
+}

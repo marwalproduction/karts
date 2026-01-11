@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160998651-a1wzrvkuq",
+  "heading": "Royal Parlor",
+  "description": "Beauty & Wellness in Thane. Quality services and products.",
+  "extractedText": "Haircut, Hair Color, Hair Spa, Facial, Waxing",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.240687187148414,
+    "lng": 72.99964583597728
+  },
+  "createdAt": "2026-01-11T19:49:58.651Z"
+}

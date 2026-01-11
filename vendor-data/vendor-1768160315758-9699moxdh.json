@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160315758-9699moxdh",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Kanpur. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.477428742383502,
+    "lng": 80.37261701433525
+  },
+  "createdAt": "2026-01-11T19:38:35.758Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160616345-djms2mvbm",
+  "heading": "City Restaurant",
+  "description": "Food & Beverages in Kanpur. Quality services and products.",
+  "extractedText": "North Indian Thali, South Indian Meals, Chinese Dishes, Fast Food, Beverages, Desserts",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.465913911225243,
+    "lng": 80.33332446335096
+  },
+  "createdAt": "2026-01-11T19:43:36.345Z"
+}

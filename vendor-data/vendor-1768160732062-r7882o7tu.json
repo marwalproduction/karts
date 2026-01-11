@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160732062-r7882o7tu",
+  "heading": "Wellness Clinic",
+  "description": "Healthcare in Kanpur. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.460055817728893,
+    "lng": 80.30885353379621
+  },
+  "createdAt": "2026-01-11T19:45:32.062Z"
+}

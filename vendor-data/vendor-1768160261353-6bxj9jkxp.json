@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160261353-6bxj9jkxp",
+  "heading": "Care Care",
+  "description": "Healthcare in Chennai. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.127312758785317,
+    "lng": 80.2309425914223
+  },
+  "createdAt": "2026-01-11T19:37:41.353Z"
+}

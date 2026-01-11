@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160882258-xeb4eg2le",
+  "heading": "Happy Cafe",
+  "description": "Food & Beverages in Delhi. Quality services and products.",
+  "extractedText": "North Indian Thali, South Indian Meals, Chinese Dishes, Fast Food, Beverages",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.566240543998784,
+    "lng": 77.19159700955565
+  },
+  "createdAt": "2026-01-11T19:48:02.258Z"
+}

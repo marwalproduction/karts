@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160318298-hsqnmialg",
+  "heading": "Health Clinic",
+  "description": "Healthcare in Delhi. Quality services and products.",
+  "extractedText": "Medicines, Prescription Drugs, First Aid, Baby Care, Health Supplements",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.617792185267692,
+    "lng": 77.20519389684407
+  },
+  "createdAt": "2026-01-11T19:38:38.298Z"
+}

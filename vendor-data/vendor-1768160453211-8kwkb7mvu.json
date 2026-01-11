@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160453211-8kwkb7mvu",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Chennai. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice, Sweets",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.064341381514895,
+    "lng": 80.31399267184814
+  },
+  "createdAt": "2026-01-11T19:40:53.211Z"
+}

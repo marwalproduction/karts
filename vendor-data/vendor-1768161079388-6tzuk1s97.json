@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161079388-6tzuk1s97",
+  "heading": "City Shop",
+  "description": "Retail & Shopping in Kanpur. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.42139255958447,
+    "lng": 80.3575646808464
+  },
+  "createdAt": "2026-01-11T19:51:19.388Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160458316-bu67kz5fe",
+  "heading": "Big Boutique",
+  "description": "Retail & Shopping in Kanpur. Quality services and products.",
+  "extractedText": "Books, Magazines, Comics, Notebooks, Pens, Art Supplies",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.445748654061997,
+    "lng": 80.28919420119144
+  },
+  "createdAt": "2026-01-11T19:40:58.316Z"
+}

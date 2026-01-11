@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160462805-5uy5y2ana",
+  "heading": "Happy Dhaba",
+  "description": "Food & Beverages in Hyderabad. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.352151404569035,
+    "lng": 78.48443399219879
+  },
+  "createdAt": "2026-01-11T19:41:02.805Z"
+}

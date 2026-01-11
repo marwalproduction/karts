@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160731181-a797ast8q",
+  "heading": "Prime Bazaar",
+  "description": "Retail & Shopping in Pune. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.494704977292177,
+    "lng": 73.88810051052327
+  },
+  "createdAt": "2026-01-11T19:45:31.181Z"
+}

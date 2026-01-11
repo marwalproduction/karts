@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161010867-blxleg80g",
+  "heading": "Happy Dhaba",
+  "description": "Food & Beverages in Kolkata. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice, Ice Cream",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.595587948821628,
+    "lng": 88.33626327859878
+  },
+  "createdAt": "2026-01-11T19:50:10.867Z"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160470859-e2mno6szg",
+  "heading": "Royal Spa",
+  "description": "Beauty & Wellness in Surat. Quality services and products.",
+  "extractedText": "Haircut, Hair Color, Hair Spa, Facial, Waxing",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.192341974943986,
+    "lng": 72.8645906570315
+  },
+  "createdAt": "2026-01-11T19:41:10.859Z"
+}

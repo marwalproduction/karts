@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161006055-8brph5pia",
+  "heading": "Med Clinic",
+  "description": "Healthcare in Bangalore. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.942127573030815,
+    "lng": 77.63704189227101
+  },
+  "createdAt": "2026-01-11T19:50:06.055Z"
+}

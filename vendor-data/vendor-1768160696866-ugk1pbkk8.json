@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160696866-ugk1pbkk8",
+  "heading": "City Boutique",
+  "description": "Retail & Shopping in Jaipur. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches, Jewelry",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.886089119247913,
+    "lng": 75.79788986161527
+  },
+  "createdAt": "2026-01-11T19:44:56.866Z"
+}

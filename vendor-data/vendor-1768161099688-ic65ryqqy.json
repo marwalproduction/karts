@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161099688-ic65ryqqy",
+  "heading": "Royal Cafe",
+  "description": "Food & Beverages in Indore. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.720341818053225,
+    "lng": 75.87690365813363
+  },
+  "createdAt": "2026-01-11T19:51:39.688Z"
+}
