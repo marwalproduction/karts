@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160459163-cdl264qmn",
+  "heading": "New Restaurant",
+  "description": "Food & Beverages in Pune. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.516793372985756,
+    "lng": 73.84345102567265
+  },
+  "createdAt": "2026-01-11T19:40:59.163Z"
+}
