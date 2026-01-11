@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161096905-0c2edk5yv",
+  "heading": "City Dhaba",
+  "description": "Food & Beverages in Jaipur. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.9365972683908,
+    "lng": 75.80693353535254
+  },
+  "createdAt": "2026-01-11T19:51:36.905Z"
+}
