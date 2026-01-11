@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161185205-f4qbdu5z9",
+  "heading": "Shine Salon",
+  "description": "Beauty & Wellness in Surat. Quality services and products.",
+  "extractedText": "Haircut, Hair Color, Hair Spa, Facial, Waxing, Threading",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.13398495582603,
+    "lng": 72.78707122513026
+  },
+  "createdAt": "2026-01-11T19:53:05.205Z"
+}
