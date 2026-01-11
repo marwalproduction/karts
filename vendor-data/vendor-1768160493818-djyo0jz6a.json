@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160493818-djyo0jz6a",
+  "heading": "Happy Restaurant",
+  "description": "Food & Beverages in Hyderabad. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.401505939965002,
+    "lng": 78.52091451259037
+  },
+  "createdAt": "2026-01-11T19:41:33.818Z"
+}
