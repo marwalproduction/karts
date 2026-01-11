@@ -1,7 +1,76 @@
 const { getAllPendingImages } = require('../../github-storage');
+const { Octokit } = require('@octokit/rest');
+
+// Helper function to get Octokit instance
+function getOctokit() {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    throw new Error('GITHUB_TOKEN environment variable is required');
+  }
+  return new Octokit({ auth: token });
+}
+
+// Helper function to compress and convert image to base64
+async function getCompressedImageBase64(imagePath) {
+  try {
+    const octokit = getOctokit();
+    const OWNER = process.env.GITHUB_OWNER || 'marwalproduction';
+    const REPO = process.env.GITHUB_REPO || 'karts';
+    
+    // Fetch image from GitHub
+    const { data } = await octokit.repos.getContent({
+      owner: OWNER,
+      repo: REPO,
+      path: imagePath,
+    });
+    
+    // Decode base64 image
+    let imageBuffer = Buffer.from(data.content, 'base64');
+    let mimeType = 'image/jpeg';
+    
+    // Try to use sharp for compression (if available)
+    try {
+      const sharp = require('sharp');
+      
+      // Compress: max width 1200px, quality 70%, convert to JPEG
+      imageBuffer = await sharp(imageBuffer)
+        .resize(1200, null, { 
+          withoutEnlargement: true,
+          fit: 'inside'
+        })
+        .jpeg({ 
+          quality: 70,
+          mozjpeg: true 
+        })
+        .toBuffer();
+      
+      mimeType = 'image/jpeg';
+      console.log(`Compressed image ${imagePath}: ${imageBuffer.length} bytes`);
+    } catch (sharpError) {
+      // If sharp is not available, use original image
+      // Note: For production, install sharp: npm install sharp
+      console.warn(`Sharp not available for ${imagePath}, using original image (${imageBuffer.length} bytes)`);
+      
+      // If image is extremely large (>2MB), truncate or skip
+      if (imageBuffer.length > 2000000) {
+        console.warn(`Image ${imagePath} is very large (${imageBuffer.length} bytes), consider installing sharp for compression`);
+      }
+    }
+    
+    // Convert to base64
+    const base64Image = imageBuffer.toString('base64');
+    const dataUri = `data:${mimeType};base64,${base64Image}`;
+    
+    return dataUri;
+  } catch (error) {
+    console.error(`Error fetching/compressing image ${imagePath}:`, error.message);
+    // Return empty string if image can't be fetched
+    return '';
+  }
+}
 
 // Admin CSV Export API
-// GET /api/admin/pending/csv - Export all pending images as CSV
+// GET /api/admin/pending/csv - Export all pending images as CSV with embedded compressed images
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -21,8 +90,8 @@ module.exports = async function handler(req, res) {
     // Generate CSV content
     const csvRows = [];
     
-    // CSV Header (with columns for processed data)
-    csvRows.push('ID,Image URL,Download URL,Latitude,Longitude,Timestamp,Date,Time,Heading,Description,Items,Prices,Hours,Contact,Features');
+    // CSV Header (with compressed image column instead of URLs)
+    csvRows.push('ID,Compressed Image (Base64),Latitude,Longitude,Timestamp,Date,Time,Heading,Description,Items,Prices,Hours,Contact,Features');
     
     // CSV Data rows
     for (const image of pendingImages) {
@@ -31,15 +100,16 @@ module.exports = async function handler(req, res) {
       const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
       const timeStr = date.toTimeString().split(' ')[0]; // HH:MM:SS
       
-      // Image URLs - use the imageUrl from metadata if available, otherwise construct it
-      const imageUrl = image.imageUrl || `https://raw.githubusercontent.com/${process.env.GITHUB_OWNER || 'marwalproduction'}/${process.env.GITHUB_REPO || 'karts'}/main/${image.imagePath || `pending-images/${image.id}.jpg`}`;
-      const downloadUrl = imageUrl; // Same URL for download
+      // Get compressed image as base64
+      const imagePath = image.imagePath || `pending-images/${image.id}.jpg`;
+      const compressedImageBase64 = await getCompressedImageBase64(imagePath);
       
       // Escape CSV values (handle commas and quotes)
       const escapeCsv = (value) => {
         if (value === null || value === undefined) return '';
         const str = String(value);
-        if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        // For base64 images, always wrap in quotes and escape internal quotes
+        if (str.includes(',') || str.includes('"') || str.includes('\n') || str.length > 100) {
           return `"${str.replace(/"/g, '""')}"`;
         }
         return str;
@@ -47,8 +117,7 @@ module.exports = async function handler(req, res) {
       
       csvRows.push([
         escapeCsv(image.id),
-        escapeCsv(imageUrl),
-        escapeCsv(downloadUrl),
+        escapeCsv(compressedImageBase64), // Compressed base64 image instead of URL
         escapeCsv(image.location?.lat || ''),
         escapeCsv(image.location?.lng || ''),
         escapeCsv(timestamp),
