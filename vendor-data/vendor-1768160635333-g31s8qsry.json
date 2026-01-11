@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160635333-g31s8qsry",
+  "heading": "Quick Garage",
+  "description": "Automotive in Ghaziabad. Quality services and products.",
+  "extractedText": "Car Wash, Polish, Tinting, Accessories, Insurance",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.68717653653678,
+    "lng": 77.43964691358406
+  },
+  "createdAt": "2026-01-11T19:43:55.333Z"
+}
