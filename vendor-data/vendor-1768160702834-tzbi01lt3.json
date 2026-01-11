@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160702834-tzbi01lt3",
+  "heading": "New Restaurant",
+  "description": "Food & Beverages in Kanpur. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.40304605954079,
+    "lng": 80.32057468800265
+  },
+  "createdAt": "2026-01-11T19:45:02.834Z"
+}
