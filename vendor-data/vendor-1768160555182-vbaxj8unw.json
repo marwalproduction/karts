@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160555182-vbaxj8unw",
+  "heading": "Care Hospital",
+  "description": "Healthcare in Ahmedabad. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.067562723004166,
+    "lng": 72.54951251585587
+  },
+  "createdAt": "2026-01-11T19:42:35.182Z"
+}
