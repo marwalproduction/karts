@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161245590-lkikszmic",
+  "heading": "Maa Dhaba",
+  "description": "Food & Beverages in Lucknow. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.871201690580634,
+    "lng": 80.91528732506333
+  },
+  "createdAt": "2026-01-11T19:54:05.590Z"
+}
