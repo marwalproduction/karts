@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160715728-zvjpsy102",
+  "heading": "Royal Restaurant",
+  "description": "Food & Beverages in Kanpur. Quality services and products.",
+  "extractedText": "North Indian Thali, South Indian Meals, Chinese Dishes, Fast Food, Beverages",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.46149761064717,
+    "lng": 80.33783755868811
+  },
+  "createdAt": "2026-01-11T19:45:15.728Z"
+}
