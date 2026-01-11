@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160952442-xtrvhonxt",
+  "heading": "City Health Center",
+  "description": "Healthcare in Visakhapatnam. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.665928315465745,
+    "lng": 83.23211563486375
+  },
+  "createdAt": "2026-01-11T19:49:12.442Z"
+}
