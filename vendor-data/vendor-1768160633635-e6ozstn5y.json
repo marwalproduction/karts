@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160633635-e6ozstn5y",
+  "heading": "Wellness Hospital",
+  "description": "Healthcare in Chennai. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology, Pediatrics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.115187122125553,
+    "lng": 80.31176351142133
+  },
+  "createdAt": "2026-01-11T19:43:53.635Z"
+}
