@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161084166-94fqoo1mf",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Lucknow. Quality services and products.",
+  "extractedText": "North Indian Thali, South Indian Meals, Chinese Dishes, Fast Food, Beverages",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.80558922681802,
+    "lng": 80.97218430790973
+  },
+  "createdAt": "2026-01-11T19:51:24.166Z"
+}
