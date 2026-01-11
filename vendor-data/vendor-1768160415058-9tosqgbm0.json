@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160415058-9tosqgbm0",
+  "heading": "Super Boutique",
+  "description": "Retail & Shopping in Thane. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.215178670737203,
+    "lng": 72.97417996589047
+  },
+  "createdAt": "2026-01-11T19:40:15.058Z"
+}
