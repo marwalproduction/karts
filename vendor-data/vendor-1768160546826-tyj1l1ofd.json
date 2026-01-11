@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160546826-tyj1l1ofd",
+  "heading": "Prime Mart",
+  "description": "Retail & Shopping in Jaipur. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 26.864919587384456,
+    "lng": 75.78981154766254
+  },
+  "createdAt": "2026-01-11T19:42:26.826Z"
+}
