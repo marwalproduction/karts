@@ -3,44 +3,44 @@
   "buildCommand": "cd webapp && npm install && npm run build",
   "outputDirectory": "webapp/build",
   "functions": {
-    "api/upload.js": {
+    "backend/upload.js": {
       "maxDuration": 60
     },
-    "api/upload-image.js": {
+    "backend/upload-image.js": {
       "maxDuration": 60
     },
-    "api/admin/pending.js": {
+    "backend/admin/pending.js": {
       "maxDuration": 30
     },
-    "api/admin/pending/[id].js": {
+    "backend/admin/pending/[id].js": {
       "maxDuration": 60
     },
-    "api/admin/pending/csv.js": {
+    "backend/admin/pending/csv.js": {
       "maxDuration": 60
     },
-    "api/admin/pending/bulk-upload.js": {
+    "backend/admin/pending/bulk-upload.js": {
       "maxDuration": 60
     },
-    "api/admin/pending/process-all.js": {
+    "backend/admin/pending/process-all.js": {
       "maxDuration": 60
     },
-    "api/search.js": {
+    "backend/search.js": {
       "maxDuration": 10
     },
-    "api/nearby.js": {
+    "backend/nearby.js": {
       "maxDuration": 10
     },
-    "api/vendors.js": {
+    "backend/vendors.js": {
       "maxDuration": 10
     },
-    "api/test-github.js": {
+    "backend/test-github.js": {
       "maxDuration": 10
     }
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "dest": "/backend/$1"
     },
     {
       "src": "/manifest.json",
