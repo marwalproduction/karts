@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160241239-2ov49brdk",
+  "heading": "Royal Dhaba",
+  "description": "Food & Beverages in Mumbai. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.065599435398,
+    "lng": 72.89755977730361
+  },
+  "createdAt": "2026-01-11T19:37:21.239Z"
+}
