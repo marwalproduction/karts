@@ -1,0 +1,29 @@
+{
+  "id": "vendor-pending-1768127923529-w2ntl2j1f",
+  "heading": "Kirana & Snacks Shop",
+  "description": "Small neighborhood shop selling packaged snacks and daily essentials. A quick stop for beverages, biscuits, and household basics.",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "Chips & namkeen",
+      "Biscuits",
+      "Chocolates & candy",
+      "Soft drinks",
+      "Dairy & milk"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Neighborhood convenience store"
+    ]
+  },
+  "location": {
+    "lat": 18.5604101,
+    "lng": 73.7793391
+  },
+  "createdAt": "2026-01-11T10:38:43.525Z",
+  "sourcePendingId": "pending-1768127923529-w2ntl2j1f",
+  "sourceImagePath": "pending-images/pending-1768127923529-w2ntl2j1f.jpg",
+  "sourceUploadedAt": "2026-01-11T10:38:43.525Z"
+}
