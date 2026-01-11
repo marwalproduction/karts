@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160448664-j0ar7s1jc",
+  "heading": "Shri Cafe",
+  "description": "Food & Beverages in Chennai. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 13.13172970600863,
+    "lng": 80.31453826482891
+  },
+  "createdAt": "2026-01-11T19:40:48.664Z"
+}
