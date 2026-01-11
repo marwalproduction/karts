@@ -1,0 +1,29 @@
+{
+  "id": "vendor-pending-1767773470187-d9ciqlbpv",
+  "heading": "Roadside Fruit Stall",
+  "description": "Roadside fruit seller offering a mix of seasonal fruits. Handy for grabbing bananas, oranges, apples, and other fresh picks.",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "Bananas",
+      "Oranges",
+      "Apples",
+      "Grapes",
+      "Papaya"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Seasonal fruits"
+    ]
+  },
+  "location": {
+    "lat": 18.5580998,
+    "lng": 73.7774257
+  },
+  "createdAt": "2026-01-07T08:11:10.182Z",
+  "sourcePendingId": "pending-1767773470187-d9ciqlbpv",
+  "sourceImagePath": "pending-images/pending-1767773470187-d9ciqlbpv.jpg",
+  "sourceUploadedAt": "2026-01-07T08:11:10.182Z"
+}
