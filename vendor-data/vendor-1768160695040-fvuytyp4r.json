@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160695040-fvuytyp4r",
+  "heading": "Prime Shop",
+  "description": "Retail & Shopping in Bangalore. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics, Toys",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.992703639190035,
+    "lng": 77.5917632221031
+  },
+  "createdAt": "2026-01-11T19:44:55.040Z"
+}
