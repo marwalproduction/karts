@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160481329-22atly3ln",
+  "heading": "Big Boutique",
+  "description": "Retail & Shopping in Bangalore. Quality services and products.",
+  "extractedText": "Home Decor, Furniture, Kitchenware, Bedding, Curtains",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.968697173965165,
+    "lng": 77.5863976148141
+  },
+  "createdAt": "2026-01-11T19:41:21.329Z"
+}
