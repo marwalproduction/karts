@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161044265-ptt81ba6y",
+  "heading": "Elite Store",
+  "description": "Retail & Shopping in Kolkata. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.586301102617156,
+    "lng": 88.38159906620321
+  },
+  "createdAt": "2026-01-11T19:50:44.265Z"
+}
