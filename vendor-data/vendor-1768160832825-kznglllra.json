@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160832825-kznglllra",
+  "heading": "Auto Workshop",
+  "description": "Automotive in Visakhapatnam. Quality services and products.",
+  "extractedText": "Oil Change, Engine Service, Battery Replacement, Tire Service, AC Service, Brake Service",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 17.733814574092357,
+    "lng": 83.17075860122226
+  },
+  "createdAt": "2026-01-11T19:47:12.825Z"
+}
