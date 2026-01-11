@@ -1,0 +1,17 @@
+{
+  "name": "karts-automation",
+  "version": "1.0.0",
+  "description": "Automation script to process pending images with Gemini AI",
+  "main": "process-images.js",
+  "scripts": {
+    "start": "node process-images.js",
+    "process": "node process-images.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.6.1",
+    "node-fetch": "^2.6.7",
+    "fs-extra": "^11.2.0",
+    "dotenv": "^16.3.1"
+  }
+}
+
