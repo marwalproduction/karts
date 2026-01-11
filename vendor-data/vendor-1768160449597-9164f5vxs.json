@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160449597-9164f5vxs",
+  "heading": "Big Store",
+  "description": "Retail & Shopping in Delhi. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.61370229500005,
+    "lng": 77.24781848509157
+  },
+  "createdAt": "2026-01-11T19:40:49.597Z"
+}
