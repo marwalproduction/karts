@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161085848-rya7tru41",
+  "heading": "Royal Cafe",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.98769399960572,
+    "lng": 77.63543916404029
+  },
+  "createdAt": "2026-01-11T19:51:25.848Z"
+}
