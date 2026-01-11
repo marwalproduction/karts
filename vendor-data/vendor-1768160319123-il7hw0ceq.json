@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160319123-il7hw0ceq",
+  "heading": "Happy Restaurant",
+  "description": "Food & Beverages in Nagpur. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.120888536292224,
+    "lng": 79.11920015144113
+  },
+  "createdAt": "2026-01-11T19:38:39.123Z"
+}
