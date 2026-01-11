@@ -25,14 +25,32 @@ async function getImageBuffer(imagePath) {
       path: imagePath,
     });
     
-    // Decode base64 image (original, uncompressed)
-    const imageBuffer = Buffer.from(data.content, 'base64');
+    // GitHub API returns base64 encoded content
+    // Remove any whitespace/newlines that GitHub might add
+    const base64Content = data.content.replace(/\s/g, '');
+    
+    // Decode base64 to buffer
+    const imageBuffer = Buffer.from(base64Content, 'base64');
+    
+    // Validate buffer
+    if (!imageBuffer || imageBuffer.length === 0) {
+      throw new Error('Image buffer is empty');
+    }
+    
+    // Validate it's a valid image (check for common image file signatures)
+    const isValidImage = imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8 || // JPEG
+                         imageBuffer[0] === 0x89 && imageBuffer[1] === 0x50 || // PNG
+                         imageBuffer[0] === 0x47 && imageBuffer[1] === 0x49;   // GIF
+    if (!isValidImage && imageBuffer.length > 10) {
+      console.warn(`Image ${imagePath} might be corrupted - invalid file signature`);
+    }
     
     console.log(`Fetched image ${imagePath}: ${imageBuffer.length} bytes`);
     
     return imageBuffer;
   } catch (error) {
     console.error(`Error fetching image ${imagePath}:`, error.message);
+    console.error(`Full error:`, error);
     return null;
   }
 }
@@ -97,12 +115,21 @@ module.exports = async function handler(req, res) {
       const imagePath = image.imagePath || `pending-images/${image.id}.jpg`;
       const imageBuffer = await getImageBuffer(imagePath);
       
-      // Determine image filename
-      const imageFilename = `${image.id}.jpg`;
+      // Determine image filename (preserve original extension if available)
+      let imageFilename = `${image.id}.jpg`;
+      if (imagePath.includes('.')) {
+        const ext = imagePath.split('.').pop().toLowerCase();
+        if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+          imageFilename = `${image.id}.${ext}`;
+        }
+      }
       
-      // Add image to ZIP
-      if (imageBuffer) {
+      // Add image to ZIP only if buffer is valid
+      if (imageBuffer && imageBuffer.length > 0) {
         archive.append(imageBuffer, { name: `images/${imageFilename}` });
+        console.log(`Added image ${imageFilename} to ZIP (${imageBuffer.length} bytes)`);
+      } else {
+        console.warn(`Skipping image ${imagePath} - buffer is empty or invalid`);
       }
       
       // Escape CSV values (handle commas and quotes)
