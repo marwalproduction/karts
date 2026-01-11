@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160699302-hlzm0zso1",
+  "heading": "Quick Garage",
+  "description": "Automotive in Ahmedabad. Quality services and products.",
+  "extractedText": "Car Wash, Polish, Tinting, Accessories, Insurance",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.01238403592546,
+    "lng": 72.54449001065987
+  },
+  "createdAt": "2026-01-11T19:44:59.302Z"
+}
