@@ -1,6 +1,7 @@
 const { getAllPendingImages } = require('../../github-storage');
 const { Octokit } = require('@octokit/rest');
 const archiver = require('archiver');
+const fetch = require('node-fetch');
 
 // Helper function to get Octokit instance
 function getOctokit() {
@@ -19,15 +20,54 @@ async function getImageBuffer(imagePath) {
     const REPO = process.env.GITHUB_REPO || 'karts';
     
     // Fetch image from GitHub
-    const { data } = await octokit.repos.getContent({
-      owner: OWNER,
-      repo: REPO,
-      path: imagePath,
-    });
+    let response;
+    try {
+      response = await octokit.repos.getContent({
+        owner: OWNER,
+        repo: REPO,
+        path: imagePath,
+      });
+    } catch (apiError) {
+      if (apiError.status === 404) {
+        throw new Error(`Image file not found on GitHub: ${imagePath}`);
+      }
+      throw new Error(`GitHub API error: ${apiError.message}`);
+    }
+    
+    const { data } = response;
+    
+    // Check if data exists
+    if (!data) {
+      throw new Error('GitHub API returned no data');
+    }
     
     // Check if data.content exists
     if (!data.content) {
-      throw new Error('GitHub API returned no content for image');
+      // Log the actual response structure for debugging
+      console.log(`GitHub API response for ${imagePath}:`, {
+        type: data.type,
+        size: data.size,
+        encoding: data.encoding,
+        hasContent: !!data.content,
+        hasDownloadUrl: !!data.download_url,
+        keys: Object.keys(data)
+      });
+      
+      // If file is too large (>1MB), GitHub returns download_url instead of content
+      if (data.download_url) {
+        console.log(`File too large, fetching from download_url: ${data.download_url}`);
+        // Fetch image from raw URL using node-fetch
+        const fetch = require('node-fetch');
+        const response = await fetch(data.download_url);
+        if (!response.ok) {
+          throw new Error(`Failed to download image from URL: ${response.statusText}`);
+        }
+        const imageBuffer = await response.buffer();
+        console.log(`✓ Downloaded image from URL: ${imageBuffer.length} bytes`);
+        return imageBuffer;
+      }
+      
+      throw new Error('GitHub API returned no content and no download_url for image');
     }
     
     // GitHub API returns base64 encoded content
