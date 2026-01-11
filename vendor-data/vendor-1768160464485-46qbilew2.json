@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160464485-46qbilew2",
+  "heading": "City Cafe",
+  "description": "Food & Beverages in Vadodara. Quality services and products.",
+  "extractedText": "Biryani, Tandoori, Curries, Roti, Rice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.28847429092891,
+    "lng": 73.21099341099888
+  },
+  "createdAt": "2026-01-11T19:41:04.485Z"
+}
