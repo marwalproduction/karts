@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160784270-ce9czprbg",
+  "heading": "City Care",
+  "description": "Healthcare in Ghaziabad. Quality services and products.",
+  "extractedText": "24x7 Pharmacy, Emergency Medicines, Prescription Filling, Health Consultation, Lab Sample Collection",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.635942317932393,
+    "lng": 77.44927172393584
+  },
+  "createdAt": "2026-01-11T19:46:24.270Z"
+}
