@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160996835-q5nv8nlvf",
+  "heading": "Shri Dhaba",
+  "description": "Food & Beverages in Mumbai. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.04998803491231,
+    "lng": 72.87171909456038
+  },
+  "createdAt": "2026-01-11T19:49:56.835Z"
+}
