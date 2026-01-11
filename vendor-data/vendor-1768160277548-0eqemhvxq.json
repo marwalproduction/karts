@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160277548-0eqemhvxq",
+  "heading": "City Kitchen",
+  "description": "Food & Beverages in Thane. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.236750952547652,
+    "lng": 73.02674724759986
+  },
+  "createdAt": "2026-01-11T19:37:57.548Z"
+}
