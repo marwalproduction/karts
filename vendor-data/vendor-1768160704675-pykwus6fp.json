@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160704675-pykwus6fp",
+  "heading": "Wellness Hospital",
+  "description": "Healthcare in Ahmedabad. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 23.0264158855543,
+    "lng": 72.57195888232334
+  },
+  "createdAt": "2026-01-11T19:45:04.675Z"
+}
