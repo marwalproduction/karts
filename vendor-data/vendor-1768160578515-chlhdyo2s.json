@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160578515-chlhdyo2s",
+  "heading": "Prime Mart",
+  "description": "Retail & Shopping in Delhi. Quality services and products.",
+  "extractedText": "Books, Magazines, Comics, Notebooks, Pens",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.568224795806255,
+    "lng": 77.19982885339807
+  },
+  "createdAt": "2026-01-11T19:42:58.515Z"
+}
