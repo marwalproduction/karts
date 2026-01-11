@@ -1,24 +1,54 @@
 # Node
 node_modules/
+package-lock.json
 
 # Build folders
 dist/
 build/
+*.build/
+android/app/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+webapp/build/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # Misc
 .DS_Store
+*.swp
+*.swo
+*~
 .env
 .env.*
 
 # OS generated files
 Thumbs.db
+.DS_Store
 
-# Uploads
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Android
+android/local.properties
+android/.gradle/
+android/app/build/
+*.apk
+*.ap_
+*.aab
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Uploads (keep vendor-data and pending-images as they're in use)
 uploads/
 backend/uploads/
 
