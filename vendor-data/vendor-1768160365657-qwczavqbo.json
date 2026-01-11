@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160365657-qwczavqbo",
+  "heading": "Super Mart",
+  "description": "Retail & Shopping in Surat. Quality services and products.",
+  "extractedText": "Clothing, Footwear, Accessories, Bags, Watches",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.219945896810724,
+    "lng": 72.78251629565183
+  },
+  "createdAt": "2026-01-11T19:39:25.657Z"
+}
