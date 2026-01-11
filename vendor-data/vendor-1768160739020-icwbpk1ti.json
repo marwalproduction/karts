@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160739020-icwbpk1ti",
+  "heading": "Super Emporium",
+  "description": "Retail & Shopping in Nagpur. Quality services and products.",
+  "extractedText": "Groceries, Household Items, Personal Care, Stationery, Electronics",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.17905443708871,
+    "lng": 79.08538552899195
+  },
+  "createdAt": "2026-01-11T19:45:39.020Z"
+}
