@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160740888-7sjjml33a",
+  "heading": "Divine Salon",
+  "description": "Beauty & Wellness in Indore. Quality services and products.",
+  "extractedText": "Massage, Body Scrub, Facials, Hair Care, Skin Care",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 22.67375326225413,
+    "lng": 75.81837999271919
+  },
+  "createdAt": "2026-01-11T19:45:40.888Z"
+}
