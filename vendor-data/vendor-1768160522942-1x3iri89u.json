@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160522942-1x3iri89u",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Surat. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney, Coffee",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.207791212284157,
+    "lng": 72.78359777318292
+  },
+  "createdAt": "2026-01-11T19:42:02.942Z"
+}
