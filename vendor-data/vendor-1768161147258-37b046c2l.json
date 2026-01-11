@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161147258-37b046c2l",
+  "heading": "City Restaurant",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice, Ice Cream",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.952534885188141,
+    "lng": 77.55611712298658
+  },
+  "createdAt": "2026-01-11T19:52:27.258Z"
+}
