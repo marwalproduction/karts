@@ -1,0 +1,30 @@
+{
+  "id": "vendor-pending-1768128003343-9n7rov2x8",
+  "heading": "Spices & Grains Store",
+  "description": "Local dry-goods shop selling spices, lentils, and grains by weight. You can find staple ingredients and spice mixes for everyday cooking.",
+  "extractedText": "",
+  "extraInfo": {
+    "items": [
+      "Turmeric powder",
+      "Red chili powder",
+      "Lentils (dal)",
+      "Rice",
+      "Chickpeas"
+    ],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": [
+      "Loose spices and grains",
+      "Weighing scale"
+    ]
+  },
+  "location": {
+    "lat": 18.5604101,
+    "lng": 73.7793391
+  },
+  "createdAt": "2026-01-11T10:40:03.339Z",
+  "sourcePendingId": "pending-1768128003343-9n7rov2x8",
+  "sourceImagePath": "pending-images/pending-1768128003343-9n7rov2x8.jpg",
+  "sourceUploadedAt": "2026-01-11T10:40:03.339Z"
+}
