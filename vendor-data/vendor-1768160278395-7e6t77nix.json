@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160278395-7e6t77nix",
+  "heading": "Maa Cafe",
+  "description": "Food & Beverages in Delhi. Quality services and products.",
+  "extractedText": "Paratha, Chaat, Pav Bhaji, Vada Pav, Juice",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.570907385466864,
+    "lng": 77.16915142236698
+  },
+  "createdAt": "2026-01-11T19:37:58.395Z"
+}
