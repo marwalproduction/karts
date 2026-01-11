@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161039726-a9rb7k24h",
+  "heading": "Shri Cafe",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.955635891186365,
+    "lng": 77.58915344681412
+  },
+  "createdAt": "2026-01-11T19:50:39.726Z"
+}
