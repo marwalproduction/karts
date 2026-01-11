@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161143149-a50yvusoe",
+  "heading": "Health Medical",
+  "description": "Healthcare in Delhi. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure, Diabetes Check",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.66298409527955,
+    "lng": 77.2462360373732
+  },
+  "createdAt": "2026-01-11T19:52:23.149Z"
+}
