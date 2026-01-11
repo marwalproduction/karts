@@ -599,6 +599,7 @@ module.exports = {
   savePendingImage,
   getAllPendingImages,
   getPendingImage,
-  deletePendingImage
+  deletePendingImage,
+  clearVendorsCache
 };
 
