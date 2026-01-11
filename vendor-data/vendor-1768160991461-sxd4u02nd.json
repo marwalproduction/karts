@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160991461-sxd4u02nd",
+  "heading": "Happy Hotel",
+  "description": "Food & Beverages in Nagpur. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 21.096039712699458,
+    "lng": 79.10914959239246
+  },
+  "createdAt": "2026-01-11T19:49:51.462Z"
+}
