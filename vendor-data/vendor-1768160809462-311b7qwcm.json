@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160809462-311b7qwcm",
+  "heading": "Life Clinic",
+  "description": "Healthcare in Pune. Quality services and products.",
+  "extractedText": "General Consultation, Health Checkup, Lab Tests, Vaccination, Blood Pressure",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 18.519555158140285,
+    "lng": 73.8305726027646
+  },
+  "createdAt": "2026-01-11T19:46:49.462Z"
+}
