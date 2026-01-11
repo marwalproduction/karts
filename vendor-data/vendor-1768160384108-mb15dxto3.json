@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160384108-mb15dxto3",
+  "heading": "Divine Salon",
+  "description": "Beauty & Wellness in Mumbai. Quality services and products.",
+  "extractedText": "Haircut, Hair Color, Hair Spa, Facial, Waxing, Threading",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 19.061208511990408,
+    "lng": 72.91374424646122
+  },
+  "createdAt": "2026-01-11T19:39:44.108Z"
+}
