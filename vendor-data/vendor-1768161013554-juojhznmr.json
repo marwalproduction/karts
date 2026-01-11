@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768161013554-juojhznmr",
+  "heading": "New Cafe",
+  "description": "Food & Beverages in Ghaziabad. Quality services and products.",
+  "extractedText": "Idli, Dosa, Vada, Sambar, Chutney, Coffee",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.68780303017553,
+    "lng": 77.43168866860059
+  },
+  "createdAt": "2026-01-11T19:50:13.554Z"
+}
