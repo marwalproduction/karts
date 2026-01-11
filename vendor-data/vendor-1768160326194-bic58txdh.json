@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160326194-bic58txdh",
+  "heading": "New Hotel",
+  "description": "Food & Beverages in Patna. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps, Soft Drinks",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 25.626741507622505,
+    "lng": 85.13362164589236
+  },
+  "createdAt": "2026-01-11T19:38:46.194Z"
+}
