@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160646179-aoxvumfe4",
+  "heading": "Royal Dhaba",
+  "description": "Food & Beverages in Bangalore. Quality services and products.",
+  "extractedText": "Pizza, Burger, Pasta, Noodles, Wraps",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 12.949663921778887,
+    "lng": 77.61578272576315
+  },
+  "createdAt": "2026-01-11T19:44:06.179Z"
+}
