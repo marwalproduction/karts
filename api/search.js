@@ -38,6 +38,16 @@ module.exports = async function handler(req, res) {
     });
   } catch (error) {
     console.error('Search error:', error);
+    
+    // Handle rate limit gracefully - return empty or cached data
+    if (error.status === 403 || (error.message && error.message.includes('rate limit'))) {
+      console.warn('Rate limit hit during search, returning empty results');
+      return res.json({ 
+        vendors: [],
+        warning: 'GitHub API rate limit exceeded. Please try again in a few minutes.'
+      });
+    }
+    
     if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }

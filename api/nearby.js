@@ -40,6 +40,16 @@ module.exports = async function handler(req, res) {
     });
   } catch (error) {
     console.error('Nearby vendors error:', error);
+    
+    // Handle rate limit gracefully
+    if (error.status === 403 || (error.message && error.message.includes('rate limit'))) {
+      console.warn('Rate limit hit during nearby search, returning empty results');
+      return res.json({ 
+        vendors: [],
+        warning: 'GitHub API rate limit exceeded. Please try again in a few minutes.'
+      });
+    }
+    
     if (!process.env.GITHUB_TOKEN) {
       return res.json({ vendors: [] });
     }

@@ -2,6 +2,11 @@ const { Octokit } = require('@octokit/rest');
 
 let octokit = null;
 
+// Cache for vendors data
+let vendorsCache = null;
+let cacheTimestamp = null;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache
+
 function getOctokit() {
   if (!octokit) {
     const token = process.env.GITHUB_TOKEN;
@@ -31,8 +36,17 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   return R * c; // Distance in meters
 }
 
-// Get all vendors from GitHub
-async function getAllVendors() {
+// Get all vendors from GitHub with caching and rate limit handling
+async function getAllVendors(useCache = true) {
+  // Return cached data if available and fresh
+  if (useCache && vendorsCache && cacheTimestamp) {
+    const cacheAge = Date.now() - cacheTimestamp;
+    if (cacheAge < CACHE_TTL) {
+      console.log(`Returning cached vendors (${vendorsCache.length} vendors, ${Math.round(cacheAge/1000)}s old)`);
+      return vendorsCache;
+    }
+  }
+
   try {
     const octokit = getOctokit();
     
@@ -49,16 +63,31 @@ async function getAllVendors() {
         files = data.filter(item => item.type === 'file' && item.name.endsWith('.json'));
       }
     } catch (error) {
+      // Handle rate limit - return cached data if available
+      if (error.status === 403 && error.message && error.message.includes('rate limit')) {
+        console.warn('GitHub API rate limit exceeded, returning cached data');
+        if (vendorsCache) {
+          return vendorsCache;
+        }
+        throw new Error('GitHub API rate limit exceeded. Please try again in a few minutes.');
+      }
+      
       // Directory doesn't exist yet, return empty array
       if (error.status === 404) {
+        vendorsCache = [];
+        cacheTimestamp = Date.now();
         return [];
       }
       throw error;
     }
 
-    // Fetch all vendor files
+    // For large datasets, limit to avoid rate limits
+    // Fetch all vendor files with error handling for rate limits
     const vendors = [];
-    for (const file of files) {
+    const maxFiles = 1000; // Limit to prevent rate limits
+    
+    for (let i = 0; i < Math.min(files.length, maxFiles); i++) {
+      const file = files[i];
       try {
         const { data } = await octokit.repos.getContent({
           owner: OWNER,
@@ -69,16 +98,54 @@ async function getAllVendors() {
         const content = Buffer.from(data.content, 'base64').toString('utf-8');
         const vendor = JSON.parse(content);
         vendors.push(vendor);
+        
+        // Small delay every 100 files to avoid rate limiting
+        if ((i + 1) % 100 === 0) {
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
       } catch (error) {
-        console.error(`Error reading file ${file.path}:`, error);
+        // Handle rate limit - return what we have so far
+        if (error.status === 403 && error.message && error.message.includes('rate limit')) {
+          console.warn(`Rate limit hit at file ${i + 1}/${files.length}, returning ${vendors.length} vendors`);
+          if (vendors.length > 0) {
+            vendorsCache = vendors;
+            cacheTimestamp = Date.now();
+            return vendors;
+          }
+          // If we have cached data, return it
+          if (vendorsCache) {
+            return vendorsCache;
+          }
+          throw new Error('GitHub API rate limit exceeded. Please try again in a few minutes.');
+        }
+        console.error(`Error reading file ${file.path}:`, error.message);
       }
     }
 
+    // Update cache
+    vendorsCache = vendors;
+    cacheTimestamp = Date.now();
+    console.log(`Fetched ${vendors.length} vendors from GitHub`);
+
     return vendors;
   } catch (error) {
-    console.error('Error fetching vendors from GitHub:', error);
+    console.error('Error fetching vendors from GitHub:', error.message);
+    
+    // If rate limited and we have cache, return cache
+    if (error.status === 403 && vendorsCache) {
+      console.warn('Rate limited, returning cached vendors');
+      return vendorsCache;
+    }
+    
+    // Re-throw if no cache available
     throw error;
   }
+}
+
+// Clear cache (call after adding/updating vendors)
+function clearVendorsCache() {
+  vendorsCache = null;
+  cacheTimestamp = null;
 }
 
 // Save a vendor to GitHub
@@ -222,6 +289,12 @@ async function saveVendor(vendorData) {
       throw new Error(`GitHub API error: Failed after retries. ${lastError.message || 'Unknown error'}`);
     }
 
+    // Clear cache after saving
+    clearVendorsCache();
+    
+    // Clear cache after saving
+    clearVendorsCache();
+    
     return vendor;
   } catch (error) {
     console.error('Error saving vendor to GitHub:', error);
@@ -231,7 +304,7 @@ async function saveVendor(vendorData) {
 
 // Search vendors by text with improved relevance scoring
 async function searchVendors(query) {
-  const vendors = await getAllVendors();
+  const vendors = await getAllVendors(true); // Use cache
   const searchTerms = query.toLowerCase().trim().split(/\s+/).filter(term => term.length > 0);
   
   if (searchTerms.length === 0) {
@@ -313,7 +386,7 @@ async function searchVendors(query) {
 
 // Get nearby vendors
 async function getNearbyVendors(lat, lng, radius = 5000) {
-  const vendors = await getAllVendors();
+  const vendors = await getAllVendors(true); // Use cache
   
   return vendors
     .map(vendor => ({
