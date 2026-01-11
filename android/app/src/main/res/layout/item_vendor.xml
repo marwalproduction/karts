@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="0dp"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="18dp">
+
+        <!-- Title with Favorite Button -->
+        <TextView
+            android:id="@+id/vendor_heading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Roadside Food Cart"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#111111"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/favorite_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_bookmark"
+            android:contentDescription="Add to favorites"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:tint="#CCCCCC"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Capsules Container (Horizontal ScrollView for items) -->
+        <HorizontalScrollView
+            android:id="@+id/capsules_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:minHeight="30dp"
+            android:scrollbars="none"
+            android:fadeScrollbars="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vendor_heading">
+
+            <LinearLayout
+                android:id="@+id/capsules_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" />
+
+        </HorizontalScrollView>
+
+        <!-- Meta Information -->
+        <TextView
+            android:id="@+id/last_seen_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Last seen 18 min ago"
+            android:textSize="14sp"
+            android:textColor="#111111"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/capsules_container" />
+
+        <LinearLayout
+            android:id="@+id/confirmed_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/last_seen_text">
+
+            <ImageView
+                android:id="@+id/confirmed_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_profile"
+                android:contentDescription="Profile"
+                android:tint="#777777"
+                android:layout_marginEnd="6dp" />
+
+            <TextView
+                android:id="@+id/confirmed_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmed by 9 people"
+                android:textSize="13sp"
+                android:textColor="#777777" />
+
+        </LinearLayout>
+
+        <!-- Directions Button -->
+        <Button
+            android:id="@+id/directions_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:minHeight="56dp"
+            android:text="Directions"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF8A2A"
+            android:background="@drawable/button_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmed_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

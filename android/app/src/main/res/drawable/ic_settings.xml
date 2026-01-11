@@ -1,0 +1,45 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Settings/wrench icon -->
+    <path
+        android:pathData="M12,12m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"
+        android:fillColor="#00000000"/>
+    <path
+        android:pathData="M12,8L12,4"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M12,20L12,16"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M8,12L4,12"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M20,12L16,12"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M9.17,9.17L6.34,6.34"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M17.66,17.66L14.83,14.83"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M14.83,9.17L17.66,6.34"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+    <path
+        android:pathData="M6.34,17.66L9.17,14.83"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"/>
+</vector>
+

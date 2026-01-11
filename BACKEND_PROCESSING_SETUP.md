@@ -79,3 +79,4 @@ Add these to Vercel Environment Variables:
 3. If Puter.ai has a backend API, we can integrate it
 4. Consider adding WebSocket or polling for real-time updates
 
+

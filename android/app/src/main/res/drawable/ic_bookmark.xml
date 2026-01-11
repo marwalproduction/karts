@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Bookmark icon -->
+    <path
+        android:pathData="M5,2H19C19.55,2 20,2.45 20,3V21C20,21.3 19.85,21.55 19.65,21.7C19.45,21.85 19.15,21.9 18.95,21.8L12,18L5.05,21.8C4.85,21.9 4.55,21.85 4.35,21.7C4.15,21.55 4,21.3 4,21V3C4,2.45 4.45,2 5,2Z"
+        android:strokeWidth="2"
+        android:strokeColor="#000000"
+        android:fillColor="#00000000"/>
+</vector>
+
