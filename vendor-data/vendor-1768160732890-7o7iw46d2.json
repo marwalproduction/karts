@@ -1,0 +1,18 @@
+{
+  "id": "vendor-1768160732890-7o7iw46d2",
+  "heading": "Med Medical",
+  "description": "Healthcare in Ghaziabad. Quality services and products.",
+  "extractedText": "Eye Care, Dental Care, Physiotherapy, Orthopedic, Cardiology",
+  "extraInfo": {
+    "items": [],
+    "prices": [],
+    "hours": null,
+    "contact": null,
+    "features": []
+  },
+  "location": {
+    "lat": 28.695564356773406,
+    "lng": 77.50242253368697
+  },
+  "createdAt": "2026-01-11T19:45:32.890Z"
+}
